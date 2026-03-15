@@ -9,6 +9,19 @@
 
     var KAI_ENDPOINT = '/.netlify/functions/kai-proxy';
 
+    function renderMarkdown(text) {
+        return text
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.+?)\*/g, '<em>$1</em>')
+            .replace(/^#{1,3}\s+(.+)$/gm, '<strong>$1</strong>')
+            .replace(/^[-*]\s+(.+)$/gm, '<li>$1</li>')
+            .replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>')
+            .replace(/\n{2,}/g, '</p><p>')
+            .replace(/\n/g, '<br>')
+            .replace(/^(.+)$/, '<p>$1</p>');
+    }
+
     // Modal state
     var activeModal = null;
     var modalHistory = {};
@@ -208,7 +221,11 @@
         var messagesEl = document.getElementById('kai-modal-messages-' + id);
         var bubble = document.createElement('div');
         bubble.className = 'kai-modal-bubble kai-modal-bubble-' + role;
-        bubble.textContent = text;
+        if (role === 'assistant') {
+            bubble.innerHTML = renderMarkdown(text);
+        } else {
+            bubble.textContent = text;
+        }
         messagesEl.appendChild(bubble);
         messagesEl.scrollTop = messagesEl.scrollHeight;
         return bubble;
