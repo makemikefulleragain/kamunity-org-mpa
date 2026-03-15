@@ -48,6 +48,8 @@
                 });
 
                 if (!resp.ok) {
+                    const errData = await resp.json().catch(() => ({}));
+                    console.error('Kai error:', resp.status, errData);
                     throw new Error('API error ' + resp.status);
                 }
 
