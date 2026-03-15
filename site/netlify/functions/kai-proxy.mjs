@@ -1,7 +1,7 @@
 ﻿/* ============================================================
    KAMUNITY.ORG MPA â€” Kai Proxy Netlify Function
    Brief: WB-MPA-002
-   Model: claude-haiku-4-5-20251001 (per validated model list)
+   Model: claude-haiku-4-5 (per validated model list)
    Crisis protocol: hardcoded â€” not AI-generated
    No conversation storage (Constitutional Principle 5)
    ============================================================ */
@@ -103,7 +103,7 @@ export const handler = async (event) => {
                 'anthropic-version': '2023-06-01'
             },
             body: JSON.stringify({
-                model: 'claude-haiku-4-5-20251001',
+                model: 'claude-haiku-4-5',
                 max_tokens: 600,
                 system: systemPrompt,
                 messages: recentMessages
@@ -136,4 +136,5 @@ export const handler = async (event) => {
         };
     }
 };
+
 
