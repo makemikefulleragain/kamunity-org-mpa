@@ -2675,6 +2675,21 @@
 .hp-section-wrap p[style*="color: var(--ash)"] { color: var(--charcoal) !important; }
 
 /* ============================================================
+   ACCESSIBILITY — Reduced motion (WCAG 2.3.3)
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+    .kai-modal-overlay,
+    .kai-modal-container,
+    .skip-link {
+        animation: none;
+        transition: none;
+    }
+    .kai-modal-overlay.active {
+        display: flex;
+    }
+}
+
+/* ============================================================
    NOSCRIPT FALLBACK (Doug Test)
    ============================================================ */
 .noscript-note {
