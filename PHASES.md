@@ -2,7 +2,7 @@
 ## Brief: WB-MPA-002
 ## Project: PROJECTS/kamunity-org-mpa/
 ## Deploy target: kamunity-ring-two.netlify.app → kamunity.org (post DNS)
-## Last updated: March 14, 2026
+## Last updated: March 16, 2026
 ## Replaces: WB-MPA-001 (7-page scaffold → 4-surface MPA rebuild)
 
 ---
@@ -215,7 +215,7 @@ kamunity-org-mpa/
 
 **Status: PENDING — Mike must complete this manually**
 
-- [ ] Visit all four pages on staging URL (kamunity-ring-two.netlify.app)
+- [ ] Visit all four pages on staging URL (kamunity-org-mpa.netlify.app)
 - [ ] Test Kai conversation (at least 3 exchanges)
 - [ ] Test Reflection intake and at least 2 exchanges
 - [ ] Test all three embedded tools in shop row 2
