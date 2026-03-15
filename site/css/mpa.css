@@ -2632,6 +2632,49 @@
 }
 
 /* ============================================================
+   ACCESSIBILITY — Colour contrast overrides (WCAG 2.1 AA)
+   --ash (#8a7e70) on light backgrounds = ~3.28:1 — fails AA normal text
+   --ash-light (#a89c8c) on light backgrounds = ~2.38:1 — fails AA all text
+   --ember-light (#d4784a) on light backgrounds = ~2.84:1 — fails AA all text
+   Replace with --charcoal (#2d2620) = ~11.9:1 — passes AA
+   ============================================================ */
+
+/* Shop cards, warehouse cards, door cards */
+.shop-card-meta,
+.wh-tool-badge,
+.door-card-time { color: var(--charcoal); }
+
+/* Section labels and taglines */
+.signals-col-label,
+.shop-row-label,
+.wh-aisle-label,
+.hp-section-tagline,
+.wh-masthead-tagline,
+.news-masthead-sub { color: var(--charcoal); }
+
+/* Timeline and My Kamunity */
+.mk-timeline-note,
+.mk-timeline-week { color: var(--charcoal); }
+
+/* News page */
+.news-card-meta,
+.news-counts { color: var(--charcoal); }
+
+/* Footer */
+.mpa-footer-tagline,
+.mpa-footer-license { color: var(--charcoal); }
+
+/* Services menu */
+.services-menu-note,
+.service-price-nfp,
+.smr-nfp,
+.smr-std,
+.smr-format { color: var(--charcoal); }
+
+/* Constitution and about pages - inline styles use --ash, override here */
+.hp-section-wrap p[style*="color: var(--ash)"] { color: var(--charcoal) !important; }
+
+/* ============================================================
    NOSCRIPT FALLBACK (Doug Test)
    ============================================================ */
 .noscript-note {
