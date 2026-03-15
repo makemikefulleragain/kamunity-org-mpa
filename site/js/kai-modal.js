@@ -147,6 +147,31 @@
             }
         });
 
+        // Focus trap: keep Tab inside modal while open
+        modal.addEventListener('keydown', function(e) {
+            if (activeModal !== id) return;
+            if (e.key !== 'Tab') return;
+            
+            var focusable = modal.querySelectorAll(
+                'button:not([disabled]), input:not([disabled]), ' +
+                'textarea:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'
+            );
+            var first = focusable[0];
+            var last = focusable[focusable.length - 1];
+            
+            if (e.shiftKey) {
+                if (document.activeElement === first) {
+                    e.preventDefault();
+                    last.focus();
+                }
+            } else {
+                if (document.activeElement === last) {
+                    e.preventDefault();
+                    first.focus();
+                }
+            }
+        });
+
         // Consent handling for Reflection
         if (config.requireConsent) {
             var consentCheck = document.getElementById('kai-modal-consent-check-' + id);
@@ -183,6 +208,9 @@
         var config = JSON.parse(modal.dataset.config);
         var inputEl = document.getElementById('kai-modal-input-' + id);
         
+        // Store trigger element for focus return
+        modal._triggerEl = document.activeElement;
+        
         // Initialize history if needed
         if (!modalHistory[id]) {
             modalHistory[id] = [];
@@ -201,20 +229,39 @@
             inputEl.value = context;
         }
         
-        // Focus input
-        if (inputEl && !config.requireConsent) {
-            setTimeout(function() { 
+        // Focus management
+        setTimeout(function() {
+            if (config.requireConsent) {
+                // Focus consent checkbox for Reflection modal
+                var consentCheck = document.getElementById('kai-modal-consent-check-' + id);
+                if (consentCheck) {
+                    consentCheck.focus();
+                } else {
+                    // Fallback: focus container
+                    var container = modal.querySelector('.kai-modal-container');
+                    if (container) {
+                        container.setAttribute('tabindex', '-1');
+                        container.focus();
+                    }
+                }
+            } else if (inputEl) {
                 inputEl.focus();
                 // Move cursor to end of pre-filled text
                 inputEl.setSelectionRange(inputEl.value.length, inputEl.value.length);
-            }, 100);
-        }
+            }
+        }, 100);
     }
 
     function closeModal(id) {
         var modal = document.getElementById('kai-modal-' + id);
         modal.classList.remove('active');
         activeModal = null;
+        
+        // Return focus to trigger element
+        if (modal._triggerEl && modal._triggerEl.focus) {
+            modal._triggerEl.focus();
+            modal._triggerEl = null;
+        }
     }
 
     function addBubble(id, text, role) {
