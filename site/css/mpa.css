@@ -23,6 +23,28 @@
 .mpa-wrap img, .hp-hero img, .hp-section img { max-width: 100%; height: auto; }
 
 /* ============================================================
+   ACCESSIBILITY — Skip link
+   ============================================================ */
+.skip-link {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    background: var(--ember);
+    color: var(--cream);
+    padding: 0.5rem 1rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    z-index: 9999;
+    border-radius: 0 0 6px 6px;
+    transition: top 0.1s;
+}
+.skip-link:focus {
+    top: 0;
+}
+
+/* ============================================================
    NAVIGATION — MPA variant
    Nav: [kamunity]  Shop↓  |  Warehouse→  |  News→  |  My Kamunity+→
    ============================================================ */
