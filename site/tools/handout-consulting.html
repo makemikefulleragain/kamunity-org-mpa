@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consulting Services — Kamunity</title>
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+  :root {
+    --ember:   #e8a84c;
+    --moss:    #4a8c6b;
+    --sky:     #3a6ea8;
+    --danger:  #b94040;
+    --bg:      #ffffff;
+    --text:    #1a1714;
+    --text-muted: #4a4a4a;
+    --border:  #e0d8cc;
+    --surface: #fafaf8;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  .page {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 3rem 2.5rem;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 2rem;
+  }
+  .brand-mark {
+    font-size: 1.4rem;
+    line-height: 1;
+  }
+  .brand-name {
+    font-family: 'Fraunces', serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--sky);
+    letter-spacing: 0.02em;
+  }
+  .brand-tag {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-left: auto;
+  }
+
+  .hero {
+    margin-bottom: 2.5rem;
+  }
+  .hero-eyebrow {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ember);
+    margin-bottom: 0.5rem;
+  }
+  .hero-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--sky);
+    margin-bottom: 0.75rem;
+  }
+  .hero-sub {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    max-width: 56ch;
+    line-height: 1.55;
+  }
+
+  /* ── How It Works ── */
+  .how-it-works {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .step {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem 1.2rem;
+    text-align: center;
+  }
+  .step-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--sky);
+  }
+  .step-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--sky);
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+  }
+  .step-text {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  /* ── Callout Box ── */
+  .callout {
+    background: rgba(58,110,168,0.05);
+    border: 1px solid rgba(58,110,168,0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .callout-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--sky);
+    margin-bottom: 1rem;
+  }
+  .callout p {
+    font-size: 0.9rem;
+    color: var(--text);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+  .callout p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* ── Investment Box ── */
+  .investment-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .inv-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--sky);
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+  }
+  .inv-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px dashed var(--border);
+  }
+  .inv-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .inv-service {
+    font-weight: 500;
+    color: var(--text);
+  }
+  .inv-price-group {
+    text-align: right;
+  }
+  .inv-price {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    color: var(--sky);
+  }
+  .inv-nfp {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-left: 0.5rem;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    border-top: 1px solid var(--border);
+    padding-top: 1.25rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .footer-left { flex: 1; min-width: 200px; }
+  .footer-title {
+    font-family: 'Fraunces', serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--sky);
+    margin-bottom: 0.25rem;
+  }
+  .footer-text {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+  .footer-text a { color: var(--sky); text-decoration: none; }
+  .footer-text a:hover { text-decoration: underline; }
+
+  .footer-bottom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 1.5rem;
+    font-size: 0.8rem;
+    color: var(--sky);
+    row-gap: 0.25rem;
+  }
+  .footer-bottom-grid a { color: var(--sky); text-decoration: none; }
+  .footer-bottom-grid a:hover { text-decoration: underline; }
+  .footer-bottom-grid .right { text-align: right; color: var(--text-muted); }
+
+  /* ── Print styles ── */
+  @media print {
+    body {
+      background: #fff !important;
+      color: #1a1714 !important;
+    }
+    .page { max-width: 100%; padding: 1.2cm 1.5cm; }
+    
+    .step {
+      background: #fafaf8 !important;
+      border-color: #e0d8cc !important;
+      break-inside: avoid;
+    }
+    .callout {
+      background: #f4f8fb !important;
+      border-color: #dceaf5 !important;
+      break-inside: avoid;
+    }
+    .investment-box {
+      background: #fafaf8 !important;
+      border-color: #e0d8cc !important;
+      break-inside: avoid;
+    }
+    .inv-row { border-color: #e0d8cc !important; }
+    .footer-bottom-grid a { color: #3a6ea8 !important; }
+  }
+
+  @media (max-width: 600px) {
+    .page { padding: 1.5rem 1.25rem; }
+    .how-it-works { grid-template-columns: 1fr; }
+    .inv-row { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
+    .inv-price-group { text-align: left; }
+    .inv-nfp { margin-left: 0; display: block; margin-top: 0.2rem; }
+    .footer-bottom-grid { grid-template-columns: 1fr; gap: 0.5rem; }
+    .footer-bottom-grid .right { text-align: left; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="brand">
+    <span class="brand-mark">🔥</span>
+    <span class="brand-name">Kamunity</span>
+    <span class="brand-tag">Community Technology — Perth, WA</span>
+  </div>
+
+  <div class="hero">
+    <div class="hero-eyebrow">Kamunity Consulting</div>
+    <h1 class="hero-title">Strategic Guidance<br>for Community Impact</h1>
+    <p class="hero-sub">From fixing broken processes to designing impossible innovations, we provide hands-on consulting to align your technology with your core mission.</p>
+  </div>
+
+  <div class="how-it-works">
+    <div class="step">
+      <div class="step-icon">🔧</div>
+      <div class="step-title">Fix It</div>
+      <div class="step-text">Strategy, QA, and process improvement. Something isn't working. Let's work out why and fix it.</div>
+    </div>
+    <div class="step">
+      <div class="step-icon">�</div>
+      <div class="step-title">Invent It</div>
+      <div class="step-text">Innovation sprints, AI systems, and design. Building the thing that doesn't exist yet.</div>
+    </div>
+    <div class="step">
+      <div class="step-icon">🌱</div>
+      <div class="step-title">Ring Zero</div>
+      <div class="step-text">Six weeks to constitutional independence. Sovereign AI presence, community rooms, sector feed.</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-title">Our Approach</div>
+    <p>Led by Mike Fuller. We use a human-centred, technology-agnostic approach grounded in the principles of continuous quality improvement and effective management. We believe technology should serve intent, not dictate it.</p>
+    <p>Our goal is to build your internal capacity, not external dependency. We want to work ourselves out of a job.</p>
+  </div>
+
+  <div class="investment-box">
+    <div class="inv-title">Pricing — visible, no discovery call required</div>
+    <div class="inv-row">
+      <div class="inv-service">Fix It — hourly</div>
+      <div class="inv-price-group">
+        <span class="inv-price">$220/hr</span>
+        <span class="inv-nfp">NFP Rate: $150/hr</span>
+      </div>
+    </div>
+    <div class="inv-row">
+      <div class="inv-service">Fix It — half-day</div>
+      <div class="inv-price-group">
+        <span class="inv-price">$880</span>
+        <span class="inv-nfp">NFP Rate: $550</span>
+      </div>
+    </div>
+    <div class="inv-row">
+      <div class="inv-service">Invent It — hourly</div>
+      <div class="inv-price-group">
+        <span class="inv-price">$220/hr</span>
+        <span class="inv-nfp">NFP Rate: $150/hr</span>
+      </div>
+    </div>
+    <div class="inv-row">
+      <div class="inv-service">Invent It — sprint</div>
+      <div class="inv-price-group">
+        <span class="inv-price">From $1,920</span>
+        <span class="inv-nfp">NFP Rate: From $1,200</span>
+      </div>
+    </div>
+    <div class="inv-row">
+      <div class="inv-service">Ring Zero — full programme</div>
+      <div class="inv-price-group">
+        <span class="inv-price">$4,500</span>
+        <span class="inv-nfp">$0 Hard-to-Love Fund</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">
+      <div class="footer-title">Want to go deeper?</div>
+      <p class="footer-text">
+        Kamunity builds constitutional AI tools, websites and chat for your community organisation — all with explicit safety guardrails, honest disclaimers, and an open methodology you can learn.
+      </p>
+    </div>
+  </div>
+
+  <div class="footer-bottom-grid">
+    <div class="left"><a href="https://kamunityconsulting.com">kamunityconsulting.com</a> &nbsp;·&nbsp; <a href="https://kamunity.org">kamunity.org</a> &nbsp;·&nbsp; <a href="https://kamunity.ai">kamunity.ai</a></div>
+    <div class="right">Mike Fuller · Maylands, Western Australia</div>
+    <div class="left"><a href="mailto:mike@kamunityconsulting.com">mike@kamunityconsulting.com</a></div>
+    <div class="right"><span style="font-size: 0.7rem; opacity: 0.7;">CC BY-SA 4.0 · kamunity.org</span></div>
+  </div>
+
+</div>
+</body>
+</html>

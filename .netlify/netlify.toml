@@ -1,0 +1,343 @@
+headersOrigin = "config"
+redirectsOrigin = "config"
+plugins = []
+functionsDirectory = "C:\\Users\\mikef\\OneDrive\\1 KomUnity\\1a New KU Plans\\Dev_Code\\Kamunity-Tabletop-Plan\\PROJECTS\\kamunity-org-mpa\\site\\netlify\\functions"
+functionsDirectoryOrigin = "config-v1"
+
+[functions]
+
+[functions."*"]
+node_bundler = "esbuild"
+
+[build]
+publish = "C:\\Users\\mikef\\OneDrive\\1 KomUnity\\1a New KU Plans\\Dev_Code\\Kamunity-Tabletop-Plan\\PROJECTS\\kamunity-org-mpa\\site"
+publishOrigin = "config"
+base = "C:\\Users\\mikef\\OneDrive\\1 KomUnity\\1a New KU Plans\\Dev_Code\\Kamunity-Tabletop-Plan\\PROJECTS\\kamunity-org-mpa"
+functions = "C:\\Users\\mikef\\OneDrive\\1 KomUnity\\1a New KU Plans\\Dev_Code\\Kamunity-Tabletop-Plan\\PROJECTS\\kamunity-org-mpa\\site\\netlify\\functions"
+
+[build.environment]
+NODE_VERSION = "22"
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]
+
+[[headers]]
+for = "/*"
+
+[headers.values]
+X-Frame-Options = "DENY"
+X-Content-Type-Options = "nosniff"
+Referrer-Policy = "strict-origin-when-cross-origin"
+Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; connect-src 'self' https://api.anthropic.com; img-src 'self' data:; frame-ancestors 'none'"
+
+[[headers]]
+for = "/*"
+
+[headers.values]
+X-Frame-Options = "DENY"
+X-Content-Type-Options = "nosniff"
+Referrer-Policy = "no-referrer"
+Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; connect-src 'self' https://community-signal.netlify.app https://api.anthropic.com; img-src 'self' data:; form-action 'self' https://kamunity-ring-two.netlify.app; frame-ancestors 'none'"
+
+[[headers]]
+for = "/robots.txt"
+
+[headers.values]
+Cache-Control = "public, max-age=3600"
+Content-Type = "text/plain; charset=utf-8"
+
+[[headers]]
+for = "/llms.txt"
+
+[headers.values]
+Content-Type = "text/plain; charset=utf-8"
+Cache-Control = "public, max-age=86400"
+
+[[headers]]
+for = "/llms-full.txt"
+
+[headers.values]
+Content-Type = "text/plain; charset=utf-8"
+Cache-Control = "public, max-age=86400"
+
+[[headers]]
+for = "/sitemap.xml"
+
+[headers.values]
+Content-Type = "application/xml; charset=utf-8"
+Cache-Control = "public, max-age=86400"
+
+[[redirects]]
+from = "/news"
+to = "/news.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/warehouse"
+to = "/warehouse.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/my-kamunity"
+to = "/my-kamunity.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/bothy-floor"
+to = "/bothy-floor.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/constitution"
+to = "/my-kamunity"
+status = 301.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/ring-zero"
+to = "/my-kamunity"
+status = 301.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/about"
+to = "/"
+status = 301.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/about/constitution"
+to = "/my-kamunity"
+status = 301.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/tools"
+to = "/#shop"
+status = 301.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/kai"
+to = "/#chats"
+status = 301.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/services"
+to = "/#services"
+status = 301.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/von-neumann"
+to = "/my-kamunity#von-neumann"
+status = 301.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/pulse"
+to = "/news"
+status = 301.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/calculator"
+to = "/#shop"
+status = 301.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/copilot-check"
+to = "/#shop"
+status = 301.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/sovereignty-check"
+to = "/#shop"
+status = 301.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/ai-readiness"
+to = "/#shop"
+status = 301.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/org-health-check"
+to = "/#shop"
+status = 301.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/reflection"
+to = "/#chats"
+status = 301.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/peer-stories"
+to = "/news"
+status = 301.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/stories"
+to = "/news"
+status = 301.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]

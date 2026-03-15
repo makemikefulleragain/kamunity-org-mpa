@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kamunity News — Sector Intelligence for the WA Community Sector</title>
+    <meta name="description" content="Signals and pulses from the WA community sector. Policy changes, funding news, sector commentary, and community practice. Filtered and organised by Kamunity.">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kamunity.org/news">
+    <meta property="og:title" content="Kamunity News — Sector Intelligence">
+    <meta property="og:description" content="Signals and pulses from the WA community sector. No algorithm. No engagement optimisation.">
+    <meta name="twitter:card" content="summary">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
+    <link rel="stylesheet" href="fonts/fonts.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mpa.css">
+</head>
+<body>
+
+<noscript>
+<div class="noscript-note">Kamunity News works without JavaScript — content is visible below. Filtering and tab switching require JS.</div>
+</noscript>
+
+<!-- ACKNOWLEDGEMENT OF COUNTRY -->
+<div class="aoc-banner" id="aoc-banner" role="banner">
+    <span>Built in Boorloo/Perth, on Whadjuk Noongar country. We acknowledge Whadjuk Noongar people as the traditional custodians of this land. Sovereignty was never ceded.</span>
+    <button class="aoc-close" id="aoc-close" aria-label="Dismiss acknowledgement">×</button>
+</div>
+
+<!-- NAVIGATION -->
+<nav class="mpa-nav" role="navigation" aria-label="Main navigation">
+    <a href="/" class="mpa-nav-logo" aria-label="Kamunity home">kamunity</a>
+    <button class="mpa-hamburger" id="mpa-hamburger" aria-expanded="false" aria-controls="mpa-nav-links" aria-label="Open navigation">
+        <span></span><span></span><span></span>
+    </button>
+    <div class="mpa-nav-links" id="mpa-nav-links" role="menubar">
+        <a href="/#shop" role="menuitem">Kamunity Shop ↓</a>
+        <span class="mpa-nav-sep" aria-hidden="true">|</span>
+        <a href="/warehouse" role="menuitem">Commons Warehouse →</a>
+        <a href="/news" class="active" role="menuitem">Kamunity News →</a>
+        <a href="/my-kamunity" role="menuitem">My Kamunity+ →</a>
+    </div>
+</nav>
+
+<div class="hp-page-body">
+
+<!-- STICKY ASK KAI -->
+<div class="news-kai-sticky" role="complementary" aria-label="Ask Kai">
+    <a href="/#chats" class="ask-kai-btn">Ask Kai about what you're reading ↗</a>
+</div>
+
+<!-- MASTHEAD -->
+<div class="hp-section-wrap news-masthead-wrap">
+<header class="news-masthead" aria-labelledby="news-heading">
+    <h1 id="news-heading">Kamunity News</h1>
+    <p class="news-masthead-sub">Sector intelligence for the WA community sector. No algorithm. No engagement optimisation.</p>
+    <p class="news-counts" id="news-counts" aria-live="polite">Loading signal count...</p>
+    <p class="news-counts" style="margin-top:0.2rem;">
+        Last updated: <span id="news-last-updated">—</span>
+    </p>
+</header>
+</div>
+
+<!-- TAB BAR -->
+<div class="hp-section-wrap news-tabs-wrap">
+<div class="news-tab-bar" role="tablist" aria-label="News categories" id="news-tab-bar">
+    <button class="news-tab active" role="tab" aria-selected="true" data-tab="latest" aria-controls="news-panel">Latest</button>
+    <button class="news-tab" role="tab" aria-selected="false" data-tab="sector-intelligence" aria-controls="news-panel">Sector Intelligence</button>
+    <button class="news-tab" role="tab" aria-selected="false" data-tab="community-practice" aria-controls="news-panel">Community Practice</button>
+    <button class="news-tab" role="tab" aria-selected="false" data-tab="ai-tech" aria-controls="news-panel">AI &amp; Tech</button>
+    <button class="news-tab" role="tab" aria-selected="false" data-tab="policy-funding" aria-controls="news-panel">Policy &amp; Funding</button>
+</div>
+
+<!-- FILTER BAR -->
+<div class="news-filter-bar" role="search" aria-label="Filter news">
+    <select class="news-filter-select" id="filter-type" aria-label="Filter by type">
+        <option value="">All types</option>
+        <option value="signal">Signals</option>
+        <option value="pulse-video">Video</option>
+        <option value="pulse-audio">Audio</option>
+        <option value="pulse-written">Written</option>
+    </select>
+    <select class="news-filter-select" id="filter-category" aria-label="Filter by category">
+        <option value="">All categories</option>
+        <option value="sector-intelligence">Sector Intelligence</option>
+        <option value="community-practice">Community Practice</option>
+        <option value="ai-tech">AI &amp; Tech</option>
+        <option value="policy-funding">Policy &amp; Funding</option>
+    </select>
+    <select class="news-filter-select" id="filter-sort" aria-label="Sort order">
+        <option value="newest">Newest first</option>
+        <option value="oldest">Oldest first</option>
+    </select>
+</div>
+</div>
+
+<!-- CARD GRID -->
+<div class="hp-section-wrap news-grid-wrap">
+<div class="news-card-grid" id="news-panel" role="tabpanel" aria-label="News articles" aria-live="polite">
+    <!-- Populated by news.js when JS is available. Static fallback cards below for no-JS / offline (Doug Test). -->
+
+    <div class="news-card" data-static-fallback="true">
+        <div class="news-card-type news-card-type--signal">Signal</div>
+        <h3>Kamunity News — live signals load when connected</h3>
+        <p class="news-card-summary">This page pulls live sector signals and pulses from the Community Signal network. When JavaScript is available and the network is reachable, cards populate automatically. Without JS or offline, use the direct links below.</p>
+        <div class="news-card-meta">Kamunity · kamunity.org/news</div>
+        <div class="news-card-actions">
+            <a href="https://community-signal.netlify.app" target="_blank" rel="noopener noreferrer" class="ask-kai-btn">Community Signal live feed →</a>
+        </div>
+    </div>
+
+    <div class="news-card" data-static-fallback="true">
+        <div class="news-card-type news-card-type--signal">What's in the feed</div>
+        <h3>What Kamunity News covers</h3>
+        <p class="news-card-summary">Five tabs: <strong>Latest</strong> (everything), <strong>Sector Intelligence</strong> (WA community sector analysis), <strong>Community Practice</strong> (orgs sharing what works), <strong>AI &amp; Tech</strong> (technology that matters for community orgs), <strong>Policy &amp; Funding</strong> (grant rounds, policy changes, funding news). Cards include read-aloud for written content and YouTube embeds via youtube-nocookie.com.</p>
+        <div class="news-card-meta">Kamunity · Updated weekly from community sources</div>
+        <div class="news-card-actions">
+            <a href="/#chats" class="ask-kai-btn">Ask Kai about the sector →</a>
+        </div>
+    </div>
+
+    <div class="news-card" data-static-fallback="true">
+        <div class="news-card-type news-card-type--pulse">Pulse</div>
+        <h3>Community organisations publishing their own signals</h3>
+        <p class="news-card-summary">Pulse cards come from community organisations using Kamunity infrastructure to publish their own stories, updates, and sector intelligence. Video, audio, and written formats. No algorithm decides what appears — curated by context, not engagement. The first pulse is from GGA × Kamunity, representing ~95 WA agricultural organisations.</p>
+        <div class="news-card-meta">Community Signal Pulse · <a href="https://gga-kamunity.netlify.app" target="_blank" rel="noopener noreferrer">GGA × Kamunity →</a></div>
+        <div class="news-card-actions">
+            <a href="/my-kamunity" class="ask-kai-btn">See My Kamunity+ →</a>
+        </div>
+    </div>
+</div>
+
+<!-- LOAD MORE -->
+<div class="news-load-more" id="news-load-more" style="display:none;">
+    <button class="news-load-more-btn" id="load-more-btn" aria-label="Load more articles">Load more</button>
+</div>
+</div>
+
+</div><!-- /hp-page-body -->
+
+<!-- FOOTER -->
+<footer class="mpa-footer" role="contentinfo">
+    <div class="mpa-footer-inner">
+        <div class="mpa-footer-top">
+            <div>
+                <a href="/" class="mpa-footer-logo">kamunity</a>
+                <p class="mpa-footer-tagline">Community sovereignty infrastructure. Built in Boorloo/Perth. Free tools, honest consulting, and sovereign infrastructure for the WA community sector.</p>
+                <p class="mpa-footer-license">No tracking. No analytics. No cookies. No data collection. Constitutional commitment.</p>
+            </div>
+            <nav class="mpa-footer-nav" aria-label="Ecosystem">
+                <h4 class="mpa-footer-nav-heading">Ecosystem</h4>
+                <a href="https://kamunity.org" target="_blank" rel="noopener noreferrer">kamunity.org</a>
+                <a href="https://kamunityconsulting.com" target="_blank" rel="noopener noreferrer">kamunityconsulting.com</a>
+                <a href="https://kamunity.ai" target="_blank" rel="noopener noreferrer">kamunity.ai</a>
+                <a href="/#shop">Sovereignty Audit</a>
+                <a href="/#shop">AI Readiness</a>
+                <a href="/tools/grant-acquittal-helper.html">Grant Helper</a>
+            </nav>
+            <div class="mpa-footer-nav">
+                <h4 class="mpa-footer-nav-heading">If you need help now</h4>
+                <a href="tel:000">Emergency: 000</a>
+                <a href="tel:131114">Lifeline: 13 11 14</a>
+                <a href="tel:1800737732">1800RESPECT: 1800 737 732</a>
+                <a href="tel:1800551800">Kids Helpline: 1800 551 800</a>
+                <a href="tel:1300224636">Beyond Blue: 1300 22 4636</a>
+            </div>
+        </div>
+        <div class="mpa-footer-bottom">
+            <div class="mpa-footer-legal">Kamunity is an AI wayfinder and community tools platform, not a counsellor, therapist, or substitute for professional advice. All AI-generated content should be reviewed by humans before use.</div>
+            <div class="mpa-footer-aoc">Built on Whadjuk Noongar boodja. Sovereignty was never ceded.</div>
+        </div>
+    </div>
+</footer>
+
+<!-- Kai FAB -->
+<button class="kai-fab" id="kai-fab" data-kai-modal data-kai-context="I've been reading Kamunity News. Can you help me understand any of these topics or find something specific?" aria-label="Talk to Kai">K</button>
+
+<script src="/js/nav.js"></script>
+<script src="/js/news.js"></script>
+<script src="/js/kai-modal.js"></script>
+
+</body>
+</html>

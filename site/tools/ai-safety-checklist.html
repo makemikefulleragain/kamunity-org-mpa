@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Safety Checklist — Kamunity</title>
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+  :root {
+    --ember:   #e8a84c;
+    --moss:    #4a8c6b;
+    --sky:     #3a6ea8;
+    --danger:  #b94040;
+    --bg:      #ffffff;
+    --text:    #1a1714;
+    --text-muted: #4a4a4a;
+    --border:  #e0d8cc;
+    --surface: #fafaf8;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  /* ── Screen layout ── */
+  .page {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 3rem 2.5rem;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 2rem;
+  }
+  .brand-mark {
+    font-size: 1.4rem;
+    line-height: 1;
+  }
+  .brand-name {
+    font-family: 'Fraunces', serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--sky);
+    letter-spacing: 0.02em;
+  }
+  .brand-tag {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-left: auto;
+  }
+
+  .hero {
+    margin-bottom: 2.5rem;
+  }
+  .hero-eyebrow {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ember);
+    margin-bottom: 0.5rem;
+  }
+  .hero-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--sky);
+    margin-bottom: 0.75rem;
+  }
+  .hero-sub {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    max-width: 56ch;
+    line-height: 1.55;
+  }
+
+  /* ── Checklist items ── */
+  .checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .item {
+    display: flex;
+    gap: 1.1rem;
+    align-items: flex-start;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.1rem 1.3rem;
+    transition: border-color 0.15s;
+  }
+  .item:hover { border-color: rgba(58,110,168,0.3); }
+
+  .item-num {
+    font-family: 'Fraunces', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--ember);
+    line-height: 1;
+    flex-shrink: 0;
+    width: 2rem;
+    text-align: right;
+    margin-top: 0.1rem;
+  }
+
+  .item-body { flex: 1; min-width: 0; }
+
+  .item-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--sky);
+    margin-bottom: 0.3rem;
+    line-height: 1.3;
+  }
+
+  .item-text {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+  }
+
+  .item-tag {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.15em 0.55em;
+    border-radius: 4px;
+    margin-right: 0.4rem;
+    margin-bottom: 0.4rem;
+  }
+  .tag-data     { background: rgba(58,110,168,0.1); color: var(--sky); }
+  .tag-legal    { background: rgba(74,140,107,0.1); color: var(--moss); }
+  .tag-accuracy { background: rgba(232,168,76,0.15); color: #b87a2a; }
+  .tag-values   { background: rgba(74,140,107,0.1); color: var(--moss); }
+  .tag-govern   { background: rgba(185,64,64,0.1); color: var(--danger); }
+
+  /* ── Bottom sections ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+  }
+
+  .panel-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--sky);
+    margin-bottom: 0.65rem;
+  }
+
+  .panel ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .panel li {
+    font-size: 0.83rem;
+    color: var(--text-muted);
+    padding-left: 1rem;
+    position: relative;
+    line-height: 1.45;
+  }
+  .panel li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--ember);
+  }
+  .panel a {
+    color: var(--sky);
+    text-decoration: none;
+  }
+  .panel a:hover { text-decoration: underline; }
+
+  .red-flags li::before { color: var(--danger); content: '⚑'; }
+
+  .footer {
+    border-top: 1px solid var(--border);
+    padding-top: 1.25rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .footer-left { flex: 1; min-width: 200px; }
+  .footer-title {
+    font-family: 'Fraunces', serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--sky);
+    margin-bottom: 0.25rem;
+  }
+  .footer-text {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+  .footer-text a { color: var(--sky); text-decoration: none; }
+  .footer-text a:hover { text-decoration: underline; }
+
+  .footer-tools {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .tool-link {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 0.2rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .tool-link span { color: var(--sky); font-weight: 600; }
+  .tool-link:hover span { text-decoration: underline; }
+
+  .footer-bottom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 1.5rem;
+    font-size: 0.8rem;
+    color: var(--sky);
+    row-gap: 0.25rem;
+  }
+  .footer-bottom-grid a { color: var(--sky); text-decoration: none; }
+  .footer-bottom-grid a:hover { text-decoration: underline; }
+  .footer-bottom-grid .right { text-align: right; color: var(--text-muted); }
+
+  /* ── Print styles ── */
+  @media print {
+    body {
+      background: #fff !important;
+      color: #1a1714 !important;
+    }
+    .page { max-width: 100%; padding: 1.2cm 1.5cm; }
+
+    .brand-name { color: #3a6ea8 !important; }
+    .brand-tag { color: #4a4a4a !important; }
+
+    .hero-eyebrow { color: #e8a84c !important; }
+    .hero-title { color: #3a6ea8 !important; }
+    .hero-sub { color: #4a4a4a !important; }
+
+    .item {
+      background: #fafaf8 !important;
+      border-color: #e0d8cc !important;
+      break-inside: avoid;
+    }
+    .item:hover { border-color: #e0d8cc !important; }
+    .item-num { color: #e8a84c !important; }
+    .item-title { color: #3a6ea8 !important; }
+    .item-text { color: #4a4a4a !important; }
+
+    .tag-data     { background: #dceaf5 !important; color: #3a6ea8 !important; }
+    .tag-legal    { background: #e2f0e2 !important; color: #4a8c6b !important; }
+    .tag-accuracy { background: #fdf3dc !important; color: #b87a2a !important; }
+    .tag-values   { background: #e2f0e2 !important; color: #4a8c6b !important; }
+    .tag-govern   { background: #fde8e8 !important; color: #b94040 !important; }
+
+    .panel {
+      background: #fafaf8 !important;
+      border-color: #e0d8cc !important;
+    }
+    .panel-title { color: #3a6ea8 !important; }
+    .panel li { color: #4a4a4a !important; }
+    .panel li::before { color: #e8a84c !important; }
+    .panel a { color: #3a6ea8 !important; }
+
+    .red-flags li::before { color: #b94040 !important; }
+
+    .footer { border-color: #e0d8cc !important; }
+    .footer-title { color: #3a6ea8 !important; }
+    .footer-text { color: #4a4a4a !important; }
+    .footer-text a { color: #3a6ea8 !important; }
+    .tool-link { color: #4a4a4a !important; }
+    .tool-link span { color: #3a6ea8 !important; }
+    .footer-bottom-grid a { color: #3a6ea8 !important; }
+  }
+
+  @media (max-width: 600px) {
+    .page { padding: 1.5rem 1.25rem; }
+    .two-col { grid-template-columns: 1fr; }
+    .footer-bottom-grid { grid-template-columns: 1fr; gap: 0.5rem; }
+    .footer-bottom-grid .right { text-align: left; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="brand">
+    <span class="brand-mark">🔥</span>
+    <span class="brand-name">Kamunity</span>
+    <span class="brand-tag">Community Technology — Perth, WA</span>
+  </div>
+
+  <div class="hero">
+    <div class="hero-eyebrow">AI Safety Checklist</div>
+    <h1 class="hero-title">5 Things to Check Before Using AI<br>in Your Community Organisation</h1>
+    <p class="hero-sub">AI tools can be genuinely useful for community organisations — but they come with real risks that affect your clients, your data, and your accountability. This checklist takes 2 minutes to run through before you start.</p>
+  </div>
+
+  <div class="checklist">
+
+    <div class="item">
+      <div class="item-num">1</div>
+      <div class="item-body">
+        <div class="item-title">
+          <span class="item-tag tag-data">Data</span>
+          What personal data are you sharing?
+        </div>
+        <p class="item-text">Client names, health information, financial details, and case notes should <strong>never</strong> go into public AI tools (ChatGPT, Claude, Gemini) without explicit consent. Check your privacy policy. When in doubt, anonymise first — replace real names with "Client A", remove postcodes, omit identifying details.</p>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-num">2</div>
+      <div class="item-body">
+        <div class="item-title">
+          <span class="item-tag tag-accuracy">Accuracy</span>
+          Is the AI making things up?
+        </div>
+        <p class="item-text">AI tools confidently produce plausible-sounding <strong>incorrect information</strong> — wrong statistics, invented citations, outdated legislation, fabricated services. Never submit AI-generated content to funders, regulators, or media without verifying every factual claim against a primary source. Always check: who said that? Where's the original?</p>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-num">3</div>
+      <div class="item-body">
+        <div class="item-title">
+          <span class="item-tag tag-values">Values</span>
+          Does it reflect your community's values?
+        </div>
+        <p class="item-text">AI reflects the biases in its training data. For CALD communities, First Nations engagement, disability inclusion, or trauma-informed practice — AI-generated content needs careful human review. It may use inappropriate language, miss cultural context, or default to majority-culture assumptions. <strong>Your values override the AI's defaults.</strong></p>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-num">4</div>
+      <div class="item-body">
+        <div class="item-title">
+          <span class="item-tag tag-legal">Legal</span>
+          Who owns the output — and what are the terms?
+        </div>
+        <p class="item-text">AI-generated content has unclear copyright status in Australia. Before publishing, grant-reporting, or submitting AI-assisted work professionally, check: does the tool's terms of service allow commercial/NFP use? Who owns what you create? Is the output trained on copyrighted material? Read the terms — or get advice before you rely on them.</p>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-num">5</div>
+      <div class="item-body">
+        <div class="item-title">
+          <span class="item-tag tag-govern">Governance</span>
+          Who's accountable when it goes wrong?
+        </div>
+        <p class="item-text">Your organisation is responsible for AI-assisted decisions — not the tool. Document when and how AI is used. Require human review for any high-stakes output: funding proposals, client assessments, public communications, financial decisions. If you can't explain how a decision was made, that's a governance gap. <strong>Have a human sign off.</strong></p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="two-col">
+    <div class="panel">
+      <div class="panel-title">🚩 Red Flags — Stop &amp; Check</div>
+      <ul class="red-flags">
+        <li>AI mentions a specific statistic, study, or report</li>
+        <li>Output will be sent to a funder, regulator, or media</li>
+        <li>Any real client or individual is mentioned</li>
+        <li>You're unsure what the tool does with your data</li>
+        <li>The output will affect a real person's access to services</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <div class="panel-title">✅ Safe Starting Points</div>
+      <ul>
+        <li>Drafting internal comms (then edit heavily)</li>
+        <li>Brainstorming ideas — not deciding between them</li>
+        <li>Summarising your own documents you've already written</li>
+        <li>Creating templates with no personal data</li>
+        <li>Exploring "what questions should I be asking?"</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">
+      <div class="footer-title">Want to go deeper?</div>
+      <p class="footer-text">
+        Kamunity builds constitutional AI tools, websites and chat for your community organisation — all with explicit safety guardrails, honest disclaimers, and an open methodology you can learn.
+      </p>
+    </div>
+    <div class="footer-tools">
+      <div class="panel-title" style="margin-bottom:0.5rem">Free Tools</div>
+      <a class="tool-link" href="https://kamunity-audit.netlify.app">🛡️ <span>Digital Sovereignty Audit</span> — 2 min self-assessment</a>
+      <a class="tool-link" href="https://kamunity-ai-readiness.netlify.app">🧭 <span>AI Readiness Assessment</span> — 5 min quiz + toolkit</a>
+      <a class="tool-link" href="https://kamunity.org">🔥 <span>Talk to Kai</span> — AI wayfinder for community orgs</a>
+    </div>
+  </div>
+
+  <div class="footer-bottom-grid">
+    <div class="left"><a href="https://kamunity.org">kamunity.org</a> &nbsp;·&nbsp; <a href="https://kamunity.ai">kamunity.ai</a></div>
+    <div class="right">Mike Fuller · Maylands, Western Australia</div>
+    <div class="left"><a href="mailto:mike@kamunityconsulting.com">mike@kamunityconsulting.com</a></div>
+    <div class="right"><span style="font-size: 0.7rem; opacity: 0.7;">* This document was drafted with AI assistance (Gemini 3.1).</span></div>
+  </div>
+
+</div>
+</body>
+</html>

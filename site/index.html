@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kamunity — Community Sovereignty Infrastructure</title>
+    <meta name="description" content="Free tools, honest AI, and consulting for the WA community sector. Sovereignty check, AI readiness, sector pulse, Commons Warehouse. No tracking. No gatekeeping. The door is always open.">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kamunity.org">
+    <meta property="og:title" content="Kamunity — Community Sovereignty Infrastructure">
+    <meta property="og:description" content="Free tools, honest AI, and consulting for the WA community sector. No tracking. No gatekeeping.">
+    <meta name="twitter:card" content="summary">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Kamunity",
+      "url": "https://kamunity.org",
+      "description": "Community sovereignty infrastructure for WA community organisations",
+      "foundingLocation": {
+        "@type": "Place",
+        "name": "Boorloo/Perth, Western Australia",
+        "description": "Built on Whadjuk Noongar boodja. Sovereignty was never ceded."
+      },
+      "knowsAbout": ["Digital sovereignty","Community infrastructure","AI readiness for nonprofits","Constitutional AI governance","Community sector WA"],
+      "ethicsPolicy": "https://kamunity.org/bothy-floor",
+      "license": "https://creativecommons.org/licenses/by-sa/4.0/"
+    }
+    </script>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
+    <link rel="stylesheet" href="fonts/fonts.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mpa.css">
+</head>
+<body>
+
+<noscript>
+<div class="noscript-note">This site works without JavaScript. All content below is readable. Tools require JS to run inline — use the direct links if needed.</div>
+</noscript>
+
+<!-- ACKNOWLEDGEMENT OF COUNTRY (Constitutional Principle 8 — visible on every page) -->
+<div class="aoc-banner" id="aoc-banner" role="banner">
+    <span>Built in Boorloo/Perth, on Whadjuk Noongar country. We acknowledge Whadjuk Noongar people as the traditional custodians of this land. Sovereignty was never ceded.</span>
+    <button class="aoc-close" id="aoc-close" aria-label="Dismiss acknowledgement">×</button>
+</div>
+
+<!-- NAVIGATION -->
+<nav class="mpa-nav" role="navigation" aria-label="Main navigation">
+    <a href="/" class="mpa-nav-logo" aria-label="Kamunity home">kamunity</a>
+    <button class="mpa-hamburger" id="mpa-hamburger" aria-expanded="false" aria-controls="mpa-nav-links" aria-label="Open navigation">
+        <span></span><span></span><span></span>
+    </button>
+    <div class="mpa-nav-links" id="mpa-nav-links" role="menubar">
+        <a href="#shop" role="menuitem">Kamunity Shop ↓</a>
+        <span class="mpa-nav-sep" aria-hidden="true">|</span>
+        <a href="/warehouse" role="menuitem">Commons Warehouse →</a>
+        <a href="/news" role="menuitem">Kamunity News →</a>
+        <a href="/my-kamunity" role="menuitem">My Kamunity+ →</a>
+    </div>
+</nav>
+
+<div class="hp-page-body">
+
+<!-- ① HERO / THREE DOORS -->
+<div class="hp-section-wrap">
+<section class="hp-hero" id="home" aria-labelledby="hero-heading">
+    <h1 id="hero-heading">Good work is possible.<br>Even here. Especially here.</h1>
+    <p class="hero-sub">We've sat in those meetings. We know what you're carrying.</p>
+
+    <div class="three-doors" role="list">
+        <a href="#shop" class="door-card door-card--quick" role="listitem" aria-label="Quick tools — grab and go, 60 seconds">
+            <span class="door-card-icon" aria-hidden="true">⚡</span>
+            <h3>Quick tools</h3>
+            <div class="door-card-time">~60 seconds · Grab and go</div>
+            <p>Checklists and downloads your team can use today. No account. No data collected.</p>
+            <div class="door-card-arrow">→ go to shop</div>
+        </a>
+
+        <a href="#shop" class="door-card door-card--dig" role="listitem" aria-label="Dig in — assessments, 10 minutes">
+            <span class="door-card-icon" aria-hidden="true">🔍</span>
+            <h3>Dig in</h3>
+            <div class="door-card-time">~10 minutes · Understand where you stand</div>
+            <p>Sovereignty check, AI readiness, org health check. Free, fully client-side.</p>
+            <div class="door-card-arrow">→ assessments</div>
+        </a>
+
+        <a href="#chats" class="door-card door-card--chat" role="listitem" aria-label="Chat — open-ended, talk to Kai or Mike">
+            <span class="door-card-icon" aria-hidden="true">💬</span>
+            <h3>Chat</h3>
+            <div class="door-card-time">Open-ended · Kai or Mike</div>
+            <p>Tell Kai what's on your plate. Or contact Mike directly. No sales pitch.</p>
+            <div class="door-card-arrow">→ start a conversation</div>
+        </a>
+    </div>
+
+    <div class="signal-teaser" id="signal-teaser" aria-label="Community Signal update">
+        From the Community Signal network — updated weekly from the WA community sector.
+    </div>
+</section>
+</div>
+
+<!-- ② SIGNALS + PULSE -->
+<div class="hp-section-wrap">
+<section class="hp-section" id="signals" aria-labelledby="signals-heading">
+    <h2 id="signals-heading">What's happening in the sector</h2>
+    <p class="hp-section-tagline">Latest signals and pulses from the WA community sector.</p>
+
+    <div class="signals-grid" id="signals-grid">
+        <!-- Column 1: Signals -->
+        <div>
+            <div class="signals-col-label">Signals</div>
+            <div id="signals-col">
+                <div class="signals-fallback" role="status" aria-live="polite">
+                    Signal pipeline loading — <a href="https://community-signal.netlify.app" target="_blank" rel="noopener noreferrer">view live signals →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Column 2: Pulse -->
+        <div>
+            <div class="signals-col-label">Pulse</div>
+            <div id="pulse-col">
+                <div class="signals-fallback" role="status" aria-live="polite">
+                    Pulse loading — <a href="https://community-signal.netlify.app" target="_blank" rel="noopener noreferrer">view sector pulse →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="newsroom-link-box" role="complementary">
+        <p>All signals, pulses, filters, and sorting</p>
+        <a href="/news">→ Kamunity News Room</a>
+    </div>
+</section>
+</div>
+
+<!-- ③ KAMUNITY SHOP -->
+<div class="hp-section-wrap">
+<section class="hp-section" id="shop" aria-labelledby="shop-heading">
+    <h2 id="shop-heading">Kamunity Shop</h2>
+    <p class="hp-section-tagline">Zero prices is just the beginning.</p>
+
+    <!-- Row 1: Checklists & Downloads -->
+    <div class="shop-row-label">Checklists &amp; Downloads — ~60 seconds</div>
+    <div class="shop-row" role="list">
+
+        <div class="shop-card" role="listitem">
+            <span class="shop-card-icon" aria-hidden="true">🛡️</span>
+            <h4>AI Safety Checklist</h4>
+            <p>Printable one-pager. What your team needs to know before using any AI tool.</p>
+            <div class="shop-card-meta">Print &amp; done</div>
+            <div class="shop-card-actions">
+                <a href="/tools/ai-safety-checklist.html" target="_blank" rel="noopener noreferrer" class="shop-btn">Open &amp; Print →</a>
+                <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm looking at the AI Safety Checklist in the Kamunity Shop. Can you help me understand how to use this with my team?" aria-label="Ask Kai about the AI Safety Checklist">Ask Kai →</button>
+            </div>
+        </div>
+
+        <div class="shop-card" role="listitem">
+            <span class="shop-card-icon" aria-hidden="true">📋</span>
+            <h4>Board Paper Pack</h4>
+            <p>Template pack for presenting digital strategy, AI policy, or tech decisions to your board.</p>
+            <div class="shop-card-meta">Print &amp; done</div>
+            <div class="shop-card-actions">
+                <a href="/tools/board-paper-pack.html" target="_blank" rel="noopener noreferrer" class="shop-btn">Open &amp; Print →</a>
+                <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm looking at the Board Paper Pack. Can you help me use this to present digital strategy or AI policy to my board?" aria-label="Ask Kai about the Board Paper Pack">Ask Kai →</button>
+            </div>
+        </div>
+
+        <div class="shop-card" role="listitem">
+            <span class="shop-card-icon" aria-hidden="true">📊</span>
+            <h4>Grant Acquittal Helper</h4>
+            <p>Template and checklist for grant acquittal reporting. Covers common funder requirements.</p>
+            <div class="shop-card-meta">Print &amp; done</div>
+            <div class="shop-card-actions">
+                <a href="/tools/grant-acquittal-helper.html" target="_blank" rel="noopener noreferrer" class="shop-btn">Open &amp; Print →</a>
+                <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm looking at the Grant Acquittal Helper. Can you walk me through how to use this for our grant reporting?" aria-label="Ask Kai about the Grant Acquittal Helper">Ask Kai →</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Row 2: Assessments & Quizzes -->
+    <div class="shop-row-label">Assessments &amp; Quizzes — ~5–10 minutes</div>
+    <div class="shop-row" role="list">
+
+        <div class="shop-card" role="listitem">
+            <span class="shop-card-icon" aria-hidden="true">🔍</span>
+            <h4>Sovereignty Check</h4>
+            <p>How dependent is your org on infrastructure you don't control? Four dimensions, 5 minutes.</p>
+            <div class="shop-card-meta">~5 min · client-side only</div>
+            <div class="shop-card-actions">
+                <button class="shop-btn" onclick="toggleQuiz('sovcheck')" aria-expanded="false" id="sovcheck-toggle">Start check</button>
+                <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm looking at the Sovereignty Check. Can you explain what digital sovereignty means for a community organisation and what this check actually measures?" aria-label="Ask Kai about the Sovereignty Check">Ask Kai →</button>
+            </div>
+            <div class="quiz-embed" id="sovcheck-embed" aria-label="Sovereignty Check quiz">
+                <div id="sovcheck-quiz"></div>
+                <div id="sovcheck-results" class="hidden"></div>
+                <div id="sovcheck-warm" style="display:none;"><p style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--ash);margin-top:1rem;">Want to talk through what this means? <button class="ask-kai-btn" data-kai-modal data-kai-context="I've just completed the Sovereignty Check. Can you help me understand my results and what they mean for my organisation?" style="display:inline;background:none;border:none;padding:0;color:var(--sky);cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;text-decoration:underline;">Ask Kai →</button></p></div>
+            </div>
+            <noscript><a href="https://kamunity-audit.netlify.app" target="_blank" rel="noopener noreferrer" class="shop-btn--secondary shop-btn">Open standalone →</a></noscript>
+        </div>
+
+        <div class="shop-card" role="listitem">
+            <span class="shop-card-icon" aria-hidden="true">🤖</span>
+            <h4>AI Readiness</h4>
+            <p>12-question check. Where does your organisation actually stand with AI adoption?</p>
+            <div class="shop-card-meta">~10 min · client-side only</div>
+            <div class="shop-card-actions">
+                <button class="shop-btn" onclick="toggleQuiz('aiready')" aria-expanded="false" id="aiready-toggle">Start check</button>
+                <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm looking at the AI Readiness Check. Can you help me understand what AI readiness actually means for a community organisation and what to do with the results?" aria-label="Ask Kai about the AI Readiness Check">Ask Kai →</button>
+            </div>
+            <div class="quiz-embed" id="aiready-embed" aria-label="AI Readiness quiz">
+                <div id="aiready-quiz"></div>
+                <div id="aiready-results" class="hidden"></div>
+                <div id="aiready-warm" style="display:none;"><p style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--ash);margin-top:1rem;">Want to talk through what this means? <button class="ask-kai-btn" data-kai-modal data-kai-context="I've just completed the AI Readiness Check. Can you help me understand my results and what steps my organisation should take next?" style="display:inline;background:none;border:none;padding:0;color:var(--sky);cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;text-decoration:underline;">Ask Kai →</button></p></div>
+            </div>
+            <noscript><a href="https://kamunity-ai-readiness.netlify.app" target="_blank" rel="noopener noreferrer" class="shop-btn--secondary shop-btn">Open standalone →</a></noscript>
+        </div>
+
+        <div class="shop-card" role="listitem">
+            <span class="shop-card-icon" aria-hidden="true">🌱</span>
+            <h4>Org Health Check</h4>
+            <p>Structured diagnostic across strategy, process, quality, innovation, and governance.</p>
+            <div class="shop-card-meta">~10 min · client-side only</div>
+            <div class="shop-card-actions">
+                <button class="shop-btn" onclick="toggleQuiz('healthcheck')" aria-expanded="false" id="healthcheck-toggle">Start check</button>
+                <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm looking at the Org Health Check. Can you help me understand what it measures across strategy, process, quality, innovation, and governance?" aria-label="Ask Kai about the Org Health Check">Ask Kai →</button>
+            </div>
+            <div class="quiz-embed" id="healthcheck-embed" aria-label="Org Health Check quiz">
+                <div id="health-quiz"></div>
+                <div id="health-results" class="hidden"></div>
+                <div id="health-warm" style="display:none;"><p style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--ash);margin-top:1rem;">Want to talk through what this means? <button class="ask-kai-btn" data-kai-modal data-kai-context="I've just completed the Org Health Check. Can you help me understand my results across strategy, process, quality, innovation, and governance?" style="display:inline;background:none;border:none;padding:0;color:var(--sky);cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;text-decoration:underline;">Ask Kai →</button></p></div>
+            </div>
+            <noscript><p class="noscript-note">JavaScript required to run this tool inline.</p></noscript>
+        </div>
+
+    </div>
+
+    <!-- Row 3: Next Steps -->
+    <div class="shop-row-label">Next Steps — when you need a person</div>
+    <div class="shop-row" role="list">
+
+        <div class="shop-card" role="listitem">
+            <span class="door-card-icon" aria-hidden="true">🔧</span>
+            <h4>Fix It</h4>
+            <p>Strategy, QA, and improvement. Something isn't working. Let's work out why and fix it.</p>
+            <div class="shop-card-actions">
+                <button class="shop-btn" onclick="toggleForm('fixit')" aria-expanded="false" id="fixit-toggle">Get in touch</button>
+                <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm looking at the Fix It consulting service. Can you help me work out if this is the right fit for what my organisation is dealing with right now?" aria-label="Ask Kai about Fix It service">Ask Kai first →</button>
+            </div>
+            <div class="quiz-embed" id="fixit-embed">
+                <form name="fix-it" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="contact-form">
+                    <input type="hidden" name="form-name" value="fix-it">
+                    <p class="hidden" style="display:none"><label>Don't fill this: <input name="bot-field"></label></p>
+                    <label>Name<input type="text" name="name" required placeholder="Your name"></label>
+                    <label>Organisation<input type="text" name="organisation" placeholder="Where you work"></label>
+                    <label>What are you working on?<textarea name="problem" rows="3" required placeholder="What's not working, or what are you trying to do?"></textarea></label>
+                    <label>Notes or questions<textarea name="notes" rows="2" placeholder="Anything else helpful to know"></textarea></label>
+                    <button type="submit" class="shop-btn">Send to Mike</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="shop-card" role="listitem">
+            <span class="door-card-icon" aria-hidden="true">💡</span>
+            <h4>Invent It</h4>
+            <p>Innovation, AI systems, and design sprints. Building the thing that doesn't exist yet.</p>
+            <div class="shop-card-actions">
+                <button class="shop-btn" onclick="toggleForm('inventit')" aria-expanded="false" id="inventit-toggle">Get in touch</button>
+                <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm looking at the Invent It consulting service. Can you help me understand if this is right for what we're trying to build or design?" aria-label="Ask Kai about Invent It service">Ask Kai first →</button>
+            </div>
+            <div class="quiz-embed" id="inventit-embed">
+                <form name="invent-it" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="contact-form">
+                    <input type="hidden" name="form-name" value="invent-it">
+                    <p class="hidden" style="display:none"><label>Don't fill this: <input name="bot-field"></label></p>
+                    <label>Name<input type="text" name="name" required placeholder="Your name"></label>
+                    <label>Organisation<input type="text" name="organisation" placeholder="Where you work"></label>
+                    <label>What are you working on?<textarea name="problem" rows="3" required placeholder="What are you trying to build or invent?"></textarea></label>
+                    <label>Notes or questions<textarea name="notes" rows="2" placeholder="Anything else helpful to know"></textarea></label>
+                    <button type="submit" class="shop-btn">Send to Mike</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="shop-card" role="listitem">
+            <span class="door-card-icon" aria-hidden="true">🤖</span>
+            <h4>AI Systems &amp; Tools</h4>
+            <p>Sovereign AI infrastructure for your organisation. Six weeks to constitutional independence.</p>
+            <div class="shop-card-actions">
+                <a href="/my-kamunity" class="shop-btn">See Ring Zero →</a>
+                <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm looking at Ring Zero — the six-week sovereignty programme. Can you explain how it works and whether it makes sense for my organisation?" aria-label="Ask Kai about Ring Zero">Ask Kai →</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Warehouse link box -->
+    <div class="warehouse-cta-box" role="complementary" aria-label="Commons Warehouse">
+        <div>
+            <h3>🏗 Commons Warehouse</h3>
+            <p>Zero prices is just the beginning. The full catalogue — tools, sovereign instances, ecosystem resources.</p>
+        </div>
+        <a href="/warehouse">Browse the Warehouse →</a>
+    </div>
+</section>
+</div>
+
+<!-- ④ EMBEDDED CHATS -->
+<div class="hp-section-wrap">
+<section class="hp-section" id="chats" aria-labelledby="chats-heading">
+    <h2 id="chats-heading">Start a conversation</h2>
+
+    <!-- Row 1: Kai -->
+    <div class="chats-row" id="kai-row">
+        <h3>Talk with Kai</h3>
+        <p class="chats-intro">Kai is an AI wayfinder for the WA community sector. It knows the sector context — funding pressures, governance challenges, digital sovereignty. Tell it what's on your plate. It won't upsell you.</p>
+        <p class="chats-mono-note">A notebook, not a therapist. A wayfinder, not a host. — <a href="/my-kamunity#constitution">How Kai works + constitutional constraints →</a></p>
+
+        <!-- Kai chat embed -->
+        <div class="kai-container" id="kai-chat" role="region" aria-label="Kai conversation">
+            <div class="kai-header-bar">
+                <div class="kai-orb" aria-hidden="true">K</div>
+                <div>
+                    <div class="kai-name">Kai</div>
+                    <div class="kai-tagline">AI wayfinder · WA community sector · Constitutional</div>
+                </div>
+            </div>
+            <div class="kai-messages" id="kai-messages" role="log" aria-live="polite" aria-label="Conversation">
+                <div class="kai-bubble kai-bubble-ai">
+                    Hello. What's on your plate today? I know the sector — funding pressures, governance headaches, technology that wasn't built for organisations like yours. Tell me what you're working on.
+                </div>
+            </div>
+            <div class="kai-typing hidden" id="kai-typing" aria-live="polite">Kai is thinking...</div>
+            <div class="kai-input-row">
+                <textarea class="kai-input" id="kai-input" placeholder="What are you working on?" rows="2" aria-label="Message to Kai"></textarea>
+                <button class="kai-send-btn" id="kai-send" aria-label="Send message">Send</button>
+            </div>
+        </div>
+
+        <div class="crisis-protocol" role="note">
+            <strong>If you're in crisis:</strong> Lifeline 13 11 14 (24/7) · Beyond Blue 1300 22 4636 (24/7) · MentalHealthLine 1800 011 511 (WA, 24/7). Kai is not a crisis service.
+        </div>
+    </div>
+
+    <!-- Row 2: Reflection -->
+    <div class="chats-row">
+        <h3>Take a moment to reflect</h3>
+        <p class="chats-intro">A slower mode. More contemplative than Kai. For when you need to think something through rather than get an answer.</p>
+
+        <div class="reflection-consent" id="reflection-consent">
+            <label>
+                <input type="checkbox" id="reflection-agree" aria-required="true">
+                I understand this is an AI, not a human counsellor. I can pause or exit at any time.
+            </label>
+            <button class="shop-btn" style="margin-top:1rem;" id="reflection-start" disabled>Begin reflection</button>
+        </div>
+
+        <div class="kai-container" id="reflection-chat" style="display:none;" role="region" aria-label="Reflection conversation">
+            <div class="kai-header-bar">
+                <div class="kai-orb" aria-hidden="true" style="background:var(--moss);">R</div>
+                <div>
+                    <div class="kai-name" style="color:var(--moss-light);">Reflection</div>
+                    <div class="kai-tagline">Slower · Contemplative · AI-assisted</div>
+                </div>
+            </div>
+            <div class="kai-messages" id="reflection-messages" role="log" aria-live="polite">
+                <div class="kai-bubble kai-bubble-ai">
+                    Take your time. What's something you've been carrying that you haven't had space to think through properly?
+                </div>
+            </div>
+            <div class="kai-typing hidden" id="reflection-typing" aria-live="polite">Reflecting...</div>
+            <div class="kai-input-row">
+                <textarea class="kai-input" id="reflection-input" placeholder="Take your time..." rows="2" aria-label="Message for reflection"></textarea>
+                <button class="kai-send-btn" id="reflection-send" aria-label="Send">Send</button>
+            </div>
+        </div>
+
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--ash);margin-top:1rem;">
+            → <a href="/constitution">About Kai &amp; the Kamunity Constitution</a> · <a href="/about">About Kamunity</a>
+        </p>
+
+        <div class="crisis-protocol" role="note">
+            <strong>If you're in crisis:</strong> Lifeline 13 11 14 (24/7) · Beyond Blue 1300 22 4636 (24/7) · MentalHealthLine 1800 011 511 (WA, 24/7). This is not a crisis service.
+        </div>
+    </div>
+
+    <!-- Row 3: Talk to a human — 3 cards -->
+    <div class="chats-row">
+        <h3>Talk to a human</h3>
+        <p class="chats-intro">Mike Fuller. 30+ years in the WA community sector. Human response within 48 hours. No sales pitch, no discovery call required.</p>
+
+        <div class="human-contact-grid">
+
+            <!-- Card 1: Leave a message -->
+            <div class="human-contact-card" id="human-card-message">
+                <span class="human-contact-icon" aria-hidden="true">✉️</span>
+                <h4>Leave a message</h4>
+                <p>Drop a note — no email needed. Tell Mike what's on your plate. He'll get back to you within 48 hours.</p>
+                <div class="human-contact-meta">No account · No email required</div>
+                <button class="shop-btn human-contact-toggle" onclick="toggleHumanForm('leave-message')" aria-expanded="false" id="leave-message-toggle">Leave a message →</button>
+                <div class="human-contact-form" id="leave-message-form">
+                    <form name="contact-mike" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+                        <input type="hidden" name="form-name" value="contact-mike">
+                        <p style="display:none"><label>Don't fill this: <input name="bot-field"></label></p>
+                        <label class="hc-label">Name (optional)<input type="text" name="name" placeholder="Your name" class="hc-input"></label>
+                        <label class="hc-label">Organisation (optional)<input type="text" name="organisation" placeholder="Where you work" class="hc-input"></label>
+                        <label class="hc-label">What's on your plate?<textarea name="message" rows="4" required placeholder="What are you working on? What do you need?" class="hc-textarea"></textarea></label>
+                        <button type="submit" class="shop-btn">Send to Mike →</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Card 2: Send an email -->
+            <div class="human-contact-card">
+                <span class="human-contact-icon" aria-hidden="true">📬</span>
+                <h4>Send an email</h4>
+                <p>Opens your email app with Mike's address pre-filled. Direct line. No form, no middleware.</p>
+                <div class="human-contact-meta">mike@kamunityconsulting.com</div>
+                <a href="mailto:mike@kamunityconsulting.com?subject=Hello%20from%20kamunity.org" class="shop-btn">Open email app →</a>
+            </div>
+
+            <!-- Card 3: See services -->
+            <div class="human-contact-card">
+                <span class="human-contact-icon" aria-hidden="true">📋</span>
+                <h4>See full services &amp; prices</h4>
+                <p>Full menu — what Kamunity does, what it costs, and the receipts. No discovery call required to see the prices.</p>
+                <div class="human-contact-meta">NFP &amp; standard rates visible</div>
+                <a href="#services" class="shop-btn">See services &amp; prices →</a>
+            </div>
+
+        </div>
+    </div>
+</section>
+</div>
+
+<!-- ⑤ SERVICES -->
+<div class="hp-section-wrap">
+<section class="hp-section" id="services" aria-labelledby="services-heading">
+    <h2 id="services-heading">Services</h2>
+    <p class="hp-section-tagline">Prices visible. No discovery call required. Constitutional Principle 1.</p>
+
+    <div class="services-grid" role="list">
+
+        <div class="service-card" role="listitem">
+            <span class="service-card-icon" aria-hidden="true">🔧</span>
+            <h3>Fix It</h3>
+            <p>Something isn't working. Strategy, QA, process improvement, governance review. You know what's broken. Let's fix it.</p>
+            <div class="service-price">NFP rate: <strong>$150/hr</strong></div>
+            <div class="service-price-nfp">Standard rate: $220/hr · Half-day from $550 NFP</div>
+            <a href="mailto:mike@kamunityconsulting.com?subject=Fix%20It%20enquiry" target="_blank" rel="noopener noreferrer">Get in touch →</a>
+        </div>
+
+        <div class="service-card" role="listitem">
+            <span class="service-card-icon" aria-hidden="true">💡</span>
+            <h3>Invent It</h3>
+            <p>Building the thing that doesn't exist yet. Innovation sprints, AI systems design, digital strategy, technology architecture for organisations that need to own what they build.</p>
+            <div class="service-price">NFP rate: <strong>$150/hr</strong></div>
+            <div class="service-price-nfp">Standard rate: $220/hr · Sprint from $1,200 NFP</div>
+            <a href="mailto:mike@kamunityconsulting.com?subject=Invent%20It%20enquiry" target="_blank" rel="noopener noreferrer">Get in touch →</a>
+        </div>
+
+        <div class="service-card" role="listitem">
+            <span class="service-card-icon" aria-hidden="true">🌱</span>
+            <h4>Ring Zero</h4>
+            <p>Six weeks to constitutional independence. Your own sovereign AI presence, community rooms, sector intelligence feed. Then you're free — we hand over the keys.</p>
+            <div class="service-price">Full programme: <strong>$0</strong> (Hard-to-Love Fund)</div>
+            <div class="service-price-nfp">Standard rate: $4,500 · Sliding scale available</div>
+            <a href="/my-kamunity">See the full programme →</a>
+        </div>
+
+    </div>
+
+    <!-- Full services menu -->
+    <div class="services-menu" id="services-menu">
+        <div class="services-menu-header">
+            <span class="services-menu-eyebrow">Full price list</span>
+            <p class="services-menu-sub">Two rates for every service. <strong>NFP rate</strong> for community organisations, charities, and not-for-profits. <strong>Standard rate</strong> for government, councils, and commercial. Both shown. No hidden fees. All ex GST.</p>
+        </div>
+
+        <div class="services-menu-body">
+
+            <div class="services-menu-category">🔧 Fix It — Strategy, QA &amp; Process</div>
+            <div class="services-menu-row">
+                <span class="smr-name">Hourly rate</span>
+                <span class="smr-prices"><span class="smr-nfp">$150/hr NFP</span><span class="smr-std">$220/hr</span></span>
+            </div>
+            <div class="services-menu-row">
+                <span class="smr-name">Half-day workshop <span class="smr-format">Any topic</span></span>
+                <span class="smr-prices"><span class="smr-nfp">$550 NFP</span><span class="smr-std">$880</span></span>
+            </div>
+            <div class="services-menu-row">
+                <span class="smr-name">Process improvement sprint <span class="smr-format">5 days</span></span>
+                <span class="smr-prices"><span class="smr-nfp">From $4,000 NFP</span><span class="smr-std">From $8,000</span></span>
+            </div>
+            <div class="services-menu-row">
+                <span class="smr-name">Strategy sprint <span class="smr-format">2 weeks</span></span>
+                <span class="smr-prices"><span class="smr-nfp">From $5,000 NFP</span><span class="smr-std">From $10,000</span></span>
+            </div>
+
+            <div class="services-menu-category">💡 Invent It — AI, Innovation &amp; Design</div>
+            <div class="services-menu-row">
+                <span class="smr-name">Hourly rate</span>
+                <span class="smr-prices"><span class="smr-nfp">$150/hr NFP</span><span class="smr-std">$220/hr</span></span>
+            </div>
+            <div class="services-menu-row">
+                <span class="smr-name">AI Readiness Workshop <span class="smr-format">Half day</span></span>
+                <span class="smr-prices"><span class="smr-nfp">$1,500 NFP</span><span class="smr-std">$3,000</span></span>
+            </div>
+            <div class="services-menu-row">
+                <span class="smr-name">Digital Sovereignty Audit <span class="smr-format">Full day + report</span></span>
+                <span class="smr-prices"><span class="smr-nfp">$2,500 NFP</span><span class="smr-std">$5,000</span></span>
+            </div>
+            <div class="services-menu-row">
+                <span class="smr-name">Innovation sprint <span class="smr-format">From 2 weeks</span></span>
+                <span class="smr-prices"><span class="smr-nfp">From $1,200 NFP</span><span class="smr-std">From $1,920</span></span>
+            </div>
+            <div class="services-menu-row">
+                <span class="smr-name">Digital Needs Mapping <span class="smr-format">Multi-session</span></span>
+                <span class="smr-prices"><span class="smr-nfp">From $4,000 NFP</span><span class="smr-std">From $8,000</span></span>
+            </div>
+
+            <div class="services-menu-category">🌱 Ring Zero — Sovereign Instance</div>
+            <div class="services-menu-row">
+                <span class="smr-name">Full programme <span class="smr-format">6 weeks · your infrastructure</span></span>
+                <span class="smr-prices"><span class="smr-nfp smr-nfp--free">$0 Hard-to-Love Fund</span><span class="smr-std">$4,500</span></span>
+            </div>
+            <div class="services-menu-row">
+                <span class="smr-name">Sliding scale</span>
+                <span class="smr-prices"><span class="smr-nfp">Ask Mike</span><span class="smr-std">—</span></span>
+            </div>
+
+            <div class="services-menu-category">📅 Ongoing</div>
+            <div class="services-menu-row">
+                <span class="smr-name">Monthly advisory retainer</span>
+                <span class="smr-prices"><span class="smr-nfp">From $1,000 NFP</span><span class="smr-std">From $2,000</span></span>
+            </div>
+            <div class="services-menu-row">
+                <span class="smr-name">Custom project</span>
+                <span class="smr-prices"><span class="smr-nfp smr-talk">Talk to Mike</span><span class="smr-std">—</span></span>
+            </div>
+
+        </div>
+
+        <div class="services-menu-receipts">
+            <div class="services-menu-receipts-label">The receipts</div>
+            <div class="smr-proof-grid">
+                <div class="smr-proof-item">
+                    <div class="smr-proof-org">RAC Western Australia</div>
+                    <p>Half a million dollars in efficiency gains in 9 months. Process improvement with one of WA's largest member organisations.</p>
+                </div>
+                <div class="smr-proof-item">
+                    <div class="smr-proof-org">Life Without Barriers</div>
+                    <p>5-day improvement sprints with one of Australia's largest disability service providers.</p>
+                </div>
+                <div class="smr-proof-item">
+                    <div class="smr-proof-org">Alike WA</div>
+                    <p>Strategy for the peak body supporting 780+ peer support groups across WA.</p>
+                </div>
+                <div class="smr-proof-item">
+                    <div class="smr-proof-org">30 years</div>
+                    <p>Mining, brewing, disability, community, local government. The Deming/Juran tradition applied where it matters most.</p>
+                </div>
+            </div>
+        </div>
+
+        <p class="services-menu-note">
+            "From" means scope varies — fixed quote before starting. If your budget is smaller than these numbers, <a href="#chats">talk to Mike anyway</a>. · Full case notes at <a href="https://kamunityconsulting.com" target="_blank" rel="noopener noreferrer">kamunityconsulting.com</a>
+        </p>
+    </div>
+
+</section>
+</div>
+
+</div><!-- /hp-page-body -->
+
+<!-- ⒖ FOOTER -->
+<footer class="mpa-footer" role="contentinfo">
+    <div class="mpa-footer-inner">
+        <div class="mpa-footer-top">
+            <div>
+                <a href="/" class="mpa-footer-logo">kamunity</a>
+                <p class="mpa-footer-tagline">Community sovereignty infrastructure. Built in Boorloo/Perth. Free tools, honest consulting, and sovereign infrastructure for the WA community sector.</p>
+                <p class="mpa-footer-license">No tracking. No analytics. No cookies. No data collection. Constitutional commitment.</p>
+            </div>
+            <nav class="mpa-footer-nav" aria-label="Ecosystem">
+                <h4 class="mpa-footer-nav-heading">Ecosystem</h4>
+                <a href="https://kamunity.org" target="_blank" rel="noopener noreferrer">kamunity.org</a>
+                <a href="https://kamunityconsulting.com" target="_blank" rel="noopener noreferrer">kamunityconsulting.com</a>
+                <a href="https://kamunity.ai" target="_blank" rel="noopener noreferrer">kamunity.ai</a>
+                <a href="/#shop">Sovereignty Audit</a>
+                <a href="/#shop">AI Readiness</a>
+                <a href="/tools/grant-acquittal-helper.html">Grant Helper</a>
+            </nav>
+            <div class="mpa-footer-nav">
+                <h4 class="mpa-footer-nav-heading">If you need help now</h4>
+                <a href="tel:000">Emergency: 000</a>
+                <a href="tel:131114">Lifeline: 13 11 14</a>
+                <a href="tel:1800737732">1800RESPECT: 1800 737 732</a>
+                <a href="tel:1800551800">Kids Helpline: 1800 551 800</a>
+                <a href="tel:1300224636">Beyond Blue: 1300 22 4636</a>
+            </div>
+        </div>
+        <div class="mpa-footer-bottom">
+            <div class="mpa-footer-legal">Kamunity is an AI wayfinder and community tools platform, not a counsellor, therapist, or substitute for professional advice. All AI-generated content should be reviewed by humans before use.</div>
+            <div class="mpa-footer-aoc">Built on Whadjuk Noongar boodja. Sovereignty was never ceded.</div>
+        </div>
+    </div>
+</footer>
+
+<!-- Kai FAB -->
+<button class="kai-fab" id="kai-fab" data-kai-modal data-kai-context="I've been exploring Kamunity. Can you help me find what I'm looking for or answer any questions I have?" aria-label="Talk to Kai">K</button>
+
+<script src="js/nav.js"></script>
+<script src="js/quizzes.js"></script>
+<script src="js/kai.js"></script>
+<script src="js/kai-modal.js"></script>
+<script src="js/supabase-feed.js"></script>
+<script>
+function toggleHumanForm(id) {
+    const form = document.getElementById(id + '-form');
+    const btn  = document.getElementById(id + '-toggle');
+    if (!form) return;
+    const open = form.classList.toggle('open');
+    if (btn) btn.setAttribute('aria-expanded', open);
+}
+</script>
+
+</body>
+</html>

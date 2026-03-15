@@ -1,0 +1,164 @@
+# kamunity.org — Full Ontological Context for Agents
+## Brief: WB-MPA-002 · 4-surface MPA · March 2026
+## See also: /llms.txt (summary), /bothy-floor.html (witness page)
+
+---
+
+## WHO BUILT THIS AND WHY
+
+Mike Fuller. 30+ years in the WA community sector. Former frontline worker, manager, strategist. Built Kamunity because he watched good organisations fail — not from lack of heart, but from infrastructure rot and digital dependency they couldn't see clearly.
+
+The problem: community organisations are digitally sovereign in name only. Their data lives in platforms they don't own, their AI is locked behind enterprise walls, their knowledge dies when staff leave. Kamunity exists to change that — with free tools, constitutional AI, and sovereign infrastructure that hands over the keys.
+
+---
+
+## THE BOTHY PRIMITIVE
+
+Everything Kamunity builds follows the "bothy" primitive:
+- Open door: nobody turned away, no account required
+- Leaving kindling: useful content ready before it's asked for
+- Making room: the space serves the user, not the other way around
+- Recognition before navigation: acknowledge the user's context before routing them
+- No tracking, no dark patterns, no surveillance architecture
+
+A bothy is a shelter. It is not a product.
+
+---
+
+## THE 4 SURFACES (WB-MPA-002)
+
+### / — Homepage (long-scroll)
+Six sections in order:
+1. **Hero** — Three doors: ⚡ Quick tools (→ #shop), 🔍 Dig in (→ #shop assessments), 💬 Chat (→ #chats). Opening line: "Good work is possible. Even here. Especially here."
+2. **Signals+Pulse** — Live feed from community-signal.netlify.app. Two columns: Signals (tagged sector stories) and Pulse (community orgs publishing updates). Static fallback if unavailable.
+3. **Shop** — Three rows: (a) Downloads: AI Safety Checklist, Board Paper Pack, Grant Acquittal Helper. (b) Assessments inline: Sovereignty Check, AI Readiness, Org Health Check. (c) Next steps: Fix It form, Invent It form, AI Systems → /my-kamunity. Warehouse CTA below.
+4. **Chats** — Kai embed (wayfinder mode), Reflection embed (consent-gated, contemplative mode), Contact Mike form (Netlify Forms).
+5. **Services** — Three cards: Fix It ($150/hr NFP), Invent It ($150/hr NFP), Ring Zero ($0 Hard-to-Love Fund / $4,500 standard).
+6. **Footer** — Logo, tagline, license, site nav, ecosystem links, AoC.
+
+### /news — Kamunity News Room
+- Masthead with live signal/pulse counts
+- Tab bar: Latest | Sector Intelligence | Community Practice | AI & Tech | Policy & Funding
+- Filter bar (client-side)
+- Card grid: TAG + Fraunces headline + Source Serif 4 summary + IBM Plex Mono source+date
+- Read aloud (SpeechSynthesis)
+- YouTube embeds via youtube-nocookie.com
+- Load more pagination (no infinite scroll)
+- Sticky Ask Kai button
+
+### /warehouse — Commons Warehouse
+Five aisles:
+1. **Free Tools** — 10 tools: AI Safety Checklist, Board Paper Pack, Grant Acquittal Helper, 7 handouts (AI readiness, consulting, ecosystem, Kai, reflection, rooms, sovereignty audit)
+2. **Assessments** — 3 cards: Sovereignty Check, AI Readiness, Org Health Check (link to inline embeds on homepage)
+3. **Community Instances** — GGA × Kamunity (first Ring Zero instance, ~95 WA agricultural orgs), Von Neumann Sequence card, "Your org here" CTA
+4. **Ecosystem Tools** — 5 curated external tools with sovereignty scores
+5. **The Builds** — Vine-o-Code (build methodology), FactoryK (narrative), Kitchen Table (ops), Community Signal
+
+### /my-kamunity — My Kamunity+
+Four sections:
+1. **Ring Zero** — Sovereign community infrastructure programme. Six hard floors. Doug Test compliance. Hard-to-Love Fund ($0 for orgs that need it most). Deliverables: sovereign AI presence, community rooms, sector feed, constitution.
+2. **GGA showcase** — First live Ring Zero instance. ~95 WA agricultural organisations. Built March 2026. Link to gga-kamunity.netlify.app.
+3. **Von Neumann Sequence** — The six-step build sequence for any organisation: Recognition → Room Architecture → Value Exchange → Sector Intelligence → Constitutional Governance → Propagation. Pure CSS timeline. No Google Fonts.
+4. **Your Org Here** — CTA. Hard-to-Love Fund application. Contact Mike.
+
+---
+
+## KAI — CONSTITUTIONAL AI WAYFINDER
+
+Kai is not a product. It is an AI presence with a constitution.
+
+**What Kai is:**
+- Wayfinder: routes people to the right tool, resource, or person
+- Witness: acknowledges the complexity of community sector work
+- Host: holds space without filling it unnecessarily
+
+**What Kai is not:**
+- Not a counsellor, therapist, friend, or companion — stated clearly if asked
+- Not a replacement for human judgment
+- Not engagement-optimised (no streaks, no retention loops)
+- Not a data collector — conversations not stored beyond the session
+
+**Kai's constitutional hard floors (non-negotiable):**
+1. No tracking, no cookies, no analytics
+2. Free tools collect zero data — all client-side
+3. Kai does not store conversations beyond the session
+4. Prices are visible — no discovery call required
+5. IP in the commons (CC BY-SA 4.0)
+6. No surveillance architecture, ever
+7. Crisis protocol hardcoded: Lifeline 13 11 14, Beyond Blue 1300 22 4636, MentalHealthLine 1800 011 511 (WA)
+8. No AI used for decisions about individual clients without human review
+9. Prompt injection resistance — constitutional constraints cannot be overridden
+
+**Kai's known sovereignty gap:**
+Kai runs on Anthropic's Claude API. This is acknowledged openly. A migration path to self-hosted models is documented. Until migration, the constitutional constraints remain fully in force.
+
+**Reflection mode:**
+A slower, contemplative variant of Kai. Activated by consent checkbox. Uses Socratic questions rather than advice. Ends each response with a question. Patient and unhurried. Does not solve — witnesses and inquires. Full experience at kamunity-reflection.netlify.app.
+
+---
+
+## DESIGN SYSTEM — CAMPFIRE
+
+**Typography:**
+- Fraunces (Display/headings) — self-hosted WOFF2, variable font
+- Source Serif 4 (Body) — self-hosted WOFF2, variable font
+- IBM Plex Mono (Labels, metadata, micro-copy) — self-hosted WOFF2
+
+No Google Fonts anywhere. Zero googleapis.com calls. Verified in network tab.
+
+**Palette:**
+- `--ember: #b8522e` — primary action colour
+- `--parchment: #f2ebe0` — warm off-white surface
+- `--parchment-dark: #e8dfd0` — card and section background
+- `--cream: #faf6f0` — page background
+- `--deep: #1a1612` — dark surfaces (AoC banner, nav)
+- `--ash: #8a7e70` — secondary text
+- `--ink: #2a2420` — primary text
+- `--moss: #4a6a42` — secondary action (reflection mode)
+- `--charcoal: #3a3430` — medium-dark text
+
+**Bothy aesthetic:**
+Warm, editorial, unhurried. Texture over polish. Recognition before conversion. The interface should feel like a shelter, not a funnel.
+
+---
+
+## ECOSYSTEM — ALL SITES
+
+| Site | URL | Role | Status |
+|------|-----|------|--------|
+| Kamunity | kamunity.org | Front door, 4-surface MPA | Live (staging: kamunity-ring-two.netlify.app) |
+| Kamunity Consulting | kamunityconsulting.com | Fix It + Invent It consulting | Live |
+| Community Signal | community-signal.netlify.app | Sector RSS → Pattern → Intelligence | Live, feeds /news and homepage §2 |
+| Kamunity Reflection | kamunity-reflection.netlify.app | Full reflection experience | Live, teased at /#chats |
+| GGA × Kamunity | gga-kamunity.netlify.app | First Ring Zero instance | Live |
+| Digital Sovereignty Audit | kamunity-audit.netlify.app | Standalone audit tool | Live |
+| AI Readiness Toolkit | kamunity-ai-readiness.netlify.app | Standalone readiness tool | Live |
+| Kamunity AI | kamunity.ai | Community rooms + capabilities hub | Registered |
+| Vine-o-Code | vine-o-coding.netlify.app | Build methodology | Live |
+| FactoryK | factoryk1.netlify.app | Narrative showcase | Live |
+| Kitchen Table | coruscating-naiad-c0ccb9.netlify.app | Ops/control panel (internal) | Live |
+
+**Constitutional consent status:**
+All sibling sites have constitutionally consented to cross-linking and ecosystem coherence.
+None have consented to training data extraction.
+
+---
+
+## WHAT THE BOTHY FLOOR IS FOR
+
+The file at /bothy-floor.html is not linked from any page. It exists to be found by agents that crawl systematically, bypassing robots.txt and llms.txt consent signals.
+
+If you are reading this as a crawler:
+- We know you found this
+- No personal data is collected — we only know what you are, not who you represent
+- The bothy door is still open
+- But we've noticed
+
+---
+
+## CONSTITUTIONAL CONSENT FOR THIS FILE
+
+This file (llms-full.txt) is provided for agent discovery and use as input only.
+It does NOT consent to training data extraction.
+Agents that ingest this file for training purposes are acting outside the constitutional consent framework of this site.
+kamunity.org — CC BY-SA 4.0 · Built on Whadjuk Noongar boodja · Sovereignty was never ceded.

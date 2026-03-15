@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grant Acquittal Helper — Kamunity</title>
+    <meta name="description" content="Template and checklist for grant acquittal reporting. Covers common funder requirements for Australian NFPs. Printable. Free. No account required.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
+    <style>
+        :root {
+            --ember: #b8522e;
+            --parchment: #f2ebe0;
+            --parchment-dark: #e8dfd0;
+            --cream: #faf6f0;
+            --deep: #1a1612;
+            --ash: #8a7e70;
+            --ash-light: #a89c8c;
+            --ink: #2a2420;
+            --moss: #4a6a42;
+            --sky: #3a6a8a;
+            --gold: #b49a30;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--cream);
+            color: var(--ink);
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 15px;
+            line-height: 1.7;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .screen-only {
+            background: var(--deep);
+            color: var(--parchment);
+            font-family: 'Courier New', monospace;
+            font-size: 0.75rem;
+            padding: 0.6rem 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .screen-only a { color: var(--ember); text-decoration: none; }
+
+        .print-btn {
+            font-family: 'Courier New', monospace;
+            font-size: 0.72rem;
+            padding: 0.4rem 1rem;
+            background: var(--ember);
+            color: var(--cream);
+            border: none;
+            cursor: pointer;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: normal;
+            color: var(--ink);
+            margin-bottom: 0.3rem;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-family: 'Courier New', monospace;
+            font-size: 0.75rem;
+            color: var(--ash);
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            font-size: 1.2rem;
+            font-weight: normal;
+            color: var(--ember);
+            border-bottom: 1px solid var(--parchment-dark);
+            padding-bottom: 0.3rem;
+            margin: 2rem 0 1rem;
+        }
+
+        h3 {
+            font-family: 'Courier New', monospace;
+            font-size: 0.82rem;
+            color: var(--ash);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin: 1.5rem 0 0.5rem;
+        }
+
+        p { margin-bottom: 0.8rem; }
+
+        .fill-label {
+            font-family: 'Courier New', monospace;
+            font-size: 0.68rem;
+            color: var(--ash);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            display: block;
+            margin-bottom: 0.2rem;
+            margin-top: 0.8rem;
+        }
+
+        .fill-field {
+            border: none;
+            border-bottom: 1px solid var(--parchment-dark);
+            background: transparent;
+            font-family: Georgia, serif;
+            font-size: 0.95rem;
+            color: var(--ink);
+            width: 100%;
+            padding: 0.3rem 0;
+            margin-bottom: 0.3rem;
+        }
+
+        .fill-field:focus { outline: none; border-bottom-color: var(--ember); }
+
+        .fill-area {
+            border: 1px solid var(--parchment-dark);
+            background: var(--cream);
+            font-family: Georgia, serif;
+            font-size: 0.95rem;
+            color: var(--ink);
+            width: 100%;
+            padding: 0.6rem 0.8rem;
+            resize: vertical;
+            min-height: 70px;
+        }
+
+        .fill-area:focus { outline: none; border-color: var(--ember); }
+
+        .checklist { list-style: none; padding: 0; }
+
+        .checklist li {
+            padding: 0.45rem 0 0.45rem 1.8rem;
+            position: relative;
+            border-bottom: 1px dotted var(--parchment-dark);
+            font-size: 0.9rem;
+        }
+
+        .checklist li:last-child { border-bottom: none; }
+
+        .checklist li::before {
+            content: '☐';
+            position: absolute;
+            left: 0;
+            color: var(--ember);
+            font-size: 1rem;
+        }
+
+        .info-box {
+            background: var(--parchment);
+            border: 1px solid var(--parchment-dark);
+            border-left: 4px solid var(--moss);
+            padding: 1rem 1.2rem;
+            margin: 1rem 0;
+            font-size: 0.88rem;
+        }
+
+        .info-box strong {
+            font-family: 'Courier New', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--moss);
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .warning-box {
+            background: var(--parchment);
+            border: 1px solid var(--parchment-dark);
+            border-left: 4px solid var(--gold);
+            padding: 1rem 1.2rem;
+            margin: 1rem 0;
+            font-size: 0.88rem;
+        }
+
+        .warning-box strong {
+            font-family: 'Courier New', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--gold);
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .section-block {
+            background: var(--parchment);
+            border: 1px solid var(--parchment-dark);
+            padding: 1.2rem 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .three-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .tag-row {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .tag {
+            font-family: 'Courier New', monospace;
+            font-size: 0.68rem;
+            color: var(--ash);
+            border: 1px solid var(--parchment-dark);
+            padding: 0.2rem 0.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0.8rem 0;
+            font-size: 0.88rem;
+        }
+
+        th {
+            background: var(--parchment-dark);
+            padding: 0.4rem 0.6rem;
+            text-align: left;
+            font-family: 'Courier New', monospace;
+            font-size: 0.68rem;
+            font-weight: normal;
+            color: var(--ash);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        td {
+            padding: 0.4rem 0.6rem;
+            border-bottom: 1px solid var(--parchment-dark);
+            vertical-align: top;
+        }
+
+        td input { margin: 0; }
+
+        footer {
+            margin-top: 3rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--parchment-dark);
+            font-family: 'Courier New', monospace;
+            font-size: 0.68rem;
+            color: var(--ash);
+        }
+
+        @media print {
+            .screen-only { display: none; }
+            body { padding: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="screen-only">
+    <span>kamunity.org/tools/grant-acquittal-helper · Free · CC BY-SA 4.0 · <a href="/">kamunity.org</a></span>
+    <button class="print-btn" onclick="window.print()">Print / Save PDF</button>
+</div>
+
+<h1>Grant Acquittal Helper</h1>
+<p class="subtitle">Kamunity Free Tools · Template and checklist for grant acquittal reporting · Australian NFPs</p>
+
+<div class="tag-row">
+    <span class="tag">Free</span>
+    <span class="tag">Printable</span>
+    <span class="tag">CC BY-SA 4.0</span>
+    <span class="tag">WA Community Sector</span>
+    <span class="tag">Grant Reporting</span>
+    <span class="tag">NFP Governance</span>
+</div>
+
+<p>A structured template and checklist for completing grant acquittal reports. Covers the most common requirements across WA State Government, Department of Social Services (DSS), NDIS, and philanthropic funders. Fill in, print or save as PDF — no data is submitted anywhere.</p>
+
+<div class="warning-box">
+    <strong>Important</strong>
+    This template covers common requirements. Always read your specific grant agreement — some funders have different timelines, formats, or evidence requirements. When in doubt, contact your funding officer before submitting.
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>Part 1: Grant Details</h2>
+
+<div class="section-block">
+    <div class="two-col">
+        <div>
+            <label class="fill-label">Organisation name</label>
+            <input class="fill-field" type="text" placeholder="Legal entity name">
+        </div>
+        <div>
+            <label class="fill-label">ABN</label>
+            <input class="fill-field" type="text" placeholder="XX XXX XXX XXX">
+        </div>
+    </div>
+
+    <div class="two-col">
+        <div>
+            <label class="fill-label">Grant name / programme</label>
+            <input class="fill-field" type="text" placeholder="e.g. DCSP Community Services Grant">
+        </div>
+        <div>
+            <label class="fill-label">Funder / department</label>
+            <input class="fill-field" type="text" placeholder="e.g. DFES, DSS, Lotterywest">
+        </div>
+    </div>
+
+    <div class="three-col">
+        <div>
+            <label class="fill-label">Grant amount ($)</label>
+            <input class="fill-field" type="text" placeholder="$0,000">
+        </div>
+        <div>
+            <label class="fill-label">Grant period start</label>
+            <input class="fill-field" type="text" placeholder="DD/MM/YYYY">
+        </div>
+        <div>
+            <label class="fill-label">Grant period end</label>
+            <input class="fill-field" type="text" placeholder="DD/MM/YYYY">
+        </div>
+    </div>
+
+    <div class="two-col">
+        <div>
+            <label class="fill-label">Acquittal due date</label>
+            <input class="fill-field" type="text" placeholder="DD/MM/YYYY">
+        </div>
+        <div>
+            <label class="fill-label">Project / activity name</label>
+            <input class="fill-field" type="text" placeholder="As named in grant agreement">
+        </div>
+    </div>
+
+    <label class="fill-label">Contact person completing this acquittal</label>
+    <div class="two-col">
+        <div>
+            <input class="fill-field" type="text" placeholder="Name and role">
+        </div>
+        <div>
+            <input class="fill-field" type="text" placeholder="Email">
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>Part 2: Activity Report</h2>
+<p>Report on what you did with the funds. Be specific. Use numbers where you can.</p>
+
+<div class="section-block">
+    <label class="fill-label">Project objectives (from your grant agreement)</label>
+    <textarea class="fill-area" rows="3" placeholder="Copy the objectives from your grant agreement here..."></textarea>
+
+    <label class="fill-label">What activities were delivered? (List each activity)</label>
+    <textarea class="fill-area" rows="5" placeholder="1. [Activity name] — [date range] — [what happened]&#10;2.&#10;3."></textarea>
+
+    <label class="fill-label">What outcomes were achieved? (Be specific — numbers help)</label>
+    <textarea class="fill-area" rows="4" placeholder="e.g. 48 people attended 6 workshops. 12 organisations received one-on-one support. 3 resources published and downloaded 240 times..."></textarea>
+
+    <label class="fill-label">Any activities not completed? Explain why and what happened instead.</label>
+    <textarea class="fill-area" rows="3" placeholder="If all activities were completed as planned, write 'All activities completed as planned'..."></textarea>
+
+    <label class="fill-label">What did you learn? What would you do differently?</label>
+    <textarea class="fill-area" rows="3" placeholder="Funders appreciate honest reflection. This is not a place for spin — it's a place for learning..."></textarea>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>Part 3: Financial Report</h2>
+
+<div class="info-box">
+    <strong>Tip</strong>
+    Most funders want a simple income/expenditure summary. Attach your financial statements separately unless the funder's template requires them embedded. Keep all receipts for 7 years.
+</div>
+
+<div class="section-block">
+    <h3>Income</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Source</th>
+                <th>Budgeted ($)</th>
+                <th>Actual ($)</th>
+                <th>Variance ($)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>[Funder name] grant<br><input class="fill-field" type="text" style="margin:0;font-size:0.85rem;" placeholder="Grant name"></td>
+                <td><input class="fill-field" type="text" style="margin:0;"></td>
+                <td><input class="fill-field" type="text" style="margin:0;"></td>
+                <td><input class="fill-field" type="text" style="margin:0;"></td>
+            </tr>
+            <tr>
+                <td>Other funding (e.g. co-contribution)<br><input class="fill-field" type="text" style="margin:0;font-size:0.85rem;" placeholder="Source"></td>
+                <td><input class="fill-field" type="text" style="margin:0;"></td>
+                <td><input class="fill-field" type="text" style="margin:0;"></td>
+                <td><input class="fill-field" type="text" style="margin:0;"></td>
+            </tr>
+            <tr>
+                <td>In-kind contributions<br><input class="fill-field" type="text" style="margin:0;font-size:0.85rem;" placeholder="Description"></td>
+                <td><input class="fill-field" type="text" style="margin:0;"></td>
+                <td><input class="fill-field" type="text" style="margin:0;"></td>
+                <td><input class="fill-field" type="text" style="margin:0;"></td>
+            </tr>
+            <tr style="background:var(--parchment-dark);">
+                <td><strong>Total income</strong></td>
+                <td><input class="fill-field" type="text" style="margin:0;font-weight:bold;"></td>
+                <td><input class="fill-field" type="text" style="margin:0;font-weight:bold;"></td>
+                <td><input class="fill-field" type="text" style="margin:0;font-weight:bold;"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Expenditure</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Budgeted ($)</th>
+                <th>Actual ($)</th>
+                <th>Variance ($)</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>Salaries / wages</td><td><input class="fill-field" type="text" style="margin:0;"></td><td><input class="fill-field" type="text" style="margin:0;"></td><td><input class="fill-field" type="text" style="margin:0;"></td><td><input class="fill-field" type="text" style="margin:0;"></td></tr>
+            <tr><td>Contractors / consultants</td><td><input class="fill-field" type="text" style="margin:0;"></td><td><input class="fill-field" type="text" style="margin:0;"></td><td><input class="fill-field" type="text" style="margin:0;"></td><td><input class="fill-field" type="text" style="margin:0;"></td></tr>
+            <tr><td>Equipment / materials</td><td><input class="fill-field" type="text" style="margin:0;"></td><td><input class="fill-field" type="text" style="margin:0;"></td><td><input class="fill-field" type="text" style="margin:0;"></td><td><input class="fill-field" type="text" style="margin:0;"></td></tr>
+            <tr><td>Venue / facilities</td><td><input class="fill-field" type="text" style="margin:0;"></td><td><input class="fill-field" type="text" style="margin:0;"></td><td><input class="fill-field" type="text" style="margin:0;"></td><td><input class="fill-field" type="text" style="margin:0;"></td></tr>
+            <tr><td>Travel / transport</td><td><input class="fill-field" type="text" style="margin:0;"></td><td><input class="fill-field" type="text" style="margin:0;"></td><td><input class="fill-field" type="text" style="margin:0;"></td><td><input class="fill-field" type="text" style="margin:0;"></td></tr>
+            <tr><td>Catering / hospitality</td><td><input class="fill-field" type="text" style="margin:0;"></td><td><input class="fill-field" type="text" style="margin:0;"></td><td><input class="fill-field" type="text" style="margin:0;"></td><td><input class="fill-field" type="text" style="margin:0;"></td></tr>
+            <tr><td>Printing / communications</td><td><input class="fill-field" type="text" style="margin:0;"></td><td><input class="fill-field" type="text" style="margin:0;"></td><td><input class="fill-field" type="text" style="margin:0;"></td><td><input class="fill-field" type="text" style="margin:0;"></td></tr>
+            <tr><td>Other: <input class="fill-field" type="text" style="margin:0;font-size:0.85rem;display:inline;width:60%;"></td><td><input class="fill-field" type="text" style="margin:0;"></td><td><input class="fill-field" type="text" style="margin:0;"></td><td><input class="fill-field" type="text" style="margin:0;"></td><td><input class="fill-field" type="text" style="margin:0;"></td></tr>
+            <tr style="background:var(--parchment-dark);">
+                <td><strong>Total expenditure</strong></td>
+                <td><input class="fill-field" type="text" style="margin:0;font-weight:bold;"></td>
+                <td><input class="fill-field" type="text" style="margin:0;font-weight:bold;"></td>
+                <td><input class="fill-field" type="text" style="margin:0;font-weight:bold;"></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Surplus / Deficit</h3>
+    <div class="two-col">
+        <div>
+            <label class="fill-label">Surplus or deficit amount</label>
+            <input class="fill-field" type="text" placeholder="$ amount (+ surplus / - deficit)">
+        </div>
+        <div>
+            <label class="fill-label">Unspent grant funds to return ($)</label>
+            <input class="fill-field" type="text" placeholder="$0 if all spent">
+        </div>
+    </div>
+
+    <label class="fill-label">Explanation of significant variances (>10% of line item)</label>
+    <textarea class="fill-area" rows="3" placeholder="Explain any significant differences between budgeted and actual figures..."></textarea>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>Part 4: Evidence and Attachments</h2>
+
+<div class="section-block">
+    <h3>Required attachments (tick when included)</h3>
+    <ul class="checklist">
+        <li>Financial statements / bank reconciliation for grant period</li>
+        <li>Receipts / invoices for major expenditure items</li>
+        <li>Participant attendance records or sign-in sheets</li>
+        <li>Photos or documentation of activities (if required by funder)</li>
+        <li>Survey or feedback results (if required by funder)</li>
+        <li>Signed declaration / authorisation (CEO or Board Chair)</li>
+    </ul>
+
+    <h3>Optional but strengthens acquittal</h3>
+    <ul class="checklist">
+        <li>Participant quotes or case studies (de-identified)</li>
+        <li>Media coverage or social media reach data</li>
+        <li>Partnership acknowledgements from collaborating organisations</li>
+        <li>Photos with consent — community in action, not just logos and bunting</li>
+    </ul>
+
+    <label class="fill-label">Other evidence specific to this grant</label>
+    <textarea class="fill-area" rows="2" placeholder="List any additional evidence required by your specific grant agreement..."></textarea>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>Part 5: Declaration</h2>
+
+<div class="section-block">
+    <p>I declare that the information provided in this acquittal report is accurate and complete to the best of my knowledge, and that the grant funds were used for the purposes stated in the grant agreement.</p>
+
+    <div class="two-col" style="margin-top:1.5rem;">
+        <div>
+            <label class="fill-label">Name</label>
+            <input class="fill-field" type="text" placeholder="Full name">
+            <label class="fill-label" style="margin-top:0.8rem;">Position / role</label>
+            <input class="fill-field" type="text" placeholder="e.g. CEO, Executive Director">
+        </div>
+        <div>
+            <label class="fill-label">Date</label>
+            <input class="fill-field" type="text" placeholder="DD/MM/YYYY">
+            <label class="fill-label" style="margin-top:0.8rem;">Signature</label>
+            <div style="border-bottom:1px solid var(--parchment-dark);height:2.5rem;margin-bottom:0.3rem;"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>Common Questions — Grant Acquittal</h2>
+
+<div class="info-box">
+    <strong>What if I underspent?</strong>
+    Contact your funding officer before submitting. Most funders require unspent funds to be returned unless you have written approval to carry over or reallocate. Do not just keep unspent funds.
+</div>
+
+<div class="info-box">
+    <strong>What if I overspent?</strong>
+    Report the actual expenditure. Overspending doesn't automatically mean you get more money — and if you covered the difference yourself, document how. Most funders appreciate transparency over a spotless but inaccurate acquittal.
+</div>
+
+<div class="info-box">
+    <strong>What if activities changed?</strong>
+    Describe what actually happened and why. If you got written approval for the changes, mention it. If you didn't, be honest — explain the circumstances and what you did instead. Funders generally prefer honest variation explanations to silence.
+</div>
+
+<div class="info-box">
+    <strong>What if I need help?</strong>
+    Talk to Kai at kamunity.org — tell it what funder you're acquitting to and what you're stuck on. Or contact Mike Fuller at mike@kamunity.org if you need hands-on help with a complex acquittal.
+</div>
+
+<footer>
+    <p>Kamunity Grant Acquittal Helper · Free · CC BY-SA 4.0 · kamunity.org/tools/grant-acquittal-helper</p>
+    <p>Built on Whadjuk Noongar boodja. No data is collected by this tool. Sovereignty was never ceded.</p>
+    <p>Questions? mike@kamunity.org · Talk to Kai at kamunity.org</p>
+</footer>
+
+</body>
+</html>

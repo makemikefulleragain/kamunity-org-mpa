@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tools — Kamunity</title>
+    <meta name="description" content="Free embedded tools for WA community organisations. Sovereignty Check, AI Readiness, Org Health Check. No data collected. No account required.">
+    <meta name="robots" content="index, follow">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
+    <link rel="stylesheet" href="fonts/fonts.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="aoc-banner" id="aoc-banner">
+    <span>Built in Boorloo/Perth, on Whadjuk Noongar country. We acknowledge Whadjuk Noongar people as the traditional custodians of this land.</span>
+    <button class="aoc-close" id="aoc-close" aria-label="Dismiss acknowledgement">×</button>
+</div>
+
+<nav class="site-nav" role="navigation" aria-label="Main navigation">
+    <a href="/" class="nav-logo" aria-label="Kamunity home">kamunity</a>
+    <button class="nav-hamburger" id="nav-hamburger" aria-expanded="false" aria-controls="nav-links" aria-label="Open navigation">
+        <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links" role="menubar">
+        <a href="/" role="menuitem">Home</a>
+        <a href="/tools" class="active" role="menuitem">Tools</a>
+        <a href="/kai" role="menuitem">Kai</a>
+        <a href="/services" role="menuitem">Services</a>
+        <a href="/about" role="menuitem">About</a>
+    </div>
+</nav>
+
+<div class="page-wrap">
+
+    <div class="page-hero">
+        <h1>Free Tools</h1>
+        <p class="subtitle">No account. No data collected. Your answers stay in your browser and nowhere else.</p>
+    </div>
+
+    <div class="page-body">
+
+        <!-- TOOL 1: SOVEREIGNTY CHECK -->
+        <div class="tools-section" id="sovereignty-check">
+            <div class="tool-header">
+                <div class="tool-eyebrow">Tool 1 of 3</div>
+                <h2>Sovereignty Check</h2>
+                <p>How dependent is your organisation on infrastructure you don't control? 5 minutes. Four dimensions. Free.</p>
+            </div>
+
+            <div id="sovcheck-quiz" class="quiz-container">
+                <!-- JS renders quiz here -->
+            </div>
+            <div id="sovcheck-results" class="quiz-results hidden">
+                <!-- JS renders results here -->
+            </div>
+
+            <div class="warm-path" id="sovcheck-warm" style="display:none;">
+                <p>If what this shows you is concerning, you're not the only one. Most community orgs in WA are 80–95% dependent on infrastructure they don't control.</p>
+                <a href="/services">Here's what help looks like →</a>
+            </div>
+
+            <p class="go-deeper-link">Want a deeper audit with executive summary and remediation plan? <a href="https://kamunity-audit.netlify.app" target="_blank" rel="noopener">Full Sovereignty Audit →</a></p>
+            <p class="disclaimer-text">All answers are processed entirely in your browser. Nothing is sent anywhere.</p>
+        </div>
+
+        <!-- TOOL 2: AI READINESS -->
+        <div class="tools-section" id="ai-readiness">
+            <div class="tool-header">
+                <div class="tool-eyebrow">Tool 2 of 3</div>
+                <h2>AI Readiness</h2>
+                <p>12 questions. An honest picture of where your organisation is with AI — not where someone thinks you should be.</p>
+            </div>
+
+            <div id="aiready-quiz" class="quiz-container">
+                <!-- JS renders quiz here -->
+            </div>
+            <div id="aiready-results" class="quiz-results hidden">
+                <!-- JS renders results here -->
+            </div>
+
+            <div class="warm-path" id="aiready-warm" style="display:none;">
+                <p>AI readiness isn't about adopting everything. It's about knowing what's worth your attention and what's noise.</p>
+                <a href="/services">Need help navigating this? →</a>
+            </div>
+
+            <p class="go-deeper-link">Want the full toolkit — prompt guides, board briefing, ethics checklist, first steps? <a href="https://kamunity-ai-readiness.netlify.app" target="_blank" rel="noopener">Full AI Readiness Toolkit →</a></p>
+            <p class="disclaimer-text">All answers are processed entirely in your browser. Nothing is sent anywhere.</p>
+        </div>
+
+        <!-- TOOL 3: ORG HEALTH CHECK -->
+        <div class="tools-section" id="org-health">
+            <div class="tool-header">
+                <div class="tool-eyebrow">Tool 3 of 3</div>
+                <h2>Org Health Check</h2>
+                <p>Quick operational diagnostic. Governance, process, QA, innovation, strategy. Five areas. Five minutes. Find where it's actually broken — not where it feels broken.</p>
+            </div>
+
+            <div id="health-quiz" class="quiz-container">
+                <!-- JS renders quiz here -->
+            </div>
+            <div id="health-results" class="quiz-results hidden">
+                <!-- JS renders results here -->
+            </div>
+
+            <div class="warm-path" id="health-warm" style="display:none;">
+                <p>Found something that needs fixing? Most of these problems are fixable — they just need someone who's seen them before.</p>
+                <a href="/services">See how we fix things →</a>
+            </div>
+
+            <p class="disclaimer-text">All answers are processed entirely in your browser. Nothing is sent anywhere.</p>
+        </div>
+
+        <hr class="section-divider" aria-hidden="true">
+
+        <div class="warm-path">
+            <p>If the free tool is useful, imagine what happens when someone who built it sits with your team for a day.</p>
+            <a href="/services">See consulting services →</a>
+        </div>
+
+    </div>
+</div>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-aoc">
+            Built in Boorloo/Perth, on Whadjuk Noongar country. We acknowledge Whadjuk Noongar people as the traditional custodians of this land, and pay our respects to Elders past and present.
+        </div>
+        <div class="footer-links">
+            <a href="/">Home</a>
+            <span class="footer-sep">·</span>
+            <a href="/tools">Tools</a>
+            <span class="footer-sep">·</span>
+            <a href="/kai">Kai</a>
+            <span class="footer-sep">·</span>
+            <a href="/services">Services</a>
+            <span class="footer-sep">·</span>
+            <a href="/about">About</a>
+            <span class="footer-sep">·</span>
+            <a href="/ring-zero">Ring Zero</a>
+        </div>
+        <div class="footer-links">
+            <span class="footer-sibling-label">Standalone tool links</span>
+            <a href="https://kamunity-audit.netlify.app" target="_blank" rel="noopener">Full Sovereignty Audit</a>
+            <span class="footer-sep">·</span>
+            <a href="https://kamunity-ai-readiness.netlify.app" target="_blank" rel="noopener">Full AI Readiness</a>
+            <span class="footer-sep">·</span>
+            <a href="https://kamunity.ai" target="_blank" rel="noopener">kamunity.ai</a>
+        </div>
+        <div class="footer-tagline">
+            No tracking · No data collected · IP in the commons · CC BY-SA 4.0
+        </div>
+    </div>
+</footer>
+
+<a href="/kai" class="kai-fab" aria-label="Talk to Kai">
+    K
+    <span class="kai-fab-tooltip">Talk to Kai</span>
+</a>
+
+<script src="js/quizzes.js" defer></script>
+<script>
+    const aocBanner = document.getElementById('aoc-banner');
+    const aocClose = document.getElementById('aoc-close');
+    if (sessionStorage.getItem('aoc-dismissed')) aocBanner.style.display = 'none';
+    aocClose.addEventListener('click', function() {
+        aocBanner.style.display = 'none';
+        sessionStorage.setItem('aoc-dismissed', '1');
+    });
+    const hamburger = document.getElementById('nav-hamburger');
+    const navLinks = document.getElementById('nav-links');
+    hamburger.addEventListener('click', function() {
+        const open = navLinks.classList.toggle('open');
+        hamburger.setAttribute('aria-expanded', open);
+    });
+</script>
+
+</body>
+</html>

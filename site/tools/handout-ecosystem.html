@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ecosystem Overview — Kamunity</title>
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+  :root {
+    --ember:   #e8a84c;
+    --moss:    #4a8c6b;
+    --sky:     #3a6ea8;
+    --danger:  #b94040;
+    --bg:      #ffffff;
+    --text:    #1a1714;
+    --text-muted: #4a4a4a;
+    --border:  #e0d8cc;
+    --surface: #fafaf8;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  .page {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 3rem 2.5rem;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 2rem;
+  }
+  .brand-mark {
+    font-size: 1.4rem;
+    line-height: 1;
+  }
+  .brand-name {
+    font-family: 'Fraunces', serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--sky);
+    letter-spacing: 0.02em;
+  }
+  .brand-tag {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-left: auto;
+  }
+
+  .hero {
+    margin-bottom: 2.5rem;
+  }
+  .hero-eyebrow {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ember);
+    margin-bottom: 0.5rem;
+  }
+  .hero-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--sky);
+    margin-bottom: 0.75rem;
+  }
+  .hero-sub {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    max-width: 56ch;
+    line-height: 1.55;
+  }
+
+  /* ── How It Works ── */
+  .how-it-works {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .step {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem 1.2rem;
+    text-align: center;
+  }
+  .step-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--sky);
+  }
+  .step-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--sky);
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+  }
+  .step-text {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  /* ── Callout Box ── */
+  .callout {
+    background: rgba(58,110,168,0.05);
+    border: 1px solid rgba(58,110,168,0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .callout-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--sky);
+    margin-bottom: 1rem;
+  }
+  .callout ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .callout li {
+    font-size: 0.9rem;
+    color: var(--text);
+    padding-left: 1.5rem;
+    position: relative;
+    line-height: 1.5;
+  }
+  .callout li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--ember);
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+  .callout strong {
+    color: var(--sky);
+  }
+
+  /* ── Footer ── */
+  .footer {
+    border-top: 1px solid var(--border);
+    padding-top: 1.25rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .footer-left { flex: 1; min-width: 200px; }
+  .footer-title {
+    font-family: 'Fraunces', serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--sky);
+    margin-bottom: 0.25rem;
+  }
+  .footer-text {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+  .footer-text a { color: var(--sky); text-decoration: none; }
+  .footer-text a:hover { text-decoration: underline; }
+
+  .footer-bottom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 1.5rem;
+    font-size: 0.8rem;
+    color: var(--sky);
+    row-gap: 0.25rem;
+  }
+  .footer-bottom-grid a { color: var(--sky); text-decoration: none; }
+  .footer-bottom-grid a:hover { text-decoration: underline; }
+  .footer-bottom-grid .right { text-align: right; color: var(--text-muted); }
+
+  /* ── Print styles ── */
+  @media print {
+    body {
+      background: #fff !important;
+      color: #1a1714 !important;
+    }
+    .page { max-width: 100%; padding: 1.2cm 1.5cm; }
+    
+    .step {
+      background: #fafaf8 !important;
+      border-color: #e0d8cc !important;
+      break-inside: avoid;
+    }
+    .callout {
+      background: #f4f8fb !important;
+      border-color: #dceaf5 !important;
+      break-inside: avoid;
+    }
+    .footer-bottom-grid a { color: #3a6ea8 !important; }
+  }
+
+  @media (max-width: 600px) {
+    .page { padding: 1.5rem 1.25rem; }
+    .how-it-works { grid-template-columns: 1fr; }
+    .footer-bottom-grid { grid-template-columns: 1fr; gap: 0.5rem; }
+    .footer-bottom-grid .right { text-align: left; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="brand">
+    <span class="brand-mark">🔥</span>
+    <span class="brand-name">Kamunity</span>
+    <span class="brand-tag">Community Technology — Perth, WA</span>
+  </div>
+
+  <div class="hero">
+    <div class="hero-eyebrow">Ecosystem Overview</div>
+    <h1 class="hero-title">Technology Built for Community,<br>Not Profit</h1>
+    <p class="hero-sub">Kamunity is a suite of tools, platforms, and AI companions designed to help community organisations coordinate, protect their data, and thrive in the digital age without compromising their values.</p>
+  </div>
+
+  <div class="how-it-works">
+    <div class="step">
+      <div class="step-icon">🧭</div>
+      <div class="step-title">1. Wayfinding</div>
+      <div class="step-text">Talk to Kai, our constitutional AI companion, to brainstorm, map your needs, and find safe solutions.</div>
+    </div>
+    <div class="step">
+      <div class="step-icon">🛡️</div>
+      <div class="step-title">2. Independence</div>
+      <div class="step-text">Assess your current tools and take actionable steps to protect your community's data and independence.</div>
+    </div>
+    <div class="step">
+      <div class="step-icon">⛺</div>
+      <div class="step-title">3. Coordination</div>
+      <div class="step-text">Use Kamunity Rooms to organise actions, share resources, and collaborate in spaces you actually own.</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-title">The Ecosystem at a Glance</div>
+    <ul>
+      <li><strong>Kai (kamunity.org):</strong> Free AI advice built with strict safety guardrails and WA crisis protocols.</li>
+      <li><strong>Sovereignty & Readiness Audits:</strong> Free self-assessment tools to measure your digital health and AI readiness.</li>
+      <li><strong>Kamunity Rooms:</strong> An independent, ad-free coordination platform for community groups and coalitions.</li>
+      <li><strong>Kamunity Consulting:</strong> Hands-on strategic guidance to help you fix processes and implement real change.</li>
+    </ul>
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">
+      <div class="footer-title">Want to go deeper?</div>
+      <p class="footer-text">
+        Kamunity builds constitutional AI tools, websites and chat for your community organisation — all with explicit safety guardrails, honest disclaimers, and an open methodology you can learn.
+      </p>
+    </div>
+  </div>
+
+  <div class="footer-bottom-grid">
+    <div class="left"><a href="https://kamunity.org">kamunity.org</a> &nbsp;·&nbsp; <a href="https://kamunity.ai">kamunity.ai</a></div>
+    <div class="right">Mike Fuller · Maylands, Western Australia</div>
+    <div class="left"><a href="mailto:mike@kamunityconsulting.com">mike@kamunityconsulting.com</a></div>
+    <div class="right"><span style="font-size: 0.7rem; opacity: 0.7;">* This document was drafted with AI assistance (Gemini 3.1).</span></div>
+  </div>
+
+</div>
+</body>
+</html>

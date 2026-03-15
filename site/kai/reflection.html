@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reflection — Kai — Kamunity</title>
+    <meta name="description" content="AI-assisted reflection. Not an audit. No score. A conversation about what your organisation is actually for.">
+    <meta name="robots" content="index, follow">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
+    <link rel="stylesheet" href="../fonts/fonts.css">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<div class="aoc-banner" id="aoc-banner">
+    <span>Built in Boorloo/Perth, on Whadjuk Noongar country. We acknowledge Whadjuk Noongar people as the traditional custodians of this land.</span>
+    <button class="aoc-close" id="aoc-close" aria-label="Dismiss acknowledgement">×</button>
+</div>
+
+<nav class="site-nav" role="navigation" aria-label="Main navigation">
+    <a href="/" class="nav-logo" aria-label="Kamunity home">kamunity</a>
+    <button class="nav-hamburger" id="nav-hamburger" aria-expanded="false" aria-controls="nav-links" aria-label="Open navigation">
+        <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links" role="menubar">
+        <a href="/" role="menuitem">Home</a>
+        <a href="/tools" role="menuitem">Tools</a>
+        <a href="/kai" class="active" role="menuitem">Kai</a>
+        <a href="/services" role="menuitem">Services</a>
+        <a href="/about" role="menuitem">About</a>
+    </div>
+</nav>
+
+<!-- Kai sub-nav -->
+<nav class="sub-nav" aria-label="Kai section navigation">
+    <a href="/kai">Kai</a>
+    <span class="sub-nav-sep" aria-hidden="true">·</span>
+    <a href="/kai/reflection" class="active" aria-current="page">Reflection</a>
+</nav>
+
+<div class="page-wrap">
+
+    <div class="page-hero">
+        <h1>Reflection</h1>
+        <p class="subtitle">Not an audit. No score at the end. A question underneath the questions.</p>
+    </div>
+
+    <div class="page-body">
+
+        <p>This is a 5-minute conversation with Kai about the question your organisation probably hasn't asked itself recently — not because it's not important, but because there's never time.</p>
+
+        <p>Reflection mode is slower than the wayfinder. Kai will ask rather than answer. You'll leave with one useful reframe and one question you didn't arrive with. That question is the point.</p>
+
+        <p><strong>Consent before we begin:</strong> Kai will not rush you, interrupt you, or try to fix what you share. You can pause or exit at any time. There is no wrong answer.</p>
+
+        <!-- CONSENT INTAKE -->
+        <div id="reflection-consent" class="kai-container" role="region" aria-label="Reflection consent intake" style="min-height: auto; padding-bottom: 1.5rem;">
+            <div class="kai-header-bar">
+                <span class="kai-orb" aria-hidden="true">K</span>
+                <div>
+                    <div class="kai-name">Kai — Reflection Mode</div>
+                    <div class="kai-tagline">Slower · No score · No data · Just the question underneath</div>
+                </div>
+            </div>
+            <div role="note" style="padding: 1rem 1.2rem; background: var(--charcoal); border-left: 3px solid var(--sky); border-radius: 6px; margin-bottom: 1rem;">
+                <p class="kai-disclosure-text">Your conversation is processed by Claude (Anthropic) and not stored beyond this session. No personal data is retained. This is AI — not counselling, not therapy. You can pause or close this window at any time. <a href="/about/constitution" class="kai-disclosure-link">Read our constitution →</a></p>
+                <p class="kai-disclosure-text" style="margin-top: 0.5rem; margin-bottom: 0.75rem;">If at any point this conversation touches something heavy, you are not obligated to continue. The door is always open in both directions.</p>
+                <button class="kai-disclosure-btn" id="reflect-consent-btn" style="background: var(--sky);">I understand — I'm ready to reflect</button>
+            </div>
+        </div>
+
+        <!-- REFLECTION CONVERSATION (hidden until consent) -->
+        <div id="reflection-conversation" style="display: none;">
+            <div class="kai-container" role="region" aria-label="Kai reflection conversation">
+                <div class="kai-header-bar">
+                    <span class="kai-orb" aria-hidden="true" style="background: var(--sky);">K</span>
+                    <div>
+                        <div class="kai-name">Kai — Reflection Mode</div>
+                        <div class="kai-tagline">Pause any time · Exit any time · No wrong answers</div>
+                    </div>
+                    <button id="reflect-pause" style="margin-left: auto; background: none; border: 1px solid var(--charcoal); color: var(--ash); font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; padding: 0.3rem 0.7rem; border-radius: 3px; cursor: pointer;" aria-label="Pause reflection">Pause</button>
+                </div>
+
+                <div class="kai-messages" id="reflect-messages" role="log" aria-live="polite" aria-label="Kai reflection messages">
+                    <div class="kai-bubble kai-bubble-ai" style="border-radius: 0 10px 10px 10px; border-left: 2px solid var(--sky);">
+                        I want to ask you something. Not about your workload or your tech stack or your funding. Something underneath all that.<br><br>
+                        When your organisation is working — really working, not just surviving — what does that look like? What are you actually <em>for</em>?
+                    </div>
+                </div>
+
+                <div class="kai-input-row" id="reflect-input-row">
+                    <textarea id="reflect-input" class="kai-input" placeholder="Take your time with this one…" rows="2" aria-label="Your reflection"></textarea>
+                    <button id="reflect-send" class="kai-send-btn" style="background: var(--sky);" aria-label="Send reflection">Send</button>
+                </div>
+
+                <div id="reflect-typing" class="kai-typing hidden" aria-live="polite">Kai is thinking…</div>
+            </div>
+        </div>
+
+        <div class="kai-crisis" role="note">
+            <strong>If you need support now:</strong> Lifeline <strong>13 11 14</strong> (24/7) · Beyond Blue <strong>1300 22 4636</strong> (24/7) · MentalHealthLine <strong>1800 011 511</strong> (WA, 24/7)
+        </div>
+
+        <p class="disclaimer-text">
+            Reflection mode runs on Claude by Anthropic. Constitutional constraints prevent data extraction.<br>
+            <a href="/about/constitution">Read our constitution.</a>
+        </p>
+
+        <hr class="section-divider" aria-hidden="true">
+
+        <p>For a deeper reflection experience — with the Kai orb, backpack for saving insights, and sector intelligence — the standalone Reflection site offers more:</p>
+
+        <div class="warm-path">
+            <p>Want the full Reflection experience? Orb, sector intelligence, backpack for saving insights.</p>
+            <a href="https://kamunity-reflection.netlify.app" target="_blank" rel="noopener">Full Reflection experience →</a>
+        </div>
+
+    </div>
+</div>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-aoc">
+            Built in Boorloo/Perth, on Whadjuk Noongar country. We acknowledge Whadjuk Noongar people as the traditional custodians of this land, and pay our respects to Elders past and present.
+        </div>
+        <div class="footer-links">
+            <a href="/">Home</a>
+            <span class="footer-sep">·</span>
+            <a href="/tools">Tools</a>
+            <span class="footer-sep">·</span>
+            <a href="/kai">Kai</a>
+            <span class="footer-sep">·</span>
+            <a href="/kai/reflection">Reflection</a>
+            <span class="footer-sep">·</span>
+            <a href="/services">Services</a>
+            <span class="footer-sep">·</span>
+            <a href="/about">About</a>
+        </div>
+        <div class="footer-links">
+            <span class="footer-sibling-label">Deeper reflection</span>
+            <a href="https://kamunity-reflection.netlify.app" target="_blank" rel="noopener">kamunity-reflection.netlify.app</a>
+        </div>
+        <div class="footer-tagline">
+            No tracking · Conversations not stored · Pause any time · CC BY-SA 4.0
+        </div>
+    </div>
+</footer>
+
+<!-- NO FAB on /kai/reflection — it would be redundant -->
+
+<script>
+    const aocBanner = document.getElementById('aoc-banner');
+    const aocClose = document.getElementById('aoc-close');
+    if (sessionStorage.getItem('aoc-dismissed')) aocBanner.style.display = 'none';
+    aocClose.addEventListener('click', function() {
+        aocBanner.style.display = 'none';
+        sessionStorage.setItem('aoc-dismissed', '1');
+    });
+    const hamburger = document.getElementById('nav-hamburger');
+    const navLinks = document.getElementById('nav-links');
+    hamburger.addEventListener('click', function() {
+        const open = navLinks.classList.toggle('open');
+        hamburger.setAttribute('aria-expanded', open);
+    });
+
+    /* Consent gate */
+    document.getElementById('reflect-consent-btn').addEventListener('click', function() {
+        document.getElementById('reflection-consent').style.display = 'none';
+        document.getElementById('reflection-conversation').style.display = 'block';
+        document.getElementById('reflect-input').focus();
+    });
+
+    /* Pause */
+    document.getElementById('reflect-pause').addEventListener('click', function() {
+        const conv = document.getElementById('reflection-conversation');
+        const consent = document.getElementById('reflection-consent');
+        conv.style.display = 'none';
+        consent.style.display = 'block';
+    });
+
+    /* Reflection send */
+    const reflectInput = document.getElementById('reflect-input');
+    const reflectSend = document.getElementById('reflect-send');
+    const reflectTyping = document.getElementById('reflect-typing');
+    const reflectMessages = document.getElementById('reflect-messages');
+    let reflectHistory = [];
+
+    async function sendReflect() {
+        const text = reflectInput.value.trim();
+        if (!text) return;
+
+        reflectSend.disabled = true;
+        reflectInput.disabled = true;
+
+        const userBubble = document.createElement('div');
+        userBubble.className = 'kai-bubble kai-bubble-user';
+        userBubble.textContent = text;
+        reflectMessages.appendChild(userBubble);
+        reflectMessages.scrollTop = reflectMessages.scrollHeight;
+
+        reflectInput.value = '';
+        reflectTyping.classList.remove('hidden');
+
+        reflectHistory.push({ role: 'user', content: text });
+
+        try {
+            const res = await fetch('/.netlify/functions/kai-proxy', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ messages: reflectHistory, mode: 'reflection' })
+            });
+            const data = await res.json();
+            const reply = data.response || 'Something went wrong — please try again.';
+
+            reflectHistory.push({ role: 'assistant', content: reply });
+
+            const aiBubble = document.createElement('div');
+            aiBubble.className = 'kai-bubble kai-bubble-ai';
+            aiBubble.style.borderLeft = '2px solid var(--sky)';
+            aiBubble.innerHTML = reply.replace(/\n/g, '<br>');
+            reflectMessages.appendChild(aiBubble);
+            reflectMessages.scrollTop = reflectMessages.scrollHeight;
+        } catch (err) {
+            const errBubble = document.createElement('div');
+            errBubble.className = 'kai-bubble kai-bubble-ai';
+            errBubble.textContent = 'Something went wrong. Take a breath — you can try again.';
+            reflectMessages.appendChild(errBubble);
+        }
+
+        reflectTyping.classList.add('hidden');
+        reflectSend.disabled = false;
+        reflectInput.disabled = false;
+        reflectInput.focus();
+    }
+
+    reflectSend.addEventListener('click', sendReflect);
+    reflectInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendReflect(); }
+    });
+</script>
+
+</body>
+</html>

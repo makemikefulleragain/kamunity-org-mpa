@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Board Paper Pack — Kamunity</title>
+    <meta name="description" content="Template pack for presenting digital strategy, AI policy, or technology decisions to your board. Printable. Free. No account required.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
+    <style>
+        /* Campfire tokens — self-contained for print */
+        :root {
+            --ember: #b8522e;
+            --parchment: #f2ebe0;
+            --parchment-dark: #e8dfd0;
+            --cream: #faf6f0;
+            --deep: #1a1612;
+            --ash: #8a7e70;
+            --ink: #2a2420;
+            --moss: #4a6a42;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--cream);
+            color: var(--ink);
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 15px;
+            line-height: 1.7;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .screen-only {
+            background: var(--deep);
+            color: var(--parchment);
+            font-family: 'Courier New', monospace;
+            font-size: 0.75rem;
+            padding: 0.6rem 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .screen-only a {
+            color: var(--ember);
+            text-decoration: none;
+        }
+
+        .print-btn {
+            font-family: 'Courier New', monospace;
+            font-size: 0.72rem;
+            padding: 0.4rem 1rem;
+            background: var(--ember);
+            color: var(--cream);
+            border: none;
+            cursor: pointer;
+        }
+
+        h1 {
+            font-family: Georgia, serif;
+            font-size: 2rem;
+            font-weight: normal;
+            color: var(--ink);
+            margin-bottom: 0.3rem;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-family: 'Courier New', monospace;
+            font-size: 0.75rem;
+            color: var(--ash);
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            font-family: Georgia, serif;
+            font-size: 1.2rem;
+            font-weight: normal;
+            color: var(--ember);
+            border-bottom: 1px solid var(--parchment-dark);
+            padding-bottom: 0.3rem;
+            margin: 2rem 0 1rem;
+        }
+
+        h3 {
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: var(--ash);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin: 1.5rem 0 0.5rem;
+        }
+
+        p { margin-bottom: 0.8rem; }
+
+        .template-block {
+            background: var(--parchment);
+            border: 1px solid var(--parchment-dark);
+            border-left: 4px solid var(--ember);
+            padding: 1.2rem 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .template-block p { font-style: italic; color: var(--ash); margin: 0 0 0.5rem; font-size: 0.88rem; }
+        .template-block p:last-child { margin-bottom: 0; }
+
+        .fill-field {
+            border: none;
+            border-bottom: 1px solid var(--parchment-dark);
+            background: transparent;
+            font-family: Georgia, serif;
+            font-size: 0.95rem;
+            color: var(--ink);
+            width: 100%;
+            padding: 0.3rem 0;
+            margin-bottom: 0.5rem;
+        }
+
+        .fill-field:focus { outline: none; border-bottom-color: var(--ember); }
+
+        .fill-label {
+            font-family: 'Courier New', monospace;
+            font-size: 0.7rem;
+            color: var(--ash);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        .fill-area {
+            border: 1px solid var(--parchment-dark);
+            background: var(--cream);
+            font-family: Georgia, serif;
+            font-size: 0.95rem;
+            color: var(--ink);
+            width: 100%;
+            padding: 0.6rem 0.8rem;
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .fill-area:focus { outline: none; border-color: var(--ember); }
+
+        .checklist { list-style: none; padding: 0; }
+
+        .checklist li {
+            padding: 0.4rem 0 0.4rem 1.8rem;
+            position: relative;
+            border-bottom: 1px dotted var(--parchment-dark);
+            font-size: 0.9rem;
+        }
+
+        .checklist li::before {
+            content: '☐';
+            position: absolute;
+            left: 0;
+            color: var(--ember);
+            font-size: 1rem;
+        }
+
+        .tip-box {
+            background: var(--parchment);
+            border: 1px solid var(--parchment-dark);
+            padding: 1rem 1.2rem;
+            margin: 1.5rem 0;
+            font-size: 0.88rem;
+            color: var(--ash);
+        }
+
+        .tip-box strong {
+            font-family: 'Courier New', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--ember);
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .tag-row {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .tag {
+            font-family: 'Courier New', monospace;
+            font-size: 0.68rem;
+            color: var(--ash);
+            border: 1px solid var(--parchment-dark);
+            padding: 0.2rem 0.5rem;
+        }
+
+        footer {
+            margin-top: 3rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--parchment-dark);
+            font-family: 'Courier New', monospace;
+            font-size: 0.68rem;
+            color: var(--ash);
+        }
+
+        @media print {
+            .screen-only { display: none; }
+            body { padding: 0; }
+            .fill-field, .fill-area { border-color: #ccc; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="screen-only">
+    <span>kamunity.org/tools/board-paper-pack · Free · CC BY-SA 4.0 · <a href="/">kamunity.org</a></span>
+    <button class="print-btn" onclick="window.print()">Print / Save PDF</button>
+</div>
+
+<h1>Board Paper Pack</h1>
+<p class="subtitle">Kamunity Free Tools · Templates for board-level technology decisions · No account required</p>
+
+<div class="tag-row">
+    <span class="tag">Free</span>
+    <span class="tag">Printable</span>
+    <span class="tag">CC BY-SA 4.0</span>
+    <span class="tag">WA Community Sector</span>
+    <span class="tag">Board Governance</span>
+</div>
+
+<p>Three templates for presenting digital strategy, AI policy, or technology decisions to your board. Fill in the fields, print or save as PDF. No data is collected — these forms don't submit anywhere.</p>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>Template 1: Technology Decision Brief</h2>
+<p>Use this when you need board approval for a technology purchase, system change, or new digital tool.</p>
+
+<div class="template-block">
+
+    <label class="fill-label">Organisation name</label>
+    <input class="fill-field" type="text" placeholder="Your organisation">
+
+    <label class="fill-label">Board meeting date</label>
+    <input class="fill-field" type="text" placeholder="DD/MM/YYYY">
+
+    <label class="fill-label">Decision title</label>
+    <input class="fill-field" type="text" placeholder="e.g. Adoption of new client management system">
+
+    <h3>Recommendation</h3>
+    <label class="fill-label">What are you recommending the board approve?</label>
+    <textarea class="fill-area" rows="3" placeholder="We recommend the board approve..."></textarea>
+
+    <h3>Background</h3>
+    <label class="fill-label">Why is this needed? What problem does it solve?</label>
+    <textarea class="fill-area" rows="4" placeholder="Describe the current situation and the need..."></textarea>
+
+    <h3>Options Considered</h3>
+
+    <div class="two-col">
+        <div>
+            <label class="fill-label">Option A (Recommended)</label>
+            <textarea class="fill-area" rows="3" placeholder="Option name and brief description..."></textarea>
+            <label class="fill-label" style="margin-top:0.5rem;">Cost</label>
+            <input class="fill-field" type="text" placeholder="$ amount + recurring costs">
+        </div>
+        <div>
+            <label class="fill-label">Option B (Alternative)</label>
+            <textarea class="fill-area" rows="3" placeholder="Option name and brief description..."></textarea>
+            <label class="fill-label" style="margin-top:0.5rem;">Cost</label>
+            <input class="fill-field" type="text" placeholder="$ amount + recurring costs">
+        </div>
+    </div>
+
+    <label class="fill-label" style="margin-top:1rem;">Why Option A?</label>
+    <textarea class="fill-area" rows="3" placeholder="Key reasons for the recommendation over alternatives..."></textarea>
+
+    <h3>Risks and Mitigations</h3>
+    <label class="fill-label">Key risks</label>
+    <textarea class="fill-area" rows="3" placeholder="Data sovereignty, vendor lock-in, staff capability, cost overrun..."></textarea>
+
+    <label class="fill-label">Mitigations</label>
+    <textarea class="fill-area" rows="3" placeholder="How each risk will be managed..."></textarea>
+
+    <h3>Data Sovereignty Check</h3>
+    <ul class="checklist">
+        <li>Where will our data be stored? (Country/region): <input class="fill-field" type="text" style="width:60%;display:inline-block;"></li>
+        <li>Can we export our data at any time? <input class="fill-field" type="text" style="width:40%;display:inline-block;" placeholder="Yes / No / Conditions"></li>
+        <li>What happens to our data if we cancel? <input class="fill-field" type="text" style="width:60%;display:inline-block;"></li>
+        <li>Does the vendor sell or share our data? <input class="fill-field" type="text" style="width:40%;display:inline-block;" placeholder="Yes / No / Conditions"></li>
+        <li>NDIS / privacy compliance confirmed: <input class="fill-field" type="text" style="width:40%;display:inline-block;" placeholder="Yes / No"></li>
+    </ul>
+
+    <h3>Resolution</h3>
+    <p style="font-style:normal;color:var(--ink);">That the board approve [decision title] as recommended, at a total cost of $_______, and note the risk register item ____.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>Template 2: AI Policy — Board Note</h2>
+<p>Use this when bringing an AI policy or AI usage decision to the board for noting or approval.</p>
+
+<div class="template-block">
+
+    <label class="fill-label">Organisation name</label>
+    <input class="fill-field" type="text" placeholder="Your organisation">
+
+    <label class="fill-label">Date</label>
+    <input class="fill-field" type="text" placeholder="DD/MM/YYYY">
+
+    <h3>Purpose of this paper</h3>
+    <label class="fill-label">Is this for noting, approval, or discussion?</label>
+    <input class="fill-field" type="text" placeholder="For noting / For approval / For discussion">
+
+    <h3>Current AI Usage</h3>
+    <label class="fill-label">How is AI currently being used in our organisation?</label>
+    <textarea class="fill-area" rows="3" placeholder="List tools currently in use (e.g. ChatGPT, Microsoft Copilot, transcription tools, etc.)..."></textarea>
+
+    <label class="fill-label">Who is using AI tools?</label>
+    <textarea class="fill-area" rows="2" placeholder="Which staff roles, teams, or volunteers are using AI tools..."></textarea>
+
+    <h3>Proposed Policy Position</h3>
+    <label class="fill-label">What is the organisation's position on AI use?</label>
+    <textarea class="fill-area" rows="4" placeholder="e.g. Staff may use AI tools for drafting and summarisation, provided no client information is entered. AI-generated content must be reviewed by a human before publishing..."></textarea>
+
+    <h3>Constitutional Hard Floors (non-negotiable)</h3>
+    <ul class="checklist">
+        <li>No client personal information entered into public AI tools</li>
+        <li>No AI used for final decisions about individual clients without human review</li>
+        <li>No AI tools that store or train on our data without consent</li>
+        <li>Crisis support decisions always made by humans, not AI</li>
+        <li>All AI outputs reviewed before external use</li>
+    </ul>
+
+    <h3>Implementation</h3>
+    <div class="two-col">
+        <div>
+            <label class="fill-label">Who is responsible for AI policy?</label>
+            <input class="fill-field" type="text" placeholder="Role name">
+        </div>
+        <div>
+            <label class="fill-label">Review date</label>
+            <input class="fill-field" type="text" placeholder="Review in 6 / 12 months">
+        </div>
+    </div>
+
+    <label class="fill-label">Training needed</label>
+    <textarea class="fill-area" rows="2" placeholder="What training or guidance do staff need..."></textarea>
+
+    <h3>Resolution</h3>
+    <p style="font-style:normal;color:var(--ink);">That the board note / approve the AI Policy as tabled, and that a review be scheduled for ______.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>Template 3: Digital Strategy One-Pager</h2>
+<p>A concise single-page format for presenting a digital strategy update or direction to the board.</p>
+
+<div class="template-block">
+
+    <div class="two-col">
+        <div>
+            <label class="fill-label">Organisation</label>
+            <input class="fill-field" type="text" placeholder="Your organisation">
+        </div>
+        <div>
+            <label class="fill-label">Period covered</label>
+            <input class="fill-field" type="text" placeholder="e.g. 2025–2026">
+        </div>
+    </div>
+
+    <h3>Where We Are Now</h3>
+    <textarea class="fill-area" rows="3" placeholder="Current state of digital infrastructure, tools, and capability..."></textarea>
+
+    <h3>Where We Want to Be</h3>
+    <textarea class="fill-area" rows="3" placeholder="Digital goals for the next 12–24 months..."></textarea>
+
+    <h3>Priority Actions</h3>
+    <table style="width:100%;border-collapse:collapse;margin:0.5rem 0;">
+        <thead>
+            <tr style="background:var(--parchment-dark);">
+                <th style="padding:0.4rem 0.6rem;text-align:left;font-family:'Courier New',monospace;font-size:0.7rem;font-weight:normal;color:var(--ash);">Action</th>
+                <th style="padding:0.4rem 0.6rem;text-align:left;font-family:'Courier New',monospace;font-size:0.7rem;font-weight:normal;color:var(--ash);">By when</th>
+                <th style="padding:0.4rem 0.6rem;text-align:left;font-family:'Courier New',monospace;font-size:0.7rem;font-weight:normal;color:var(--ash);">Owner</th>
+                <th style="padding:0.4rem 0.6rem;text-align:left;font-family:'Courier New',monospace;font-size:0.7rem;font-weight:normal;color:var(--ash);">Cost</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td style="padding:0.4rem 0.6rem;border-bottom:1px solid var(--parchment-dark);"><input class="fill-field" type="text" style="margin:0;"></td><td style="padding:0.4rem 0.6rem;border-bottom:1px solid var(--parchment-dark);"><input class="fill-field" type="text" style="margin:0;"></td><td style="padding:0.4rem 0.6rem;border-bottom:1px solid var(--parchment-dark);"><input class="fill-field" type="text" style="margin:0;"></td><td style="padding:0.4rem 0.6rem;border-bottom:1px solid var(--parchment-dark);"><input class="fill-field" type="text" style="margin:0;"></td></tr>
+            <tr><td style="padding:0.4rem 0.6rem;border-bottom:1px solid var(--parchment-dark);"><input class="fill-field" type="text" style="margin:0;"></td><td style="padding:0.4rem 0.6rem;border-bottom:1px solid var(--parchment-dark);"><input class="fill-field" type="text" style="margin:0;"></td><td style="padding:0.4rem 0.6rem;border-bottom:1px solid var(--parchment-dark);"><input class="fill-field" type="text" style="margin:0;"></td><td style="padding:0.4rem 0.6rem;border-bottom:1px solid var(--parchment-dark);"><input class="fill-field" type="text" style="margin:0;"></td></tr>
+            <tr><td style="padding:0.4rem 0.6rem;border-bottom:1px solid var(--parchment-dark);"><input class="fill-field" type="text" style="margin:0;"></td><td style="padding:0.4rem 0.6rem;border-bottom:1px solid var(--parchment-dark);"><input class="fill-field" type="text" style="margin:0;"></td><td style="padding:0.4rem 0.6rem;border-bottom:1px solid var(--parchment-dark);"><input class="fill-field" type="text" style="margin:0;"></td><td style="padding:0.4rem 0.6rem;border-bottom:1px solid var(--parchment-dark);"><input class="fill-field" type="text" style="margin:0;"></td></tr>
+            <tr><td style="padding:0.4rem 0.6rem;"><input class="fill-field" type="text" style="margin:0;"></td><td style="padding:0.4rem 0.6rem;"><input class="fill-field" type="text" style="margin:0;"></td><td style="padding:0.4rem 0.6rem;"><input class="fill-field" type="text" style="margin:0;"></td><td style="padding:0.4rem 0.6rem;"><input class="fill-field" type="text" style="margin:0;"></td></tr>
+        </tbody>
+    </table>
+
+    <h3>Key Risks</h3>
+    <textarea class="fill-area" rows="2" placeholder="Top 2–3 digital risks to flag to the board..."></textarea>
+
+    <h3>What We're Asking the Board to Do</h3>
+    <textarea class="fill-area" rows="2" placeholder="Note / approve / provide feedback on..."></textarea>
+</div>
+
+<div class="tip-box">
+    <strong>Tip from Kamunity</strong>
+    Boards often struggle with technology decisions because they feel too technical or too operational. The key is to frame every technology decision in terms your board already understands: cost, risk, community benefit, and sovereignty. "Where does our data live?" is a governance question, not a tech question.
+</div>
+
+<footer>
+    <p>Kamunity Board Paper Pack · Free · CC BY-SA 4.0 · kamunity.org/tools/board-paper-pack</p>
+    <p>Built on Whadjuk Noongar boodja. No data is collected by this tool. Sovereignty was never ceded.</p>
+    <p>Questions? mike@kamunity.org · Talk to Kai at kamunity.org</p>
+</footer>
+
+</body>
+</html>

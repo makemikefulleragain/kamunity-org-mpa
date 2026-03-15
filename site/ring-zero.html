@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ring Zero — Sovereign Community Infrastructure · Kamunity</title>
+  <meta name="description" content="Ring Zero is how a community organisation gets its own sovereign instance of Kamunity — the tools, the infrastructure, and the methodology to run it without needing us. Six weeks to constitutional independence.">
+  <meta name="robots" content="index, follow">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Ring Zero — Sovereign Community Infrastructure">
+  <meta property="og:description" content="Six weeks to constitutional independence. Your own Kamunity. Your Supabase. Your domain. Your data.">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Kamunity",
+    "url": "https://kamunity.org",
+    "description": "Community sovereignty infrastructure for WA community organisations",
+    "foundingLocation": {
+      "@type": "Place",
+      "name": "Boorloo/Perth, Western Australia",
+      "description": "Built on Whadjuk Noongar boodja. Sovereignty was never ceded."
+    },
+    "ethicsPolicy": "https://kamunity.org/about/constitution",
+    "license": "https://creativecommons.org/licenses/by-sa/4.0/"
+  }
+  </script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
+  <link rel="stylesheet" href="fonts/fonts.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Ring Zero specific styles — inherited from ring-two-mvp/site/ring-zero.html */
+    .hero { padding: 5rem 0 4rem; max-width: 42rem; }
+    .hero-eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem; color: var(--ember);
+      text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 1.75rem;
+    }
+    .hero-body {
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: clamp(1.2rem, 3.5vw, 1.6rem);
+      line-height: 1.55; color: var(--ink);
+      font-weight: 300; font-style: italic; margin-bottom: 2rem;
+    }
+    .hero-sub {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.78rem; color: var(--ash); line-height: 1.65;
+      max-width: 36rem; border-left: 2px solid var(--parchment-dark); padding-left: 1rem;
+    }
+    .rz-section { padding: 4rem 0; border-top: 1px solid var(--parchment-dark); }
+    .rz-section:first-of-type { border-top: none; }
+    .rz-h2 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.4rem, 3vw, 1.9rem);
+      font-weight: 700; color: var(--ink); margin-bottom: 2rem; line-height: 1.2;
+    }
+    .rz-h2 .ember { color: var(--ember); }
+    .get-items { display: flex; flex-direction: column; gap: 0; }
+    .get-item {
+      display: grid; grid-template-columns: 2.5rem 1fr;
+      gap: 0 1.25rem; padding: 1.75rem 0;
+      border-bottom: 1px solid var(--parchment-dark); align-items: start;
+    }
+    .get-item:last-child { border-bottom: none; }
+    .get-num {
+      font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 700;
+      color: var(--parchment-dark); line-height: 1; padding-top: 0.2rem;
+    }
+    .get-title {
+      font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 700;
+      color: var(--ink); margin-bottom: 0.6rem; line-height: 1.25;
+    }
+    .get-body { font-size: 0.95rem; color: var(--charcoal); line-height: 1.7; }
+    .timeline { position: relative; }
+    .timeline-line {
+      position: absolute; left: 1.1rem; top: 0.5rem; bottom: 0.5rem;
+      width: 2px; background: var(--parchment-dark);
+    }
+    .timeline-steps { display: flex; flex-direction: column; gap: 0; position: relative; }
+    .timeline-step {
+      display: grid; grid-template-columns: 2.5rem 1fr;
+      gap: 0 1.25rem; padding: 1.25rem 0; align-items: start;
+    }
+    .timeline-dot {
+      width: 2.25rem; height: 2.25rem; border-radius: 50%;
+      background: var(--cream); border: 2px solid var(--parchment-dark);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: var(--ash);
+      flex-shrink: 0; position: relative; z-index: 1; transition: border-color 0.2s, background 0.2s;
+    }
+    .timeline-step:hover .timeline-dot { border-color: var(--ember-light); background: var(--parchment); }
+    .timeline-week {
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: var(--ember);
+      text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.25rem;
+    }
+    .timeline-title {
+      font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 700;
+      color: var(--ink); margin-bottom: 0.35rem;
+    }
+    .timeline-body { font-size: 0.88rem; color: var(--ash); line-height: 1.6; }
+    .timeline-note {
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; color: var(--ash);
+      line-height: 1.6; margin-top: 1.5rem; padding: 1rem 1.25rem;
+      background: var(--parchment); border-radius: 0.5rem; border-left: 3px solid var(--parchment-dark);
+    }
+    .for-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+    @media (min-width: 600px) { .for-grid { grid-template-columns: 1fr 1fr; } }
+    .for-card { padding: 1.5rem; border-radius: 0.75rem; border: 1px solid; }
+    .for-card-yes { background: #edf3eb; border-color: #c8dfc4; }
+    .for-card-no { background: var(--parchment); border-color: var(--parchment-dark); }
+    .for-card-heading {
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem;
+      text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 1rem; font-weight: 500;
+    }
+    .for-card-yes .for-card-heading { color: var(--moss); }
+    .for-card-no .for-card-heading { color: var(--ash); }
+    .for-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .for-list li {
+      font-size: 0.9rem; line-height: 1.5; color: var(--charcoal);
+      padding-left: 1.25rem; position: relative;
+    }
+    .for-list li::before { position: absolute; left: 0; top: 0.05em; }
+    .for-card-yes .for-list li::before { content: '✓'; color: var(--moss); font-size: 0.8rem; }
+    .for-card-no .for-list li::before { content: '→'; color: var(--ash); font-size: 0.8rem; }
+    .pricing-panel {
+      background: #fff; border: 2px solid var(--ember-light);
+      border-radius: 1rem; padding: 2rem 2rem 1.75rem; max-width: 34rem;
+    }
+    .pricing-eyebrow {
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: var(--ember);
+      text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 0.5rem;
+    }
+    .pricing-amount {
+      font-family: 'Fraunces', serif; font-size: 2.5rem; font-weight: 700;
+      color: var(--ink); line-height: 1; margin-bottom: 0.35rem;
+    }
+    .pricing-amount span { font-family: 'Source Serif 4', Georgia, serif; font-size: 1rem; font-weight: 300; color: var(--ash); }
+    .pricing-divider { height: 1px; background: var(--parchment-dark); margin: 1.25rem 0; }
+    .pricing-includes-label {
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: var(--ash);
+      text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem;
+    }
+    .pricing-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.25rem; }
+    .pricing-list li {
+      font-size: 0.9rem; color: var(--charcoal); padding-left: 1.25rem; position: relative; line-height: 1.5;
+    }
+    .pricing-list li::before { content: '–'; position: absolute; left: 0; color: var(--ember-light); }
+    .pricing-after {
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; color: var(--ash);
+      line-height: 1.7; padding: 1rem; background: var(--parchment); border-radius: 0.5rem; margin-bottom: 1.25rem;
+    }
+    .pricing-founding { font-size: 0.88rem; color: var(--charcoal); line-height: 1.6; font-style: italic; margin-bottom: 1.5rem; }
+    .pricing-htlf {
+      font-size: 0.88rem; color: var(--ash); line-height: 1.6;
+      border-top: 1px solid var(--parchment-dark); padding-top: 1.25rem;
+    }
+    .pricing-htlf strong { color: var(--ember); }
+    .pricing-cta {
+      display: inline-block; margin-top: 1.5rem;
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem;
+      background: var(--ember); color: #fff; padding: 0.75rem 1.75rem;
+      border-radius: 999px; text-decoration: none; transition: background 0.2s; letter-spacing: 0.02em;
+    }
+    .pricing-cta:hover { background: var(--ember-light); color: #fff; }
+    .doug-panel {
+      font-size: 0.95rem; color: var(--charcoal); line-height: 1.75;
+      max-width: 38rem; font-style: italic;
+    }
+    .doug-panel p { margin-bottom: 1rem; }
+    .doug-panel p:last-child { margin-bottom: 0; }
+    .doug-panel strong { font-style: normal; font-weight: 600; color: var(--ink); }
+    .doug-links { font-style: normal; margin-top: 1.25rem; display: flex; flex-direction: column; gap: 0.4rem; }
+    .doug-link {
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem;
+      color: var(--ember); text-decoration: none; transition: color 0.2s;
+    }
+    .doug-link:hover { color: var(--ember-light); }
+  </style>
+</head>
+<body>
+
+  <!-- ACKNOWLEDGEMENT OF COUNTRY -->
+  <div class="aoc-banner" id="aoc-banner">
+    <span>Built in Boorloo/Perth, on Whadjuk Noongar country. We acknowledge Whadjuk Noongar people as the traditional custodians of this land.</span>
+    <button class="aoc-close" id="aoc-close" aria-label="Dismiss acknowledgement">×</button>
+  </div>
+
+  <!-- NAVIGATION -->
+  <nav class="site-nav" role="navigation" aria-label="Main navigation">
+    <a href="/" class="nav-logo" aria-label="Kamunity home">kamunity</a>
+    <button class="nav-hamburger" id="nav-hamburger" aria-expanded="false" aria-controls="nav-links" aria-label="Open navigation">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links" role="menubar">
+      <a href="/" role="menuitem">Home</a>
+      <a href="/tools" role="menuitem">Tools</a>
+      <a href="/kai" role="menuitem">Kai</a>
+      <a href="/services" role="menuitem">Services</a>
+      <a href="/about" role="menuitem">About</a>
+    </div>
+  </nav>
+
+  <div class="page-wrap">
+
+    <!-- ① HERO -->
+    <div class="hero">
+      <div class="hero-eyebrow">Ring Zero · Sovereign Infrastructure · Not in primary nav — you found it</div>
+      <p class="hero-body">
+        "Your community has been paying rent to landlords you've never met. Every message, every file, every relationship — sitting in infrastructure owned by someone who can change the price, the algorithm, or the terms. You already know this. That's why you're here."
+      </p>
+      <p class="hero-sub">
+        Ring Zero is how a community organisation gets its own sovereign instance of Kamunity — the tools, the infrastructure, and the methodology to run it without needing us.
+      </p>
+    </div>
+
+    <!-- ② WHAT YOU GET -->
+    <div class="rz-section">
+      <h2 class="rz-h2">What you <span class="ember">actually</span> get</h2>
+      <p style="color: var(--ash); font-size: 0.95rem; margin-bottom: 2rem; max-width: 38rem;">Not benefits. Not features. What exists, in plain language.</p>
+
+      <div class="get-items">
+        <div class="get-item">
+          <div class="get-num">1</div>
+          <div>
+            <div class="get-title">A forked instance that's yours</div>
+            <p class="get-body">Your Kamunity. Your Supabase. Your domain. Your data. When you fork, you get the full constitutional template and the codebase. We help you configure it. After that, it runs without us. If Kamunity disappears tomorrow, your instance keeps running.</p>
+          </div>
+        </div>
+        <div class="get-item">
+          <div class="get-num">2</div>
+          <div>
+            <div class="get-title">The constitutional floors — built in, not bolted on</div>
+            <p class="get-body">Six things that can't be removed from your instance, even by you: no surveillance, data sovereignty, exit terms before entry, IP in the commons, Dunbar-limited growth, Hard-to-Love Fund allocation. These aren't policies. They're architecture. The door can't be locked because it was built without a lock.</p>
+          </div>
+        </div>
+        <div class="get-item">
+          <div class="get-num">3</div>
+          <div>
+            <div class="get-title">Capability transfer, not dependency creation</div>
+            <p class="get-body">The onboarding is designed to make you not need us. Six weeks. Constitution → Fork → Configure → Test → Launch → Independence. We're not a vendor you subscribe to. We're methodology you absorb.</p>
+          </div>
+        </div>
+        <div class="get-item">
+          <div class="get-num">4</div>
+          <div>
+            <div class="get-title">Federation without merger</div>
+            <p class="get-body">Once you're running, your instance can connect to others in the network — share signals, cross-reference resources, coordinate on shared issues — without your data leaving your control. The constitutional badge means other instances trust you. Not because we certified you. Because the architecture is transparent.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ③ THE JOURNEY -->
+    <div class="rz-section">
+      <h2 class="rz-h2">The journey</h2>
+      <p style="color: var(--ash); font-size: 0.95rem; margin-bottom: 2rem; max-width: 38rem;">Six weeks. Six steps. Structured enough to follow, light enough to adapt to your community's rhythm.</p>
+
+      <div class="timeline">
+        <div class="timeline-line" aria-hidden="true"></div>
+        <div class="timeline-steps">
+          <div class="timeline-step">
+            <div class="timeline-dot">W1</div>
+            <div>
+              <div class="timeline-week">Week 1</div>
+              <div class="timeline-title">Constitution</div>
+              <p class="timeline-body">Read the founding documents. Understand the floors. Decide if this is right for your community. Nothing technical yet.</p>
+            </div>
+          </div>
+          <div class="timeline-step">
+            <div class="timeline-dot">W2</div>
+            <div>
+              <div class="timeline-week">Week 2</div>
+              <div class="timeline-title">Fork</div>
+              <p class="timeline-body">Fork the codebase. Set up your Supabase. Your instance, your credentials, your data from day one.</p>
+            </div>
+          </div>
+          <div class="timeline-step">
+            <div class="timeline-dot">W3</div>
+            <div>
+              <div class="timeline-week">Week 3</div>
+              <div class="timeline-title">Configure</div>
+              <p class="timeline-body">Kai learns your community's context. Tools seeded with your sector signals. Your identity, not ours.</p>
+            </div>
+          </div>
+          <div class="timeline-step">
+            <div class="timeline-dot">W4</div>
+            <div>
+              <div class="timeline-week">Week 4</div>
+              <div class="timeline-title">Capability Transfer</div>
+              <p class="timeline-body">You learn to build doors. Add tools. Manage signals. We hand over the keys. You test that they work.</p>
+            </div>
+          </div>
+          <div class="timeline-step">
+            <div class="timeline-dot">W5</div>
+            <div>
+              <div class="timeline-week">Week 5</div>
+              <div class="timeline-title">Launch</div>
+              <p class="timeline-body">Go live. Soft launch to your community. We're available. You're in charge.</p>
+            </div>
+          </div>
+          <div class="timeline-step">
+            <div class="timeline-dot">W6</div>
+            <div>
+              <div class="timeline-week">Week 6</div>
+              <div class="timeline-title">Independence</div>
+              <p class="timeline-body">Your first session without us. You've got the kindling. You light your own fires now.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="timeline-note">If after Week 1 it's not right, stop. Nothing lost. The constitutional template stays free in the commons regardless.</p>
+    </div>
+
+    <!-- ④ FOR / NOT FOR -->
+    <div class="rz-section">
+      <h2 class="rz-h2">Who this is for — and who it isn't</h2>
+      <p style="color: var(--ash); font-size: 0.95rem; margin-bottom: 2rem; max-width: 38rem;">This isn't a rejection. It's information. Knowing it's not for you yet is useful.</p>
+      <div class="for-grid">
+        <div class="for-card for-card-yes">
+          <div class="for-card-heading">This is for you if —</div>
+          <ul class="for-list">
+            <li>Community organisations with 5–150 active members — the Dunbar range where this works</li>
+            <li>Orgs that hold sensitive community data and care who owns it</li>
+            <li>Orgs tired of paying rent to platforms that don't share their values</li>
+            <li>Orgs with at least one person willing to learn to maintain it — it's not hard, but someone needs to care</li>
+          </ul>
+        </div>
+        <div class="for-card for-card-no">
+          <div class="for-card-heading">This is not for you if —</div>
+          <ul class="for-list">
+            <li>You're looking for a plug-and-play SaaS — this requires ownership, not subscription</li>
+            <li>You need something live in 48 hours — constitutional infrastructure takes six weeks</li>
+            <li>You're a large institution looking to scale extraction with better branding — the constitutional floors will reject this organically</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑤ THE FOUNDING RATE -->
+    <div class="rz-section" id="founding-rate">
+      <h2 class="rz-h2">The founding rate</h2>
+      <p style="color: var(--ash); font-size: 0.95rem; margin-bottom: 2rem; max-width: 38rem;">One price. No tiers. No hidden fees. No discovery call required to find out if you can afford it.</p>
+      <div class="pricing-panel">
+        <div class="pricing-eyebrow">Founding Community Rate</div>
+        <div class="pricing-amount">$2,500 AUD <span>one-time</span></div>
+        <div class="pricing-divider"></div>
+        <div class="pricing-includes-label">Includes</div>
+        <ul class="pricing-list">
+          <li>6-week onboarding (Constitution → Independence)</li>
+          <li>Forked instance setup</li>
+          <li>Supabase configuration</li>
+          <li>Domain configuration</li>
+          <li>Capability transfer sessions (4 × 90 min)</li>
+          <li>30 days post-launch support</li>
+        </ul>
+        <div class="pricing-after">
+          After that: you run it yourself.<br>
+          Ongoing cost to you: ~$30/month (Supabase + hosting)<br>
+          Ongoing cost to Kamunity: nothing. You're independent.
+        </div>
+        <p class="pricing-founding">This is a founding rate for the first 10 communities. After 10, the price goes up — not because we're greedy, but because by then we'll know what it costs.</p>
+        <div class="pricing-htlf">
+          <strong>Can't afford $2,500?</strong> Talk to us. We have a <strong>Hard-to-Love Fund</strong> for a reason. The communities who most need sovereign infrastructure are rarely the ones with the most money.
+        </div>
+        <a href="mailto:mike@kamunity.org?subject=Ring%20Zero%20%E2%80%94%20[Your%20Org%20Name]" class="pricing-cta">
+          Start the conversation →
+        </a>
+      </div>
+    </div>
+
+    <!-- ⑥ THE DOUG TEST -->
+    <div class="rz-section">
+      <div class="doug-panel">
+        <p>Doug runs a community land care group in the Wheatbelt. Twelve volunteers. They coordinate via a Facebook group they don't control and a Google Drive folder they'd lose access to if their Gmail account got hacked. Doug has never heard of data sovereignty. He just knows that every time Facebook changes something, they lose members.</p>
+        <p><strong>Does Ring Zero serve Doug's community?</strong></p>
+        <p>Yes. But not yet. Doug's community needs the tools first — the free ones, the practical ones, the ones that don't require any sovereignty consciousness to use. Ring Zero comes later, when Doug's community is ready to own the infrastructure they've already been using.</p>
+        <div class="doug-links">
+          <a href="/" class="doug-link">If you're Doug, start here →</a>
+          <a href="#founding-rate" class="doug-link">If you're ready for Ring Zero, keep reading ↑</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑦ BOTHY NOTE -->
+    <div style="padding: 2.5rem 0;">
+      <div class="bothy-note" role="note">
+        <p>A bothy is a shelter in the Scottish mountains. No one owns it. The door is never locked. The previous person left kindling. You leave kindling for the next one.</p>
+        <p>Ring Zero is how communities become bothies. Not metaphorically. Architecturally.</p>
+      </div>
+    </div>
+
+  </div><!-- /page-wrap -->
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-aoc">
+        Built in Boorloo/Perth, on Whadjuk Noongar country. We acknowledge Whadjuk Noongar people as the traditional custodians of this land, and pay our respects to Elders past and present.
+      </div>
+      <div class="footer-links">
+        <a href="/">kamunity.org</a>
+        <span class="footer-sep">·</span>
+        <a href="/services">Services &amp; Prices</a>
+        <span class="footer-sep">·</span>
+        <a href="/about/constitution">Constitution</a>
+        <span class="footer-sep">·</span>
+        <a href="https://kamunity.ai" target="_blank" rel="noopener">kamunity.ai</a>
+        <span class="footer-sep">·</span>
+        <a href="mailto:mike@kamunity.org">mike@kamunity.org</a>
+      </div>
+      <div class="footer-tagline">
+        No data collected · Free forever · IP in the commons · CC BY-SA 4.0
+      </div>
+    </div>
+  </footer>
+
+  <a href="/kai" class="kai-fab" aria-label="Talk to Kai">
+    K
+    <span class="kai-fab-tooltip">Talk to Kai</span>
+  </a>
+
+  <script>
+    const aocBanner = document.getElementById('aoc-banner');
+    const aocClose = document.getElementById('aoc-close');
+    if (sessionStorage.getItem('aoc-dismissed')) aocBanner.style.display = 'none';
+    aocClose.addEventListener('click', function() {
+      aocBanner.style.display = 'none';
+      sessionStorage.setItem('aoc-dismissed', '1');
+    });
+    const hamburger = document.getElementById('nav-hamburger');
+    const navLinks = document.getElementById('nav-links');
+    hamburger.addEventListener('click', function() {
+      const open = navLinks.classList.toggle('open');
+      hamburger.setAttribute('aria-expanded', open);
+    });
+  </script>
+
+</body>
+</html>

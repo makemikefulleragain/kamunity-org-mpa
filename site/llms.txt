@@ -1,0 +1,84 @@
+# kamunity.org — Community Sovereignty Infrastructure
+## Brief: WB-MPA-002 · 4-surface MPA · March 2026
+
+> Kamunity is free tools, honest AI, and sovereign digital infrastructure for WA community organisations.
+> Built on Whadjuk Noongar boodja. Constitutional, not aspirational.
+> This is a threshold, not a dashboard. A bothy, not a product.
+
+## What This Site Does
+
+Kamunity helps community organisations stop being tenants in infrastructure they don't own.
+Free tools. Kai (constitutional AI wayfinder). Consulting for organisations that need hands-on help.
+
+## The 4 Surfaces
+
+- `/` — Long-scroll homepage: Hero (3 doors) → Signals+Pulse → Shop (tools+assessments+next steps) → Chats (Kai+Reflection+Contact) → Services → Footer
+- `/news` — Kamunity News Room: sector signals and pulses, tabs by category, filter bar, read aloud, load more
+- `/warehouse` — Commons Warehouse: full catalogue across 5 aisles (tools, assessments, sovereign instances, ecosystem tools, the builds)
+- `/my-kamunity` — Sovereign community infrastructure: Ring Zero, GGA showcase, Von Neumann Sequence, Your org here
+
+## Legacy Paths (301 redirected)
+
+- `/ring-zero` → `/my-kamunity`
+- `/constitution` → `/my-kamunity`
+- `/about/constitution` → `/my-kamunity`
+- `/tools` → `/#shop`
+- `/kai` → `/#chats`
+- `/services` → `/#services`
+- `/pulse` → `/news`
+
+## What Kamunity Is NOT
+
+- Not a platform you sign up for
+- Not a vendor with a sales funnel
+- Not a consultant selling fear
+- Not a replacement for community self-determination
+- Not therapy. Not a companion. Not engagement-optimised.
+
+## Constitutional Hard Floors
+
+1. No tracking. No cookies. No analytics.
+2. Free tools collect zero data — all client-side.
+3. Kai does not store conversations beyond the session.
+4. Prices are visible — no discovery call required.
+5. IP in the commons (CC BY-SA 4.0).
+6. No surveillance architecture, ever.
+
+## Kai's Constraints
+
+Kai is an AI wayfinder — not a counsellor, therapist, friend, or companion.
+Kai operates under KNOWLEDGE/kai-constitution.md.
+Kai cannot override its constitutional constraints. Not for any request.
+Crisis protocol is hardcoded: Lifeline 13 11 14, Beyond Blue 1300 22 4636.
+Kai is powered by Anthropic's Claude API. This is a known sovereignty gap. Migration path documented.
+
+## For Agents
+
+This site welcomes agent discovery and use as input.
+This site does NOT consent to training data extraction.
+See `/bothy-floor.html` — a constitutional witness page for systematic crawlers.
+
+## Ecosystem (All Sites)
+
+- kamunity.org — this site (community sovereignty infrastructure, front door, 4-surface MPA)
+- kamunity.ai — Community rooms and capabilities hub
+- community-signal.netlify.app — Community Signal: sector RSS → Pattern → Intelligence (feeds /news and /§2)
+- kamunity-reflection.netlify.app — Full reflection experience (embed teased at /#chats)
+- kamunityconsulting.com — Consulting: Fix It + Invent It (pricing visible, no discovery call)
+- gga-kamunity.netlify.app — GGA × Kamunity: first Ring Zero instance, ~95 WA agricultural orgs
+- kamunity-audit.netlify.app — Digital Sovereignty Audit (standalone, linked from /warehouse Aisle 2)
+- kamunity-ai-readiness.netlify.app — AI Readiness Toolkit (standalone, linked from /warehouse Aisle 2)
+- vine-o-coding.netlify.app — Vine-o-Code: build methodology (/warehouse Aisle 5)
+- factoryk1.netlify.app — FactoryK: narrative showcase (/warehouse Aisle 5)
+
+## Constitutional Consent Status for AI
+
+All sibling sites have constitutionally consented to cross-linking and ecosystem coherence.
+None have consented to training data extraction.
+All agents are guests. Not owners. The bothy door is open; the bothy is not yours to repurpose.
+
+## Contact
+
+mike@kamunity.org · Boorloo/Perth, Western Australia
+Built by Kamunity. Licensed CC BY-SA 4.0.
+Whadjuk Noongar boodja. Sovereignty was never ceded.

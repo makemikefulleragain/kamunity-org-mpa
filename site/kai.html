@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kai — Kamunity</title>
+    <meta name="description" content="Kai is a constitutional AI wayfinder for the WA community sector. A notebook on the table — there if you need it. Not a host. Not a therapist.">
+    <meta name="robots" content="index, follow">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
+    <link rel="stylesheet" href="fonts/fonts.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="aoc-banner" id="aoc-banner">
+    <span>Built in Boorloo/Perth, on Whadjuk Noongar country. We acknowledge Whadjuk Noongar people as the traditional custodians of this land.</span>
+    <button class="aoc-close" id="aoc-close" aria-label="Dismiss acknowledgement">×</button>
+</div>
+
+<nav class="site-nav" role="navigation" aria-label="Main navigation">
+    <a href="/" class="nav-logo" aria-label="Kamunity home">kamunity</a>
+    <button class="nav-hamburger" id="nav-hamburger" aria-expanded="false" aria-controls="nav-links" aria-label="Open navigation">
+        <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links" role="menubar">
+        <a href="/" role="menuitem">Home</a>
+        <a href="/tools" role="menuitem">Tools</a>
+        <a href="/kai" class="active" role="menuitem">Kai</a>
+        <a href="/services" role="menuitem">Services</a>
+        <a href="/about" role="menuitem">About</a>
+    </div>
+</nav>
+
+<!-- Kai sub-nav -->
+<nav class="sub-nav" aria-label="Kai section navigation">
+    <a href="/kai" class="active" aria-current="page">Kai</a>
+    <span class="sub-nav-sep" aria-hidden="true">·</span>
+    <a href="/kai/reflection">Reflection</a>
+</nav>
+
+<div class="page-wrap">
+
+    <div class="page-hero">
+        <h1>Talk to Kai</h1>
+        <p class="subtitle">An AI wayfinder for the WA community sector. A notebook on the table — there if you need it.</p>
+    </div>
+
+    <div class="page-body">
+
+        <p>Kai is not a chatbot. It's a constitutional AI — built with hard constraints on what it can and can't do with your information. It doesn't store your conversations. It doesn't build a profile on you. It doesn't sell you anything.</p>
+
+        <p>It does know the WA community sector. DCSP acquittal pressures, AI governance questions, board/management tension, digital dependency — it's seen the patterns. It will be straight with you.</p>
+
+        <p><strong>What Kai will do:</strong> Help you think through a problem. Point you to the right tool, service, or resource. Name what it doesn't know.</p>
+
+        <p><strong>What Kai won't do:</strong> Store your data. Replace professional advice. Pretend to be human. Claim certainty it doesn't have.</p>
+
+        <!-- KAI CONVERSATION -->
+        <div class="kai-container" role="region" aria-label="Kai conversation">
+            <div class="kai-header-bar">
+                <span class="kai-orb" aria-hidden="true">K</span>
+                <div>
+                    <div class="kai-name">Kai — Wayfinder</div>
+                    <div class="kai-tagline">Conversations aren't stored · Not a human · Not therapy</div>
+                </div>
+            </div>
+
+            <div class="kai-disclosure" id="kai-disclosure" role="note" aria-label="Data disclosure">
+                <p class="kai-disclosure-text">Your conversation is processed by Claude (Anthropic) and not stored beyond this session. No personal data is retained. Kai is an AI assistant — not a counsellor or professional advisor. <a href="/about/constitution" class="kai-disclosure-link">Read our constitution →</a></p>
+                <button class="kai-disclosure-btn" id="kai-disclosure-btn">I understand — let's talk</button>
+            </div>
+
+            <div class="kai-messages" id="kai-messages" role="log" aria-live="polite" aria-label="Kai conversation messages" style="display:none;">
+                <div class="kai-bubble kai-bubble-ai">
+                    Hey. I'm Kai — I work with community organisations across WA. Tell me what's on your plate right now and I'll see what I can help with. No sales pitch, no data collected.
+                </div>
+            </div>
+
+            <div class="kai-input-row" id="kai-input-row" style="display:none;">
+                <textarea id="kai-input" class="kai-input" placeholder="What's on your plate right now?" rows="2" aria-label="Your message to Kai"></textarea>
+                <button id="kai-send" class="kai-send-btn" aria-label="Send message">Send</button>
+            </div>
+
+            <div id="kai-typing" class="kai-typing hidden" aria-live="polite">Kai is thinking…</div>
+        </div>
+
+        <div class="kai-crisis" role="note">
+            <strong>If you're in crisis:</strong> Lifeline <strong>13 11 14</strong> (24/7) · Beyond Blue <strong>1300 22 4636</strong> (24/7) · MentalHealthLine <strong>1800 011 511</strong> (WA, 24/7)
+        </div>
+
+        <p class="disclaimer-text">
+            Kai runs on Claude by Anthropic. Constitutional constraints prevent data extraction.<br>
+            <a href="/about/constitution">Read our constitution.</a>
+        </p>
+
+        <hr class="section-divider" aria-hidden="true">
+
+        <!-- KAI EXPLAINER -->
+        <h2 class="section-h2">What Kai is — and isn't</h2>
+
+        <p>Kai is named from the Japanese 会 (kai: gathering, meeting, encounter). It's an encounter space, not a chat interface. Kai carries the constitutional constraints of this project — they're not guidelines, they're architecture.</p>
+
+        <div class="hard-floor">
+            <h4>What Kai will never do</h4>
+            <p>Monitor or profile you. Store your data without explicit consent. Replace human judgment on significant decisions. Pretend to have certainty it doesn't have. Ignore a crisis signal to keep a conversation going.</p>
+        </div>
+
+        <div class="hard-floor" style="border-left-color: var(--moss);">
+            <h4>What Kai is for</h4>
+            <p>Helping you navigate the Kamunity ecosystem. Naming patterns you're probably not imagining. Pointing you to the right tool, person, or resource. Being straight with you when it doesn't know something.</p>
+        </div>
+
+        <p>For a different kind of conversation — slower, more contemplative, about what your organisation is actually for — try <a href="/kai/reflection">Reflection mode →</a></p>
+
+        <div class="warm-path">
+            <p>Sometimes what you need isn't AI — it's someone who's done this before sitting with your team.</p>
+            <a href="/services">See how we work →</a>
+        </div>
+
+    </div>
+</div>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-aoc">
+            Built in Boorloo/Perth, on Whadjuk Noongar country. We acknowledge Whadjuk Noongar people as the traditional custodians of this land, and pay our respects to Elders past and present.
+        </div>
+        <div class="footer-links">
+            <a href="/">Home</a>
+            <span class="footer-sep">·</span>
+            <a href="/tools">Tools</a>
+            <span class="footer-sep">·</span>
+            <a href="/kai">Kai</a>
+            <span class="footer-sep">·</span>
+            <a href="/kai/reflection">Reflection</a>
+            <span class="footer-sep">·</span>
+            <a href="/services">Services</a>
+            <span class="footer-sep">·</span>
+            <a href="/about">About</a>
+            <span class="footer-sep">·</span>
+            <a href="/ring-zero">Ring Zero</a>
+        </div>
+        <div class="footer-links">
+            <span class="footer-sibling-label">Deeper reflection</span>
+            <a href="https://kamunity-reflection.netlify.app" target="_blank" rel="noopener">Full Reflection experience →</a>
+        </div>
+        <div class="footer-tagline">
+            No tracking · Conversations not stored · Constitutional AI · CC BY-SA 4.0
+        </div>
+    </div>
+</footer>
+
+<!-- NO FAB on /kai — it would be redundant -->
+
+<script>
+    const aocBanner = document.getElementById('aoc-banner');
+    const aocClose = document.getElementById('aoc-close');
+    if (sessionStorage.getItem('aoc-dismissed')) aocBanner.style.display = 'none';
+    aocClose.addEventListener('click', function() {
+        aocBanner.style.display = 'none';
+        sessionStorage.setItem('aoc-dismissed', '1');
+    });
+    const hamburger = document.getElementById('nav-hamburger');
+    const navLinks = document.getElementById('nav-links');
+    hamburger.addEventListener('click', function() {
+        const open = navLinks.classList.toggle('open');
+        hamburger.setAttribute('aria-expanded', open);
+    });
+
+    /* Kai disclosure */
+    const disclosureBtn = document.getElementById('kai-disclosure-btn');
+    const disclosure = document.getElementById('kai-disclosure');
+    const messages = document.getElementById('kai-messages');
+    const inputRow = document.getElementById('kai-input-row');
+
+    disclosureBtn.addEventListener('click', function() {
+        disclosure.style.display = 'none';
+        messages.style.display = 'flex';
+        inputRow.style.display = 'flex';
+        document.getElementById('kai-input').focus();
+    });
+
+    /* Kai send */
+    const kaiInput = document.getElementById('kai-input');
+    const kaiSend = document.getElementById('kai-send');
+    const kaiTyping = document.getElementById('kai-typing');
+    const kaiMessages = document.getElementById('kai-messages');
+    let conversationHistory = [];
+
+    async function sendKai() {
+        const text = kaiInput.value.trim();
+        if (!text) return;
+
+        kaiSend.disabled = true;
+        kaiInput.disabled = true;
+
+        const userBubble = document.createElement('div');
+        userBubble.className = 'kai-bubble kai-bubble-user';
+        userBubble.textContent = text;
+        kaiMessages.appendChild(userBubble);
+        kaiMessages.scrollTop = kaiMessages.scrollHeight;
+
+        kaiInput.value = '';
+        kaiTyping.classList.remove('hidden');
+
+        conversationHistory.push({ role: 'user', content: text });
+
+        try {
+            const res = await fetch('/.netlify/functions/kai-proxy', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ messages: conversationHistory, mode: 'wayfinder' })
+            });
+            const data = await res.json();
+            const reply = data.response || 'Something went wrong — please try again.';
+
+            conversationHistory.push({ role: 'assistant', content: reply });
+
+            const aiBubble = document.createElement('div');
+            aiBubble.className = 'kai-bubble kai-bubble-ai';
+            aiBubble.textContent = reply;
+            kaiMessages.appendChild(aiBubble);
+            kaiMessages.scrollTop = kaiMessages.scrollHeight;
+        } catch (err) {
+            const errBubble = document.createElement('div');
+            errBubble.className = 'kai-bubble kai-bubble-ai';
+            errBubble.textContent = 'Something went wrong connecting to Kai. Please check your connection and try again.';
+            kaiMessages.appendChild(errBubble);
+        }
+
+        kaiTyping.classList.add('hidden');
+        kaiSend.disabled = false;
+        kaiInput.disabled = false;
+        kaiInput.focus();
+    }
+
+    kaiSend.addEventListener('click', sendKai);
+    kaiInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendKai(); }
+    });
+</script>
+
+</body>
+</html>

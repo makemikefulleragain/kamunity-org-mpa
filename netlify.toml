@@ -1,0 +1,159 @@
+﻿[build]
+  publish = "site"
+  functions = "site/netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[functions]
+  node_bundler = "esbuild"
+
+# â”€â”€ Security headers (all pages) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "no-referrer"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; connect-src 'self' https://community-signal.netlify.app https://api.anthropic.com; img-src 'self' data:; form-action 'self' https://kamunity-org-mpa.netlify.app; frame-ancestors 'none'"
+
+# â”€â”€ Agent discovery file headers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+[[headers]]
+  for = "/robots.txt"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+    Content-Type = "text/plain; charset=utf-8"
+
+[[headers]]
+  for = "/llms.txt"
+  [headers.values]
+    Content-Type = "text/plain; charset=utf-8"
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "/llms-full.txt"
+  [headers.values]
+    Content-Type = "text/plain; charset=utf-8"
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "/sitemap.xml"
+  [headers.values]
+    Content-Type = "application/xml; charset=utf-8"
+    Cache-Control = "public, max-age=86400"
+
+# â”€â”€ Clean page URL routes (MPA â€” must precede catch-all) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+[[redirects]]
+  from = "/news"
+  to = "/news.html"
+  status = 200
+
+[[redirects]]
+  from = "/warehouse"
+  to = "/warehouse.html"
+  status = 200
+
+[[redirects]]
+  from = "/my-kamunity"
+  to = "/my-kamunity.html"
+  status = 200
+
+[[redirects]]
+  from = "/bothy-floor"
+  to = "/bothy-floor.html"
+  status = 200
+
+[[redirects]]
+  from = "/constitution"
+  to = "/constitution.html"
+  status = 200
+
+[[redirects]]
+  from = "/about"
+  to = "/about.html"
+  status = 200
+
+# â”€â”€ Old URL redirects (post DNS cutover â€” old kamunity.org paths) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+[[redirects]]
+  from = "/ring-zero"
+  to = "/my-kamunity"
+  status = 301
+
+[[redirects]]
+  from = "/about/constitution"
+  to = "/constitution"
+  status = 301
+
+[[redirects]]
+  from = "/tools"
+  to = "/#shop"
+  status = 301
+
+[[redirects]]
+  from = "/kai"
+  to = "/#chats"
+  status = 301
+
+[[redirects]]
+  from = "/services"
+  to = "/#services"
+  status = 301
+
+[[redirects]]
+  from = "/von-neumann"
+  to = "/my-kamunity#von-neumann"
+  status = 301
+
+[[redirects]]
+  from = "/pulse"
+  to = "/news"
+  status = 301
+
+[[redirects]]
+  from = "/calculator"
+  to = "/#shop"
+  status = 301
+
+[[redirects]]
+  from = "/copilot-check"
+  to = "/#shop"
+  status = 301
+
+[[redirects]]
+  from = "/sovereignty-check"
+  to = "/#shop"
+  status = 301
+
+[[redirects]]
+  from = "/ai-readiness"
+  to = "/#shop"
+  status = 301
+
+[[redirects]]
+  from = "/org-health-check"
+  to = "/#shop"
+  status = 301
+
+[[redirects]]
+  from = "/reflection"
+  to = "/#chats"
+  status = 301
+
+[[redirects]]
+  from = "/peer-stories"
+  to = "/news"
+  status = 301
+
+[[redirects]]
+  from = "/stories"
+  to = "/news"
+  status = 301
+
+# â”€â”€ Any 404 â†’ home (the bothy door is always open) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+

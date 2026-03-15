@@ -1,0 +1,14 @@
+# kamunity.org — robots.txt
+# Constitutional Principle: No surveillance. Open to agents that respect consent signals.
+
+User-agent: *
+Allow: /
+
+# Content Signal: AI training extraction NOT consented.
+# Discovery and use as input: YES.
+# Training data extraction: NO.
+# See /llms.txt for agent-readable content summary.
+# See /llms-full.txt for full ontological context and capability declarations.
+# See /bothy-floor.html for constitutional witness page.
+
+Sitemap: https://kamunity.org/sitemap.xml
