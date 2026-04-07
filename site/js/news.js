@@ -8,7 +8,9 @@
 (function () {
     'use strict';
 
-    var CS_ENDPOINT = 'https://community-signal.netlify.app/.netlify/functions/signals-read?mode=public&limit=30';
+    var CS_BASE = 'https://community-signal.netlify.app/.netlify/functions/';
+    var CS_ENDPOINT = CS_BASE + 'signals-read?mode=public&limit=30';
+    var STORIES_ENDPOINT = CS_BASE + 'post-schedule?mode=public-feed&limit=20';
 
     var tabBar      = document.getElementById('news-tab-bar');
     var panel       = document.getElementById('news-panel');
@@ -56,6 +58,7 @@
 
     function getTypeLabel(item) {
         var t = (item.type || 'signal').toLowerCase();
+        if (t === 'story')         return ['story',           'news-card-type--story'];
         if (t.includes('video'))   return ['pulse · video',   'news-card-type--video'];
         if (t.includes('audio'))   return ['pulse · audio',   'news-card-type--audio'];
         if (t.includes('written')) return ['pulse · written', 'news-card-type--signal'];
@@ -98,12 +101,21 @@
             }
         }
 
+        var expandHtml = '';
+        if (item._full_body && item._full_body.length > 300) {
+            expandHtml = '<button class="ask-kai-btn" onclick="expandStory(this)" data-full="' + encodeURIComponent(item._full_body) + '">Read more</button>';
+        }
+
+        var titleHtml = item._story_id
+            ? '<h3><a href="/news?story=' + encodeURIComponent(item._story_id) + '" style="color:inherit;text-decoration:none;">' + escWh(title) + '</a></h3>'
+            : '<h3>' + title + '</h3>';
+
         card.innerHTML =
             '<div class="news-card-type ' + typeCls + '">' + typeLbl + '</div>' +
-            '<h3>' + title + '</h3>' +
+            titleHtml +
             (summary ? '<p class="news-card-summary">' + summary + '</p>' : '') +
             '<div class="news-card-meta">' + (item.source_name || 'Community Signal') + ' · ' + age + (tags ? ' · ' + tags : '') + '</div>' +
-            '<div class="news-card-actions">' + mediaHtml + actionsHtml + readAloudHtml + '</div>';
+            '<div class="news-card-actions">' + mediaHtml + expandHtml + actionsHtml + readAloudHtml + '</div>';
 
         return card;
     }
@@ -177,14 +189,51 @@
         });
     }
 
+    function mapStoryToItem(story) {
+        var content = story.content || '';
+        var firstLine = content.split('\n')[0] || 'Published Story';
+        var rest = content.slice(firstLine.length).trim();
+        var tags = (story.patterns && story.patterns.sector_tags) || [];
+        return {
+            type: 'story',
+            _story_id: story.id,
+            summary: story.patterns && story.patterns.summary ? story.patterns.summary : firstLine.slice(0, 120),
+            why_matters: rest.slice(0, 300) || content.slice(0, 300),
+            tags: tags,
+            source_name: 'Content Studio',
+            published_at: story.published_at,
+            created_at: story.created_at,
+            _full_body: content
+        };
+    }
+
     /* Load data */
     async function loadNews() {
         try {
-            var resp = await fetch(CS_ENDPOINT, { signal: AbortSignal.timeout(8000) });
-            if (!resp.ok) throw new Error('Feed error');
+            var results = await Promise.allSettled([
+                fetch(CS_ENDPOINT, { signal: AbortSignal.timeout(8000) }),
+                fetch(STORIES_ENDPOINT, { signal: AbortSignal.timeout(8000) })
+            ]);
 
-            var data  = await resp.json();
-            allItems  = Array.isArray(data) ? data : (data.signals || data.items || []);
+            var signals = [];
+            var stories = [];
+
+            if (results[0].status === 'fulfilled' && results[0].value.ok) {
+                var sData = await results[0].value.json();
+                signals = Array.isArray(sData) ? sData : (sData.signals || sData.items || []);
+            }
+
+            if (results[1].status === 'fulfilled' && results[1].value.ok) {
+                var stData = await results[1].value.json();
+                stories = (stData.stories || []).map(mapStoryToItem);
+            }
+
+            allItems = signals.concat(stories);
+            allItems.sort(function (a, b) {
+                var da = new Date(a.published_at || a.created_at || 0);
+                var db = new Date(b.published_at || b.created_at || 0);
+                return db - da;
+            });
 
             if (countsEl && allItems.length) {
                 countsEl.textContent = allItems.length + ' items loaded';
@@ -209,9 +258,108 @@
         }
     }
 
-    loadNews();
+    /* ── Routing: single story or list ────────────────────── */
+    var storyParam = new URLSearchParams(window.location.search).get('story');
+    if (storyParam) {
+        showSingleStory(storyParam);
+    } else {
+        loadNews();
+    }
+
+    async function showSingleStory(storyId) {
+        var listView  = document.getElementById('story-list-view');
+        var storyView = document.getElementById('story-view');
+        if (listView)  listView.style.display = 'none';
+        if (storyView) storyView.style.display = '';
+        document.getElementById('sr-story-id').value = storyId;
+
+        try {
+            var res = await fetch(CS_BASE + 'post-schedule?mode=public-feed&story_id=' + encodeURIComponent(storyId));
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            var data = await res.json();
+            var story = data.story;
+            if (!story) {
+                document.getElementById('sv-title').textContent = 'Story not found';
+                return;
+            }
+            var content = story.content || '';
+            var patSummary = story.patterns && story.patterns.summary ? story.patterns.summary : '';
+            var title = patSummary || content.split('\n')[0] || 'Published Story';
+
+            document.getElementById('sv-title').textContent = title;
+            document.getElementById('sv-date').textContent =
+                new Date(story.published_at).toLocaleDateString('en-AU',
+                    { day: 'numeric', month: 'long', year: 'numeric' });
+
+            var tags = (story.patterns && story.patterns.sector_tags) || [];
+            var tagsEl = document.getElementById('sv-tags');
+            if (tagsEl && tags.length) {
+                tagsEl.innerHTML = tags.map(function(t) {
+                    return '<span class="news-tag-badge">' + escWh(t) + '</span>';
+                }).join(' ');
+            }
+
+            var bodyEl = document.getElementById('sv-body');
+            bodyEl.innerHTML = content.split('\n').map(function(line) {
+                return line.trim() ? '<p>' + escWh(line) + '</p>' : '';
+            }).join('');
+
+            document.title = title + ' \u2014 Kamunity News';
+        } catch (err) {
+            document.getElementById('sv-title').textContent = 'Error loading story';
+        }
+    }
 
 }());
+
+/* Submit story response — engagement capture */
+function submitStoryResponse(e) {
+    e.preventDefault();
+    var storyId = document.getElementById('sr-story-id').value;
+    var text = document.getElementById('sr-text').value.trim();
+    var name = document.getElementById('sr-name').value.trim();
+    var btn = e.target.querySelector('.sr-submit-btn');
+
+    if (!text) return;
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+
+    fetch('https://community-signal.netlify.app/.netlify/functions/post-schedule?mode=story-engagement', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ story_id: storyId, text: text, name: name || null, source: 'news-page' }),
+    }).then(function(res) {
+        if (res.ok) {
+            document.getElementById('story-response-form').style.display = 'none';
+            document.getElementById('sr-success').style.display = '';
+        } else {
+            return res.json().then(function(d) { throw new Error(d.error || 'Submit failed'); });
+        }
+    }).catch(function(err) {
+        btn.disabled = false;
+        btn.textContent = 'Send →';
+        alert('Something went wrong: ' + err.message);
+    });
+}
+
+function escWh(s) {
+    return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;')
+                         .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* Expand story — shows full body inline when "Read more" is clicked */
+function expandStory(btn) {
+    var full = decodeURIComponent(btn.getAttribute('data-full') || '');
+    if (!full) return;
+    var card = btn.closest('.news-card');
+    if (!card) return;
+    var summary = card.querySelector('.news-card-summary');
+    if (summary) {
+        summary.style.whiteSpace = 'pre-wrap';
+        summary.textContent = full;
+    }
+    btn.remove();
+}
 
 /* Read aloud — uses SpeechSynthesis, gracefully absent if unavailable */
 function readAloud(btn, encodedText) {

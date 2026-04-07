@@ -1,7 +1,7 @@
 headersOrigin = "config"
 redirectsOrigin = "config"
 plugins = []
-functionsDirectory = "C:\\Users\\mikef\\OneDrive\\1 KomUnity\\1a New KU Plans\\Dev_Code\\Kamunity-Tabletop-Plan\\PROJECTS\\kamunity-org-mpa\\site\\netlify\\functions"
+functionsDirectory = "/Users/mikef76/Library/CloudStorage/OneDrive-Personal/1 KomUnity/1a New KU Plans/Dev_Code/Kamunity-Tabletop-Plan/PROJECTS/kamunity-org-mpa/site/netlify/functions"
 functionsDirectoryOrigin = "config-v1"
 
 [functions]
@@ -10,9 +10,9 @@ functionsDirectoryOrigin = "config-v1"
 node_bundler = "esbuild"
 
 [build]
-publish = "C:\\Users\\mikef\\OneDrive\\1 KomUnity\\1a New KU Plans\\Dev_Code\\Kamunity-Tabletop-Plan\\PROJECTS\\kamunity-org-mpa\\site"
+publish = "/Users/mikef76/Library/CloudStorage/OneDrive-Personal/1 KomUnity/1a New KU Plans/Dev_Code/Kamunity-Tabletop-Plan/PROJECTS/kamunity-org-mpa/site"
 publishOrigin = "config"
-functions = "C:\\Users\\mikef\\OneDrive\\1 KomUnity\\1a New KU Plans\\Dev_Code\\Kamunity-Tabletop-Plan\\PROJECTS\\kamunity-org-mpa\\site\\netlify\\functions"
+functions = "/Users/mikef76/Library/CloudStorage/OneDrive-Personal/1 KomUnity/1a New KU Plans/Dev_Code/Kamunity-Tabletop-Plan/PROJECTS/kamunity-org-mpa/site/netlify/functions"
 
 [build.environment]
 NODE_VERSION = "22"

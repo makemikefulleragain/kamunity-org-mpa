@@ -53,6 +53,41 @@
     <a href="/#chats" class="ask-kai-btn">Ask Kai about what you're reading ↗</a>
 </div>
 
+<!-- SINGLE STORY VIEW (hidden by default) -->
+<div id="story-view" style="display:none;">
+<div class="hp-section-wrap">
+  <a href="/news" class="story-back-link">← All stories</a>
+  <article class="story-full">
+    <div class="story-full-meta">
+      <span class="story-full-date" id="sv-date"></span>
+      <span id="sv-tags"></span>
+    </div>
+    <h1 id="sv-title" class="story-full-title">Loading…</h1>
+    <div id="sv-body" class="story-full-body"></div>
+    <div class="story-response-panel">
+      <h3>Did this resonate?</h3>
+      <p>Share a thought, push back, or ask a question. We read every response.</p>
+      <form id="story-response-form" onsubmit="submitStoryResponse(event)">
+        <input type="hidden" id="sr-story-id">
+        <textarea id="sr-text" placeholder="Your thoughts…" rows="4"
+                  class="sr-textarea" maxlength="1000" required></textarea>
+        <label for="sr-name" class="sr-label">Your name (optional)</label>
+        <input type="text" id="sr-name" placeholder="e.g. Priya from Housing First"
+               class="sr-input" maxlength="100">
+        <button type="submit" class="sr-submit-btn">Send →</button>
+        <p class="optin-small">No account needed. We don't publish responses without permission.</p>
+      </form>
+      <div id="sr-success" style="display:none;">
+        <p>✓ Thank you. We'll read this and may be in touch.</p>
+      </div>
+    </div>
+  </article>
+</div>
+</div>
+
+<!-- STORY LIST VIEW -->
+<div id="story-list-view">
+
 <!-- MASTHEAD -->
 <div class="hp-section-wrap news-masthead-wrap">
 <header class="news-masthead" id="main-content" aria-labelledby="news-heading">
@@ -83,6 +118,7 @@
         <option value="pulse-video">Video</option>
         <option value="pulse-audio">Audio</option>
         <option value="pulse-written">Written</option>
+        <option value="story">Stories</option>
     </select>
     <select class="news-filter-select" id="filter-category" aria-label="Filter by category">
         <option value="">All categories</option>
@@ -139,6 +175,8 @@
     <button class="news-load-more-btn" id="load-more-btn" aria-label="Load more articles">Load more</button>
 </div>
 </div>
+
+</div><!-- /story-list-view -->
 
 </div><!-- /hp-page-body -->
 </main>

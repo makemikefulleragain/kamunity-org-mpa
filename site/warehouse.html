@@ -67,6 +67,18 @@
 </header>
 </div>
 
+<!-- FROM THE FIELD — dynamically loaded from approved commons_library items -->
+<div class="hp-section-wrap wh-aisle-wrap wh-aisle-wrap--field" id="aisle-field-wrap" style="display:none;">
+<section class="wh-aisle" id="aisle-field" aria-labelledby="aisle-field-heading">
+    <div class="wh-aisle-label">From the Field</div>
+    <h2 id="aisle-field-heading">What the sector is building — tools generated from real community patterns</h2>
+    <p class="wh-aisle-intro">These tools were generated because multiple community organisations faced the same challenge. Pattern detected → tool built → reviewed → published here.</p>
+    <div class="wh-aisle-row" id="field-tools-row" role="list">
+        <!-- Populated by loadFieldTools() -->
+    </div>
+</section>
+</div>
+
 <!-- AISLE 1: FREE TOOLS -->
 <div class="hp-section-wrap wh-aisle-wrap wh-aisle-wrap--tools">
 <section class="wh-aisle" id="aisle-tools" aria-labelledby="aisle1-heading">
@@ -344,6 +356,16 @@
 </section>
 </div>
 
+<!-- FOOTER OPT-IN WIDGET -->
+<div class="hp-section-wrap">
+<section class="wh-optin-footer" aria-labelledby="optin-footer-heading">
+  <h2 id="optin-footer-heading">Want to know when we add something in your area?</h2>
+  <p>The Warehouse grows as the sector produces needs. We'll tell you when something relevant lands.</p>
+  <button class="optin-footer-btn" onclick="openOptinModal(null)">Get notified →</button>
+  <p class="optin-small">Email only. No account. Unsubscribe anytime.</p>
+</section>
+</div>
+
 </div><!-- /hp-page-body -->
 </main>
 
@@ -381,12 +403,246 @@
     </div>
 </footer>
 
+<!-- OPT-IN MODAL -->
+<div id="optin-modal" class="optin-modal-overlay" role="dialog" aria-modal="true"
+     aria-labelledby="optin-modal-title" style="display:none;">
+  <div class="optin-modal-box">
+    <button class="optin-modal-close" onclick="closeOptinModal()" aria-label="Close">✕</button>
+    <h3 id="optin-modal-title">Get notified when we add tools in your area</h3>
+    <p class="optin-modal-desc">We'll email you when something new appears in the Warehouse that matches what you're working on. No spam. Unsubscribe anytime.</p>
+    <form id="optin-form" onsubmit="submitOptin(event)">
+      <label for="optin-email" class="optin-label">Your email</label>
+      <input type="email" id="optin-email" name="email" class="optin-email-input"
+             placeholder="you@yourorg.org.au" required autocomplete="email">
+      <fieldset class="optin-tags-fieldset">
+        <legend class="optin-label">Areas of interest <span class="optin-required">(pick at least one)</span></legend>
+        <div class="optin-tags-grid" id="optin-tags-grid"></div>
+      </fieldset>
+      <div id="optin-preselect-note" class="optin-preselect-note" style="display:none;"></div>
+      <button type="submit" class="optin-submit-btn" id="optin-submit">Notify me →</button>
+      <p class="optin-small">We don't sell data. We don't track opens. Unsubscribe link in every email.</p>
+    </form>
+    <div id="optin-success" class="optin-success" style="display:none;">
+      <p>✓ Done. We'll be in touch when something relevant lands in the Warehouse.</p>
+    </div>
+    <div id="optin-error" class="optin-error" style="display:none;"></div>
+  </div>
+</div>
+
 <!-- Kai FAB -->
 <button class="kai-fab" id="kai-fab" data-kai-modal data-kai-context="I've been browsing the Commons Warehouse. Can you help me find what I'm looking for?" aria-label="Talk to Kai">K</button>
+
+<style>
+.wh-field-tags { display: flex; flex-wrap: wrap; gap: 0.25rem; margin: 0.5rem 0; }
+.wh-field-tag { background: var(--ember, #c84b0c); color: white; font-size: 0.7rem; padding: 0.1rem 0.4rem; border-radius: 3px; }
+.wh-aisle-intro { color: var(--muted, #706050); font-size: 0.9rem; margin-bottom: 1rem; }
+.optin-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 1rem; }
+.optin-modal-box { background: var(--parchment, #faf7f0); border-radius: 8px; padding: 2rem; max-width: 480px; width: 100%; position: relative; max-height: 90vh; overflow-y: auto; }
+.optin-modal-close { position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.2rem; cursor: pointer; }
+.optin-email-input { display: block; width: 100%; padding: 0.5rem 0.75rem; border: 1px solid var(--ash, #c8bfb0); border-radius: 4px; font-size: 1rem; margin: 0.5rem 0 1rem; box-sizing: border-box; }
+.optin-tags-fieldset { border: none; padding: 0; margin: 0 0 1rem; }
+.optin-tags-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; margin-top: 0.5rem; }
+.optin-tag-label { display: flex; align-items: center; gap: 0.4rem; font-size: 0.9rem; cursor: pointer; }
+.optin-submit-btn { background: var(--ember, #c84b0c); color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 4px; font-size: 1rem; cursor: pointer; width: 100%; }
+.optin-submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.optin-small { font-size: 0.75rem; color: var(--muted, #706050); margin-top: 0.5rem; }
+.optin-success { color: var(--forest, #2d5a27); font-weight: bold; padding: 1rem 0; }
+.optin-error { color: #c0392b; font-size: 0.9rem; margin-top: 0.5rem; }
+.optin-label { font-weight: 600; font-size: 0.9rem; }
+.optin-required { font-weight: normal; color: var(--muted, #706050); }
+.optin-preselect-note { font-size: 0.85rem; color: var(--muted, #706050); margin-bottom: 0.5rem; }
+.optin-notify-btn { background: none; border: 1px solid var(--ash, #c8bfb0); padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.8rem; cursor: pointer; margin-top: 0.25rem; }
+.optin-notify-btn:hover { border-color: var(--ember, #c84b0c); color: var(--ember, #c84b0c); }
+.wh-optin-footer { padding: 3rem 0; text-align: center; border-top: 1px solid var(--ash, #c8bfb0); }
+.optin-footer-btn { background: var(--ember, #c84b0c); color: white; border: none; padding: 0.75rem 2rem; border-radius: 4px; font-size: 1rem; cursor: pointer; margin: 1rem 0 0.5rem; }
+</style>
 
 <script src="/js/nav.js"></script>
 <script src="/js/warehouse.js"></script>
 <script src="/js/kai-modal.js"></script>
+
+<script>
+function escWh(str) {
+  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+async function loadFieldTools() {
+  try {
+    var res = await fetch('https://community-signal.netlify.app/.netlify/functions/warehouse-read');
+    if (!res.ok) return;
+    var data = await res.json();
+    if (!data.tools || data.tools.length === 0) return;
+
+    var row = document.getElementById('field-tools-row');
+    var wrap = document.getElementById('aisle-field-wrap');
+    if (!row || !wrap) return;
+
+    row.innerHTML = data.tools.map(function(tool) {
+      var tags = (tool.sector_tags || []).map(function(t) {
+        return '<span class="wh-field-tag">' + escWh(t) + '</span>';
+      }).join('');
+      var searchData = escWh(tool.artifact_title) + ' ' + escWh(tool.triage_reasoning) + ' ' + (tool.sector_tags || []).join(' ') + ' field community generated';
+      return '<div class="wh-tool-card" role="listitem" data-search="' + searchData + '">' +
+        '<span class="wh-tool-badge">' + escWh(tool.artifact_type || 'Template') + ' · Community</span>' +
+        '<h4>' + escWh(tool.artifact_title || 'Community Tool') + '</h4>' +
+        '<p>' + escWh(tool.triage_reasoning || '') + '</p>' +
+        '<div class="wh-field-tags">' + tags + '</div>' +
+        '<button class="ask-kai-btn wh-field-view-btn" onclick="openFieldTool(this)" data-tool-id="' + escWh(tool.id) + '" data-tool-title="' + escWh(tool.artifact_title) + '" data-tool-content="' + escWh(tool.artifact_content) + '" aria-label="Open ' + escWh(tool.artifact_title) + '">Open &amp; Use →</button>' +
+        '<button class="ask-kai-btn" data-kai-modal data-kai-context="I\'m in the Commons Warehouse looking at \'' + escWh(tool.artifact_title) + '\'. Can you help me understand how to use this for my organisation?" aria-label="Ask Kai about ' + escWh(tool.artifact_title) + '">Ask Kai \u2192</button>' +
+        '<button class="optin-notify-btn" onclick="openOptinModal(\'' + escWh((tool.sector_tags || [])[0] || '') + '\')" aria-label="Get notified about new tools in this area">\uD83D\uDD14 Notify me \u2192</button>' +
+        '</div>';
+    }).join('');
+
+    wrap.style.display = '';
+
+    // Re-bind Kai modal buttons for dynamically added cards
+    if (typeof window.initKaiModalButtons === 'function') {
+      window.initKaiModalButtons();
+    }
+  } catch (e) {
+    // Silent fail — static warehouse still works
+  }
+}
+
+function openFieldTool(btn) {
+  var title = btn.getAttribute('data-tool-title') || 'Community Tool';
+  var content = btn.getAttribute('data-tool-content') || '';
+  var win = window.open('', '_blank');
+  if (!win) return;
+  win.document.write('<!DOCTYPE html><html><head><title>' + escWh(title) + '</title>' +
+    '<style>body{font-family:Georgia,serif;max-width:800px;margin:2rem auto;padding:1rem;line-height:1.6;color:#2C2318;background:#FAF7F2;}' +
+    'h1{font-size:1.4rem;margin-bottom:1rem;} pre{white-space:pre-wrap;background:#f5f5f0;padding:1rem;border-radius:8px;font-size:0.9rem;}</style>' +
+    '</head><body><h1>' + escWh(title) + '</h1><pre>' + escWh(content) + '</pre>' +
+    '<p><small>Generated from community signal patterns — Commons Warehouse, Kamunity</small></p>' +
+    '</body></html>');
+  win.document.close();
+}
+
+var SECTOR_TAGS = [
+  { value: 'housing', label: 'Housing & Homelessness' },
+  { value: 'workforce', label: 'Workforce & Employment' },
+  { value: 'digital-tools', label: 'Digital & AI' },
+  { value: 'funding', label: 'Funding & Grants' },
+  { value: 'disability', label: 'Disability Services' },
+  { value: 'wellbeing', label: 'Health & Wellbeing' },
+  { value: 'governance', label: 'Governance & Policy' },
+  { value: 'indigenous-communities', label: 'First Nations' },
+];
+
+var OPTIN_ENDPOINT = 'https://community-signal.netlify.app/.netlify/functions/opt-in';
+
+var AISLE_TAG_MAP = {
+  'aisle-tools': 'digital-tools',
+  'aisle-assessments': 'governance',
+  'aisle-builds': 'digital-tools',
+  'aisle-ecosystem': 'digital-tools',
+  'aisle-instances': 'governance'
+};
+
+function openOptinModal(preselectedTag) {
+  var modal = document.getElementById('optin-modal');
+  var grid = document.getElementById('optin-tags-grid');
+  var note = document.getElementById('optin-preselect-note');
+  document.getElementById('optin-success').style.display = 'none';
+  document.getElementById('optin-error').style.display = 'none';
+  document.getElementById('optin-form').style.display = '';
+  document.getElementById('optin-submit').disabled = false;
+  document.getElementById('optin-submit').textContent = 'Notify me \u2192';
+
+  grid.innerHTML = SECTOR_TAGS.map(function(t) {
+    return '<label class="optin-tag-label">' +
+      '<input type="checkbox" name="tags" value="' + escWh(t.value) + '"' +
+      (preselectedTag === t.value ? ' checked' : '') + '> ' +
+      escWh(t.label) + '</label>';
+  }).join('');
+
+  if (preselectedTag) {
+    var tagLabel = SECTOR_TAGS.find(function(t) { return t.value === preselectedTag; });
+    note.textContent = 'Pre-selected: ' + (tagLabel ? tagLabel.label : preselectedTag) + ' \u2014 add more or change below.';
+    note.style.display = '';
+  } else {
+    note.style.display = 'none';
+  }
+
+  modal.style.display = 'flex';
+  document.getElementById('optin-email').focus();
+}
+
+function closeOptinModal() {
+  document.getElementById('optin-modal').style.display = 'none';
+}
+
+async function submitOptin(e) {
+  e.preventDefault();
+  var email = document.getElementById('optin-email').value.trim();
+  var tags = Array.from(document.querySelectorAll('#optin-tags-grid input[name="tags"]:checked'))
+    .map(function(cb) { return cb.value; });
+
+  if (!tags.length) {
+    document.getElementById('optin-error').textContent = 'Please select at least one area of interest.';
+    document.getElementById('optin-error').style.display = '';
+    return;
+  }
+
+  var submitBtn = document.getElementById('optin-submit');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Saving\u2026';
+  document.getElementById('optin-error').style.display = 'none';
+
+  try {
+    var res = await fetch(OPTIN_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: email,
+        sector_tags: tags,
+        consent_source: 'warehouse',
+        consent_text: 'Get notified when new tools are added to the Commons Warehouse in your areas of interest. No spam. Unsubscribe anytime.'
+      }),
+    });
+
+    if (res.ok) {
+      document.getElementById('optin-form').style.display = 'none';
+      document.getElementById('optin-success').style.display = '';
+    } else {
+      var data = await res.json().catch(function() { return {}; });
+      throw new Error(data.error || 'Submission failed');
+    }
+  } catch (err) {
+    document.getElementById('optin-error').textContent = 'Something went wrong: ' + err.message;
+    document.getElementById('optin-error').style.display = '';
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Notify me \u2192';
+  }
+}
+
+function injectNotifyButtons() {
+  Object.keys(AISLE_TAG_MAP).forEach(function(aisleId) {
+    var tag = AISLE_TAG_MAP[aisleId];
+    var aisle = document.getElementById(aisleId);
+    if (!aisle) return;
+    aisle.querySelectorAll('.wh-tool-card').forEach(function(card) {
+      if (card.querySelector('.optin-notify-btn')) return;
+      var btn = document.createElement('button');
+      btn.className = 'optin-notify-btn';
+      btn.setAttribute('aria-label', 'Get notified about new tools in this area');
+      btn.textContent = '\uD83D\uDD14 Notify me \u2192';
+      btn.onclick = function() { openOptinModal(tag); };
+      card.appendChild(btn);
+    });
+  });
+}
+
+document.getElementById('optin-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeOptinModal();
+});
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeOptinModal(); });
+
+document.addEventListener('DOMContentLoaded', function() {
+  loadFieldTools();
+  injectNotifyButtons();
+});
+</script>
 
 </body>
 </html>

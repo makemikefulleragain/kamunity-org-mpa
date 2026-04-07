@@ -10,22 +10,25 @@
     var searchInput  = document.getElementById('wh-search');
     var searchGoBtn  = document.getElementById('wh-search-go');
     var noResults    = document.getElementById('wh-no-results');
-    var allCards     = document.querySelectorAll('.wh-tool-card[data-search]');
-    var aisles       = document.querySelectorAll('.wh-aisle');
 
-    if (!searchInput || !allCards.length) return;
+    if (!searchInput) return;
 
     function normalise(str) {
         return (str || '').toLowerCase().replace(/[^a-z0-9 ]/g, ' ');
     }
 
     function runSearch(query) {
+        var allCards = document.querySelectorAll('.wh-tool-card[data-search]');
+        var aisles   = document.querySelectorAll('.wh-aisle');
         var q = normalise(query);
 
         if (!q) {
             /* Reset: show all */
             allCards.forEach(function (card) { card.style.display = ''; });
             aisles.forEach(function (aisle) { aisle.style.display = ''; });
+            // Show field aisle wrap if it has cards
+            var fieldWrap = document.getElementById('aisle-field-wrap');
+            if (fieldWrap && fieldWrap.querySelector('.wh-tool-card')) fieldWrap.style.display = '';
             if (noResults) noResults.style.display = 'none';
             return;
         }
