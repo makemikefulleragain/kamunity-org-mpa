@@ -482,12 +482,43 @@ async function loadFieldTools() {
         return '<span class="wh-field-tag">' + escWh(t) + '</span>';
       }).join('');
       var searchData = escWh(tool.artifact_title) + ' ' + escWh(tool.triage_reasoning) + ' ' + (tool.sector_tags || []).join(' ') + ' field community generated';
-      return '<div class="wh-tool-card" role="listitem" data-search="' + searchData + '">' +
-        '<span class="wh-tool-badge">' + escWh(tool.artifact_type || 'Template') + ' · Community</span>' +
+
+      // Generate type-specific action button for FactoryK tools
+      var actionBtn = '';
+      if (tool.factory_origin) {
+        // FactoryK-built tool — render based on output_type
+        var outputType = tool.output_type || 'url';
+        switch(outputType) {
+          case 'url':
+            // URL tools open in new tab
+            actionBtn = '<a href="' + escWh(tool.output_url || '') + '/index.html" target="_blank" class="ask-kai-btn wh-field-view-btn" style="text-decoration:none;display:inline-block;">Open Tool →</a>';
+            break;
+          case 'download':
+            // Downloadable files
+            actionBtn = '<button class="ask-kai-btn wh-field-view-btn" onclick="downloadFactoryTool(\'' + escWh(tool.id) + '\', \'' + escWh(tool.output_url || '') + '\')">Download →</button>';
+            break;
+          case 'embed':
+            // Embeddable widgets
+            actionBtn = '<button class="ask-kai-btn wh-field-view-btn" onclick="openEmbeddedTool(\'' + escWh(tool.id) + '\', \'' + escWh(tool.output_url || '') + '\')">Try It →</button>';
+            break;
+          case 'content':
+            // Text content — copy to clipboard
+            actionBtn = '<button class="ask-kai-btn wh-field-view-btn" onclick="copyToolContent(\'' + escWh(tool.id) + '\')">Copy to Clipboard →</button>';
+            break;
+          default:
+            actionBtn = '<button class="ask-kai-btn wh-field-view-btn" onclick="openFieldTool(this)" data-tool-id="' + escWh(tool.id) + '" data-tool-title="' + escWh(tool.artifact_title) + '" data-tool-content="' + escWh(tool.artifact_content) + '">Open & Use →</button>';
+        }
+      } else {
+        // Legacy community signal tool — use original behavior
+        actionBtn = '<button class="ask-kai-btn wh-field-view-btn" onclick="openFieldTool(this)" data-tool-id="' + escWh(tool.id) + '" data-tool-title="' + escWh(tool.artifact_title) + '" data-tool-content="' + escWh(tool.artifact_content) + '">Open & Use →</button>';
+      }
+
+      return '<div class="wh-tool-card" role="listitem" data-search="' + searchData + '" data-tool-id="' + escWh(tool.id) + '" data-output-type="' + escWh(tool.output_type || '') + '" data-output-url="' + escWh(tool.output_url || '') + '">' +
+        '<span class="wh-tool-badge">' + escWh(tool.artifact_type || 'Template') + ' · Community' + (tool.factory_origin ? ' · Factory' : '') + '</span>' +
         '<h4>' + escWh(tool.artifact_title || 'Community Tool') + '</h4>' +
         '<p>' + escWh(tool.triage_reasoning || '') + '</p>' +
         '<div class="wh-field-tags">' + tags + '</div>' +
-        '<button class="ask-kai-btn wh-field-view-btn" onclick="openFieldTool(this)" data-tool-id="' + escWh(tool.id) + '" data-tool-title="' + escWh(tool.artifact_title) + '" data-tool-content="' + escWh(tool.artifact_content) + '" aria-label="Open ' + escWh(tool.artifact_title) + '">Open &amp; Use →</button>' +
+        actionBtn +
         '<button class="ask-kai-btn" data-kai-modal data-kai-context="I\'m in the Commons Warehouse looking at \'' + escWh(tool.artifact_title) + '\'. Can you help me understand how to use this for my organisation?" aria-label="Ask Kai about ' + escWh(tool.artifact_title) + '">Ask Kai \u2192</button>' +
         '<button class="optin-notify-btn" onclick="openOptinModal(\'' + escWh((tool.sector_tags || [])[0] || '') + '\')" aria-label="Get notified about new tools in this area">\uD83D\uDD14 Notify me \u2192</button>' +
         '</div>';
@@ -516,6 +547,64 @@ function openFieldTool(btn) {
     '<p><small>Generated from community signal patterns — Commons Warehouse, Kamunity</small></p>' +
     '</body></html>');
   win.document.close();
+}
+
+// FactoryK-specific action handlers
+
+function copyToolContent(toolId) {
+  // Find the tool card and get content
+  var card = document.querySelector('[data-tool-id="' + toolId + '"]');
+  if (!card) return;
+
+  var content = card.getAttribute('data-tool-content') || '';
+
+  navigator.clipboard.writeText(content).then(function() {
+    alert('Tool content copied to clipboard!');
+  }).catch(function() {
+    // Fallback for browsers without clipboard API
+    var textarea = document.createElement('textarea');
+    textarea.value = content;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    alert('Tool content copied to clipboard!');
+  });
+}
+
+function downloadFactoryTool(toolId, outputUrl) {
+  // For local file paths, we need to serve them through an endpoint
+  // For now, alert the user about the location
+  if (!outputUrl) {
+    alert('Download not available — tool location unknown');
+    return;
+  }
+
+  // Check if it's a web URL or local path
+  if (outputUrl.startsWith('http')) {
+    // Web URL — can direct download
+    window.open(outputUrl, '_blank');
+  } else {
+    // Local path — show instructions
+    alert('Tool staged locally at:\n' + outputUrl + '\n\nOpen this folder in Finder to access files.');
+  }
+}
+
+function openEmbeddedTool(toolId, outputUrl) {
+  // Open embedded widget in a modal or new window
+  if (!outputUrl) {
+    alert('Tool preview not available — location unknown');
+    return;
+  }
+
+  // For now, open in new window
+  // Future: could render in a modal iframe
+  if (outputUrl.startsWith('http')) {
+    window.open(outputUrl, '_blank', 'width=800,height=600');
+  } else {
+    // Local path — show in preview window
+    alert('Embedded tool staged locally at:\n' + outputUrl + '\n\nOpen index.html in this folder to use the tool.');
+  }
 }
 
 var SECTOR_TAGS = [
