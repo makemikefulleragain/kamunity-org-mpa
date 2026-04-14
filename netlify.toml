@@ -44,6 +44,12 @@
     Cache-Control = "public, max-age=86400"
 
 # â”€â”€ Clean page URL routes (MPA â€” must precede catch-all) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+[[headers]]
+  for = "/door-template.html"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+    Cache-Control = "public, max-age=0, must-revalidate"
+
 [[redirects]]
   from = "/news"
   to = "/news.html"
