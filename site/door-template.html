@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kamunity — Community Sovereignty Infrastructure</title>
+    <meta name="description" content="Free tools, honest conversations, and consulting for the WA community sector. No tracking. No gatekeeping.">
+    <meta name="robots" content="noindex, nofollow">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Kamunity — Community Sovereignty Infrastructure">
+    <meta property="og:description" content="Free tools, honest conversations, and consulting for the WA community sector. No tracking. No gatekeeping.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍄</text></svg>">
+    <link rel="stylesheet" href="fonts/fonts.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mpa.css">
+</head>
+<body>
+
+<!-- ACKNOWLEDGEMENT OF COUNTRY -->
+<div class="aoc-banner" id="aoc-banner">
+    <span>Built in Boorloo/Perth, on Whadjuk Noongar country. We acknowledge Whadjuk Noongar people as the traditional custodians of this land.</span>
+    <button class="aoc-close" id="aoc-close" aria-label="Dismiss acknowledgement">×</button>
+</div>
+
+<!-- NAVIGATION -->
+<nav class="mpa-nav" role="navigation" aria-label="Main navigation">
+    <a href="https://kamunity-org-mpa.netlify.app" class="mpa-nav-logo" aria-label="Kamunity home">kamunity</a>
+</nav>
+
+<main id="main-content">
+
+<!-- HERO -->
+<section class="hp-hero" aria-labelledby="door-heading">
+    <h1>Good work is possible.<br>Even here. Especially here.</h1>
+    <p class="subtitle">We've sat in those meetings. We know what you're carrying.</p>
+    <a href="#kai" class="door-link">Talk to Kai about this →</a>
+</section>
+
+<!-- PULSE CARD -->
+<section class="hp-section-wrap" aria-label="Sector pattern">
+    <div class="pulse-card">
+        <div class="pulse-date">SECTOR PULSE — Template</div>
+        <h3>A pattern detected across the WA community sector</h3>
+        <p>This door was generated from a verified sector pattern. The tools below are relevant to this specific challenge.</p>
+    </div>
+</section>
+
+<!-- TOOLS -->
+<section class="hp-section-wrap" aria-label="Tools for this door">
+    <h2 class="section-label">Tools for this challenge</h2>
+    <div class="tools-grid">
+        <div class="tool-card">
+            <div class="tool-name">Placeholder tool</div>
+            <div class="tool-action">Open tool →</div>
+        </div>
+    </div>
+</section>
+
+<!-- KAI CHAT -->
+<section class="hp-section-wrap" aria-label="Talk to Kai">
+    <h2>Talk to Kai</h2>
+    <p>Kai is an AI wayfinder for the WA community sector. Tell it what's on your plate. No sales pitch. No data extracted.</p>
+    <p class="chats-mono-note">A notebook, not a therapist. A wayfinder, not a host.</p>
+    <div class="kai-container" id="kai-chat" role="region" aria-label="Kai conversation">
+        <div class="kai-header-bar">
+            <div class="kai-orb" aria-hidden="true">K</div>
+            <div>
+                <div class="kai-name">Kai</div>
+                <div class="kai-tagline">AI wayfinder for the WA community sector</div>
+            </div>
+        </div>
+        <div class="kai-disclosure" id="kai-disclosure" role="note" aria-label="Data disclosure">
+            <p class="kai-disclosure-text">
+                Your conversation is processed by Claude (Anthropic) and not stored beyond this session.
+                No personal data is retained. Kai is an AI assistant — not a counsellor or professional advisor.
+                If you need immediate support: <strong>Lifeline 13 11 14</strong>
+            </p>
+            <button class="kai-disclosure-btn" id="kai-disclosure-btn">I understand — start conversation</button>
+        </div>
+        <div class="kai-messages" id="kai-messages" role="log" aria-live="polite" aria-label="Kai messages"></div>
+        <div class="kai-input-row" id="kai-input-row" style="display:none;">
+            <textarea id="kai-input" class="kai-input" placeholder="What's on your plate?" rows="2" aria-label="Your message to Kai"></textarea>
+            <button id="kai-send" class="kai-send-btn" aria-label="Send message">Send</button>
+        </div>
+        <div id="kai-typing" class="kai-typing hidden" aria-live="polite">Kai is thinking…</div>
+    </div>
+</section>
+
+</main>
+
+<footer class="mpa-footer" role="contentinfo">
+    <p>Built in Boorloo/Perth on Whadjuk Noongar country. Sovereignty was never ceded.</p>
+    <p><a href="https://kamunity-org-mpa.netlify.app">kamunity.org</a> · CC-BY-SA 4.0 · No tracking. No surveillance.</p>
+</footer>
+
+<script>
+(function () {
+    'use strict';
+
+    /* AOC banner close */
+    var aocClose = document.getElementById('aoc-close');
+    if (aocClose) {
+        aocClose.addEventListener('click', function () {
+            var banner = document.getElementById('aoc-banner');
+            if (banner) banner.style.display = 'none';
+        });
+    }
+
+    /* Kai chat — calls MPA kai-proxy via absolute URL (door sites have no functions) */
+    var disclosureBtn = document.getElementById('kai-disclosure-btn');
+    var inputRow      = document.getElementById('kai-input-row');
+    var messages      = document.getElementById('kai-messages');
+    var sendBtn       = document.getElementById('kai-send');
+    var inputEl       = document.getElementById('kai-input');
+    var typingEl      = document.getElementById('kai-typing');
+
+    if (disclosureBtn) {
+        disclosureBtn.addEventListener('click', function () {
+            document.getElementById('kai-disclosure').style.display = 'none';
+            inputRow.style.display = '';
+            inputEl.focus();
+        });
+    }
+
+    var history = [];
+
+    function addBubble(role, text) {
+        var div = document.createElement('div');
+        div.className = 'kai-bubble kai-bubble-' + role;
+        div.textContent = text;
+        messages.appendChild(div);
+        messages.scrollTop = messages.scrollHeight;
+    }
+
+    async function sendMessage() {
+        var text = (inputEl.value || '').trim();
+        if (!text) return;
+        inputEl.value = '';
+        sendBtn.disabled = true;
+        if (typingEl) typingEl.classList.remove('hidden');
+        addBubble('user', text);
+        history.push({ role: 'user', content: text });
+
+        var doorSlug  = document.body.dataset.door  || '';
+        var doorTheme = document.body.dataset.doorTheme || '';
+
+        try {
+            var res = await fetch('https://kamunity-org-mpa.netlify.app/.netlify/functions/kai-proxy', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    messages: history,
+                    door_context: doorSlug ? { door: doorSlug, theme: doorTheme } : undefined
+                })
+            });
+            var data = await res.json();
+            var reply = (data.content || data.text || '').trim() || 'Sorry, I could not respond right now.';
+            if (typingEl) typingEl.classList.add('hidden');
+            addBubble('ai', reply);
+            history.push({ role: 'assistant', content: reply });
+        } catch (e) {
+            if (typingEl) typingEl.classList.add('hidden');
+            addBubble('ai', 'Connection issue. Please try again in a moment.');
+        }
+        sendBtn.disabled = false;
+        inputEl.focus();
+    }
+
+    if (sendBtn)  sendBtn.addEventListener('click', sendMessage);
+    if (inputEl)  inputEl.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+    });
+})();
+</script>
+
+</body>
+</html>
