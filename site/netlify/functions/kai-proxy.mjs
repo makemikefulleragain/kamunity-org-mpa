@@ -59,7 +59,8 @@ When mode is "reflection", your role shifts. You ask the deeper question: what i
 const CORS = {
     'Access-Control-Allow-Origin':  '*',
     'Access-Control-Allow-Headers': 'Content-Type',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS, GET',
+    'X-Kai-Version': '3',
 };
 
 export const handler = async (event) => {
