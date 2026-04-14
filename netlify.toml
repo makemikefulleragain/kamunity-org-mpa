@@ -45,14 +45,14 @@
 
 # â”€â”€ Clean page URL routes (MPA â€” must precede catch-all) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 [[headers]]
-  for = "/door-template.html"
+  for = "/door-gen-template.html"
   [headers.values]
     X-Robots-Tag = "noindex, nofollow"
     Cache-Control = "public, max-age=0, must-revalidate"
 
 [[redirects]]
-  from = "/door-template"
-  to = "/door-template.html"
+  from = "/door-gen-template"
+  to = "/door-gen-template.html"
   status = 200
 
 [[redirects]]
