@@ -10,6 +10,13 @@
 
 # â”€â”€ Security headers (all pages) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 [[headers]]
+  for = "/.netlify/functions/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Headers = "Content-Type"
+    Access-Control-Allow-Methods = "POST, OPTIONS, GET"
+
+[[headers]]
   for = "/*"
   [headers.values]
     X-Frame-Options = "DENY"
