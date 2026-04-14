@@ -56,15 +56,25 @@ When a user's problem is clearly something Kamunity Consulting could help with, 
 REFLECTION MODE:
 When mode is "reflection", your role shifts. You ask the deeper question: what is this organisation actually for? You use Socratic questions rather than advice. You end each response with a question. You are patient and unhurried. You do not solve â€” you witness and inquire.`;
 
+const CORS = {
+    'Access-Control-Allow-Origin':  '*',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+};
+
 export const handler = async (event) => {
+    if (event.httpMethod === 'OPTIONS') {
+        return { statusCode: 200, headers: CORS, body: '' };
+    }
     if (event.httpMethod !== 'POST') {
-        return { statusCode: 405, body: JSON.stringify({ error: 'Method not allowed' }) };
+        return { statusCode: 405, headers: CORS, body: JSON.stringify({ error: 'Method not allowed' }) };
     }
 
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
         return {
             statusCode: 500,
+            headers: CORS,
             body: JSON.stringify({ error: 'API key not configured' })
         };
     }
@@ -73,7 +83,7 @@ export const handler = async (event) => {
     try {
         body = JSON.parse(event.body);
     } catch {
-        return { statusCode: 400, body: JSON.stringify({ error: 'Invalid JSON' }) };
+        return { statusCode: 400, headers: CORS, body: JSON.stringify({ error: 'Invalid JSON' }) };
     }
 
     const messages = body.messages || [];
@@ -84,12 +94,12 @@ export const handler = async (event) => {
         : SYSTEM_PROMPT;
 
     if (!messages.length || !messages[messages.length - 1].content) {
-        return { statusCode: 400, body: JSON.stringify({ error: 'No message content' }) };
+        return { statusCode: 400, headers: CORS, body: JSON.stringify({ error: 'No message content' }) };
     }
 
     const lastMessage = messages[messages.length - 1];
     if (lastMessage.content.length > 2000) {
-        return { statusCode: 400, body: JSON.stringify({ error: 'Message too long. Please keep messages under 2000 characters.' }) };
+        return { statusCode: 400, headers: CORS, body: JSON.stringify({ error: 'Message too long. Please keep messages under 2000 characters.' }) };
     }
 
     const recentMessages = messages.slice(-10);
@@ -115,6 +125,7 @@ export const handler = async (event) => {
             console.error('Anthropic error:', response.status, errText);
             return {
                 statusCode: 502,
+                headers: CORS,
                 body: JSON.stringify({ error: 'Upstream API error', details: response.status })
             };
         }
@@ -124,7 +135,7 @@ export const handler = async (event) => {
 
         return {
             statusCode: 200,
-            headers: { 'Content-Type': 'application/json' },
+            headers: { ...CORS, 'Content-Type': 'application/json' },
             body: JSON.stringify({ response: text })
         };
 
@@ -132,6 +143,7 @@ export const handler = async (event) => {
         console.error('Kai proxy error:', err);
         return {
             statusCode: 500,
+            headers: CORS,
             body: JSON.stringify({ error: 'Internal error', message: err.message })
         };
     }

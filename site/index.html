@@ -329,13 +329,21 @@
                     <div class="kai-tagline">AI wayfinder · WA community sector · Constitutional</div>
                 </div>
             </div>
-            <div class="kai-messages" id="kai-messages" role="log" aria-live="polite" aria-label="Conversation">
+            <div class="kai-disclosure" id="kai-disclosure" role="note" aria-label="Data disclosure">
+                <p class="kai-disclosure-text">
+                    Your conversation is processed by Claude (Anthropic) and not stored beyond this session.
+                    No personal data is retained. Kai is an AI wayfinder — not a counsellor or professional advisor.
+                    If you need immediate support: <strong>Lifeline 13 11 14</strong>
+                </p>
+                <button class="kai-disclosure-btn" id="kai-disclosure-btn">I understand — start conversation</button>
+            </div>
+            <div class="kai-messages" id="kai-messages" role="log" aria-live="polite" aria-label="Conversation" style="display:none;">
                 <div class="kai-bubble kai-bubble-ai">
                     Hello. What's on your plate today? I know the sector — funding pressures, governance headaches, technology that wasn't built for organisations like yours. Tell me what you're working on.
                 </div>
             </div>
             <div class="kai-typing hidden" id="kai-typing" aria-live="polite">Kai is thinking...</div>
-            <div class="kai-input-row">
+            <div class="kai-input-row" id="kai-input-row" style="display:none;">
                 <textarea class="kai-input" id="kai-input" placeholder="What are you working on?" rows="2" aria-label="Message to Kai"></textarea>
                 <button class="kai-send-btn" id="kai-send" aria-label="Send message">Send</button>
             </div>
@@ -621,6 +629,16 @@
 <script src="js/kai-modal.js"></script>
 <script src="js/supabase-feed.js"></script>
 <script>
+var kaiDisclosureBtn = document.getElementById('kai-disclosure-btn');
+if (kaiDisclosureBtn) {
+    kaiDisclosureBtn.addEventListener('click', function() {
+        document.getElementById('kai-disclosure').style.display = 'none';
+        document.getElementById('kai-messages').style.display = '';
+        document.getElementById('kai-input-row').style.display = '';
+        document.getElementById('kai-input').focus();
+    });
+}
+
 function toggleHumanForm(id) {
     const form = document.getElementById(id + '-form');
     const btn  = document.getElementById(id + '-toggle');
