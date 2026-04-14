@@ -51,6 +51,11 @@
     Cache-Control = "public, max-age=0, must-revalidate"
 
 [[redirects]]
+  from = "/door-template"
+  to = "/door-template.html"
+  status = 200
+
+[[redirects]]
   from = "/news"
   to = "/news.html"
   status = 200
