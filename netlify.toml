@@ -8,7 +8,15 @@
 [functions]
   node_bundler = "esbuild"
 
-# â”€â”€ Security headers (all pages) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ── Edge Functions ──────────────────────────────────────────────────────────────
+# Kai CORS: intercepts kai-proxy responses and adds CORS headers at the edge.
+# Netlify CDN strips custom headers from serverless function responses.
+# Edge Functions run AT the CDN layer and headers persist to the browser.
+[[edge_functions]]
+  function = "kai-cors"
+  path = "/.netlify/functions/kai-proxy"
+
+# ── Security headers (all pages) ─────────────────────────────────────────────
 [[headers]]
   for = "/.netlify/functions/*"
   [headers.values]
@@ -25,7 +33,7 @@
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
     Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; connect-src 'self' https://community-signal.netlify.app https://api.anthropic.com; img-src 'self' data:; form-action 'self' https://kamunity-org-mpa.netlify.app; frame-ancestors 'none'"
 
-# â”€â”€ Agent discovery file headers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ── Agent discovery file headers ─────────────────────────────────────────────
 [[headers]]
   for = "/robots.txt"
   [headers.values]
@@ -50,7 +58,7 @@
     Content-Type = "application/xml; charset=utf-8"
     Cache-Control = "public, max-age=86400"
 
-# â”€â”€ Clean page URL routes (MPA â€” must precede catch-all) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ── Clean page URL routes (MPA — must precede catch-all) ─────────────────────
 [[headers]]
   for = "/door-gen-template.html"
   [headers.values]
@@ -92,7 +100,7 @@
   to = "/about.html"
   status = 200
 
-# â”€â”€ Old URL redirects (post DNS cutover â€” old kamunity.org paths) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ── Old URL redirects (post DNS cutover — old kamunity.org paths) ────────────
 
 [[redirects]]
   from = "/ring-zero"
@@ -169,9 +177,8 @@
   to = "/news"
   status = 301
 
-# â”€â”€ Any 404 â†’ home (the bothy door is always open) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ── Any 404 → home (the bothy door is always open) ──────────────────────────
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-
