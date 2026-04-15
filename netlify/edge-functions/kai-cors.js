@@ -1,17 +1,15 @@
 /**
  * kai-cors.js — Netlify Edge Function
  * 
- * Wraps the kai-proxy serverless function response with CORS headers.
+ * Adds CORS headers to kai-proxy responses.
  * 
  * Why: Netlify's CDN strips custom headers from serverless function responses.
  * Edge Functions run AT the CDN layer and can set headers that persist.
  * 
- * This edge function intercepts all requests to /.netlify/functions/kai-proxy,
- * passes them through to the actual function, then adds CORS headers to the
- * response before returning to the browser.
+ * Approach: For OPTIONS, respond directly. For POST, fetch the serverless
+ * function internally and return the response with CORS headers added.
  * 
- * Constitutional note: No data is stored, logged, or modified. This is a
- * pass-through that adds transport headers only.
+ * Constitutional note: No data is stored, logged, or modified. Pass-through only.
  */
 
 const CORS_HEADERS = {
@@ -21,7 +19,7 @@ const CORS_HEADERS = {
 };
 
 export default async (request, context) => {
-  // Handle OPTIONS preflight directly at the edge — never hits the function
+  // Handle OPTIONS preflight directly at the edge
   if (request.method === 'OPTIONS') {
     return new Response('', {
       status: 204,
@@ -29,18 +27,47 @@ export default async (request, context) => {
     });
   }
 
-  // Pass through to the actual kai-proxy function
-  const response = await context.next();
-
-  // Clone the response so we can modify headers
-  const body = await response.text();
-
-  // Return with CORS headers added
-  return new Response(body, {
-    status: response.status,
-    headers: {
-      ...Object.fromEntries(response.headers.entries()),
-      ...CORS_HEADERS,
-    },
-  });
+  // For all other methods, pass through to the serverless function
+  // and add CORS headers to the response
+  try {
+    const response = await context.next();
+    
+    // Create new headers combining the original response headers with CORS
+    const newHeaders = new Headers(response.headers);
+    newHeaders.set('Access-Control-Allow-Origin', '*');
+    newHeaders.set('Access-Control-Allow-Headers', 'Content-Type');
+    newHeaders.set('Access-Control-Allow-Methods', 'POST, OPTIONS, GET');
+    
+    return new Response(response.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers: newHeaders,
+    });
+  } catch (err) {
+    // If context.next() fails, try direct fetch as fallback
+    try {
+      const url = new URL(request.url);
+      const fetchResponse = await fetch(url.toString(), {
+        method: request.method,
+        headers: request.headers,
+        body: request.method !== 'GET' ? await request.text() : undefined,
+      });
+      
+      const newHeaders = new Headers(fetchResponse.headers);
+      newHeaders.set('Access-Control-Allow-Origin', '*');
+      newHeaders.set('Access-Control-Allow-Headers', 'Content-Type');
+      newHeaders.set('Access-Control-Allow-Methods', 'POST, OPTIONS, GET');
+      
+      return new Response(fetchResponse.body, {
+        status: fetchResponse.status,
+        statusText: fetchResponse.statusText,
+        headers: newHeaders,
+      });
+    } catch (fetchErr) {
+      return new Response(JSON.stringify({ error: 'Edge function error', detail: fetchErr.message }), {
+        status: 502,
+        headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
+      });
+    }
+  }
 };
