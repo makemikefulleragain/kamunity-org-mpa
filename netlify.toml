@@ -159,8 +159,9 @@
 
 [[redirects]]
   from = "/org-health-check"
-  to = "/#shop"
+  to = "https://kamunity-org-health.netlify.app/"
   status = 301
+  force = true
 
 [[redirects]]
   from = "/reflection"
