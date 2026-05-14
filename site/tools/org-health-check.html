@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Org Health Check — Kamunity</title>
+<meta name="description" content="A 15-question diagnostic of organisational health across strategy, process, quality, innovation and governance. Free, client-side, no data collected.">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#b8522e">
+<meta property="og:title" content="Org Health Check — Kamunity">
+<meta property="og:description" content="Structured diagnostic across strategy, process, quality, innovation and governance. ~10 minutes. Client-side only.">
+<meta property="og:type" content="website">
+
+<!-- Fonts: Google Fonts CDN. Disclosed in footer. Remove this <link> + add @font-face if you need fully offline. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@300;400;500;600;700&family=Source+Serif+4:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  /* ── Brand tokens (from kamunity-org-mpa/site/css/style.css) ── */
+  :root {
+    --ember: #b8522e;
+    --ember-light: #d4784a;
+    --warm: #c49a6c;
+    --parchment: #f2ebe0;
+    --parchment-dark: #e8dfd0;
+    --cream: #faf6f0;
+    --deep: #1a1612;
+    --ash: #8a7e70;
+    --moss: #4a6741;
+    --sky: #2c5f7a;
+    --gold: #b49a30;
+    --ink: #2a2420;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-optical-sizing: auto;
+    line-height: 1.75;
+    font-size: 17px;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  /* ── Page chrome ── */
+  .page {
+    max-width: 52rem;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+  }
+
+  .brand {
+    display: flex;
+    align-items: baseline;
+    gap: 0.7rem;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--parchment-dark);
+  }
+  .brand-mark { font-size: 1.3rem; line-height: 1; }
+  .brand-name {
+    font-family: 'Fraunces', serif;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--sky);
+    letter-spacing: 0.02em;
+  }
+  .brand-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--ash);
+    margin-left: auto;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .hero { margin-bottom: 2rem; }
+  .hero-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ember);
+    margin-bottom: 0.6rem;
+  }
+  .hero-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(1.8rem, 4.5vw, 2.6rem);
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 0.8rem;
+  }
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--ink);
+    max-width: 38rem;
+    margin-bottom: 1rem;
+  }
+  .how-to {
+    background: var(--parchment);
+    border-left: 3px solid var(--warm);
+    padding: 0.9rem 1.2rem;
+    font-size: 0.92rem;
+    color: var(--ink);
+    margin-top: 1.2rem;
+  }
+  .how-to strong { color: var(--ember); font-weight: 600; }
+
+  main { margin-top: 1rem; }
+
+  /* ── Quiz containers (ported from style.css:401-657) ── */
+  .quiz-start {
+    padding: 3rem 2rem;
+    background: var(--parchment);
+    border: 1px solid var(--parchment-dark);
+    text-align: center;
+  }
+  .quiz-start h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1.3rem;
+    margin-bottom: 0.8rem;
+    color: var(--ink);
+  }
+  .quiz-start p { color: var(--ash); font-size: 0.95rem; margin-bottom: 1.5rem; }
+  .quiz-btn-start {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85rem;
+    padding: 0.8rem 2.4rem;
+    background: var(--ember);
+    color: var(--cream);
+    border: none;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: background 0.2s;
+  }
+  .quiz-btn-start:hover { background: var(--ember-light); }
+
+  .quiz-question {
+    padding: 2rem;
+    background: var(--parchment);
+    border: 1px solid var(--parchment-dark);
+  }
+  .quiz-progress-bar {
+    width: 100%;
+    height: 4px;
+    background: var(--parchment-dark);
+    margin-bottom: 1.5rem;
+  }
+  .quiz-progress-fill {
+    height: 4px;
+    background: var(--ember);
+    transition: width 0.4s ease;
+  }
+  .quiz-meta {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--ash);
+    letter-spacing: 0.04em;
+    margin-bottom: 1.2rem;
+  }
+  .quiz-dimension { color: var(--ember); }
+  .quiz-question-text {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 1.2rem;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+  .quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-bottom: 1.5rem;
+  }
+  .quiz-option {
+    padding: 0.85rem 1.2rem;
+    border: 1px solid var(--parchment-dark);
+    background: var(--cream);
+    color: var(--ink);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    transition: all 0.2s;
+  }
+  .quiz-option:hover { border-color: var(--warm); color: var(--ink); }
+  .quiz-option.selected {
+    border-color: var(--ember);
+    background: var(--parchment);
+    color: var(--ink);
+  }
+  .quiz-option-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--ash);
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  .quiz-option.selected .quiz-option-dot {
+    border-color: var(--ember);
+    background: var(--ember);
+  }
+  .quiz-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+  }
+  .quiz-btn-back {
+    background: none;
+    border: none;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--ash);
+    cursor: pointer;
+    padding: 0.5rem;
+  }
+  .quiz-btn-back:disabled { opacity: 0.3; cursor: not-allowed; }
+  .quiz-btn-back:not(:disabled):hover { color: var(--ember); }
+  .quiz-btn-next {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.82rem;
+    padding: 0.65rem 1.8rem;
+    background: var(--ember);
+    color: var(--cream);
+    border: none;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: background 0.2s;
+  }
+  .quiz-btn-next:disabled { background: var(--parchment-dark); color: var(--ash); cursor: not-allowed; }
+  .quiz-btn-next:not(:disabled):hover { background: var(--ember-light); }
+
+  .quiz-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 1.2rem;
+    flex-wrap: wrap;
+  }
+  .quiz-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--parchment-dark);
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    padding: 0;
+  }
+  .quiz-dot.current { background: var(--ember); transform: scale(1.3); }
+  .quiz-dot.answered { background: var(--warm); }
+
+  /* Results */
+  #health-results {
+    padding: 2rem;
+    background: var(--parchment);
+    border: 1px solid var(--parchment-dark);
+    margin-top: 1rem;
+  }
+  #health-results.hidden { display: none; }
+  #health-results h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--ink);
+  }
+  .quiz-score-bar-wrap { margin: 1.5rem 0; }
+  .quiz-score-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--ash);
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.06em;
+  }
+  .quiz-score-track {
+    height: 10px;
+    background: var(--parchment-dark);
+    margin-bottom: 0.8rem;
+    position: relative;
+  }
+  .quiz-score-fill { height: 10px; transition: width 1s ease; }
+  .score-fill-ember { background: var(--ember); }
+  .quiz-result-summary {
+    margin: 1.5rem 0;
+    padding: 1rem 1.5rem;
+    border-left: 3px solid var(--ember);
+    background: var(--cream);
+    color: var(--ink);
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+  .quiz-btn-reset {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    padding: 0.5rem 1.2rem;
+    background: transparent;
+    color: var(--ash);
+    border: 1px solid var(--parchment-dark);
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: all 0.2s;
+  }
+  .quiz-btn-reset:hover { border-color: var(--warm); color: var(--ink); }
+
+  /* Share / save row */
+  .share-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1.2rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--parchment-dark);
+  }
+  .share-btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    padding: 0.5rem 1rem;
+    background: transparent;
+    color: var(--sky);
+    border: 1px solid var(--parchment-dark);
+    cursor: pointer;
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .share-btn:hover { border-color: var(--sky); }
+
+  /* Footer */
+  footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--parchment-dark);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--ash);
+    line-height: 1.6;
+  }
+  footer a { color: var(--sky); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  footer .privacy { margin-bottom: 0.6rem; }
+  footer .meta { font-size: 0.7rem; color: var(--ash); }
+
+  noscript p {
+    background: var(--parchment);
+    border-left: 3px solid var(--ember);
+    padding: 1rem 1.2rem;
+    margin-top: 1rem;
+  }
+
+  /* ── Print ── */
+  @media print {
+    body { background: white; font-size: 12pt; }
+    .page { max-width: 100%; padding: 1rem; }
+    .brand-tag, .share-row, .quiz-btn-reset, .how-to { display: none !important; }
+    #health-quiz { display: none !important; }
+    #health-results { background: white; border: 1px solid #ccc; page-break-inside: avoid; }
+    footer { font-size: 9pt; }
+    a { color: black; }
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 540px) {
+    .page { padding: 1.5rem 1rem 3rem; }
+    .quiz-question, .quiz-start, #health-results { padding: 1.5rem 1.2rem; }
+    .brand-tag { display: none; }
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <header class="brand">
+      <span class="brand-mark" aria-hidden="true">🌱</span>
+      <span class="brand-name">Kamunity</span>
+      <span class="brand-tag">Assessment · Free · Client-side only</span>
+    </header>
+
+    <section class="hero">
+      <div class="hero-eyebrow">~10 minutes · No data collected</div>
+      <h1 class="hero-title">Org Health Check</h1>
+      <p class="hero-sub">A structured diagnostic across <strong>strategy, process, quality, innovation, and governance</strong> — designed for small community-sector organisations.</p>
+      <div class="how-to">
+        <strong>How to use this:</strong> Answer 15 questions honestly — pick the option that <em>most closely</em> matches your reality, not the one that sounds best. Your answers never leave this browser. At the end you'll see a summary band; print it, screenshot it, or take it into a board conversation.
+      </div>
+    </section>
+
+    <main>
+      <div id="health-quiz" aria-live="polite"></div>
+      <div id="health-results" class="hidden" aria-live="polite"></div>
+      <noscript><p>JavaScript is required to run this assessment. Your answers will still never leave your browser when JavaScript is enabled.</p></noscript>
+    </main>
+
+    <footer>
+      <p class="privacy"><strong>Privacy:</strong> All scoring runs in your browser. No analytics, no tracking, no submission. The only network request this page makes is to load Google Fonts (Fraunces, Source Serif 4, IBM Plex Mono) on first paint. To run fully offline, save the page locally.</p>
+      <p class="meta">
+        Part of the Kamunity commons · <a href="https://kamunity.org/" target="_blank" rel="noopener">kamunity.org</a> · <a href="https://kamunity.org/#chats" target="_blank" rel="noopener">Ask Kai about your results →</a>
+      </p>
+    </footer>
+  </div>
+
+<script>
+/* ============================================================
+   Org Health Check — standalone
+   Questions, scoring and engine copied verbatim from
+   PROJECTS/kamunity-org-mpa/site/js/quizzes.js (lines 201-490).
+   Canonical source remains quizzes.js — keep in sync.
+   ============================================================ */
+
+const HEALTH_QUESTIONS = [
+    {
+        q: "How often does your organisation's strategy get reviewed and updated?",
+        dimension: "Strategy",
+        options: [
+            { text: "Annually with clear process and board involvement", score: 3 },
+            { text: "Irregularly — when there's a crisis or change in leadership", score: 1 },
+            { text: "We have a strategy but it's rarely revisited", score: 2 },
+            { text: "We don't have a documented strategy", score: 0 }
+        ]
+    },
+    {
+        q: "When something goes wrong in your operations, how well does your organisation understand why?",
+        dimension: "Quality",
+        options: [
+            { text: "We have root cause analysis processes — we understand the why", score: 3 },
+            { text: "We usually figure it out but it takes time and varies by person", score: 2 },
+            { text: "We fix the symptom but rarely get to the underlying cause", score: 1 },
+            { text: "We're in reactive mode — we fix what breaks and move on", score: 0 }
+        ]
+    },
+    {
+        q: "How well do your core processes work — the things that happen every day or every week?",
+        dimension: "Process",
+        options: [
+            { text: "They're documented, followed, and regularly reviewed", score: 3 },
+            { text: "They mostly work but depend on specific people's knowledge", score: 2 },
+            { text: "They're inconsistent — varies by team or person", score: 1 },
+            { text: "We don't really have documented processes for most things", score: 0 }
+        ]
+    },
+    {
+        q: "How much of your organisation's knowledge lives only in people's heads (not documented)?",
+        dimension: "Process",
+        options: [
+            { text: "Very little — we document well and knowledge is accessible", score: 3 },
+            { text: "Some — key roles have things documented, others don't", score: 2 },
+            { text: "A lot — if certain people left, we'd be in trouble", score: 1 },
+            { text: "Nearly all of it — we're very dependent on specific individuals", score: 0 }
+        ]
+    },
+    {
+        q: "How does your organisation handle new ideas for improving how you work?",
+        dimension: "Innovation",
+        options: [
+            { text: "We have a clear process for testing and implementing improvements", score: 3 },
+            { text: "Good ideas sometimes get implemented but it's inconsistent", score: 2 },
+            { text: "New ideas often get discussed but rarely actioned", score: 1 },
+            { text: "There's no real process — it depends on who has energy or authority", score: 0 }
+        ]
+    },
+    {
+        q: "How well does your board understand and fulfil its governance role?",
+        dimension: "Governance",
+        options: [
+            { text: "Very well — clear role separation, active oversight, good support", score: 3 },
+            { text: "Mostly well — some confusion about roles but generally functional", score: 2 },
+            { text: "Unevenly — board engagement varies significantly between members", score: 1 },
+            { text: "There are real problems — board/management tension, unclear roles, or disengagement", score: 0 }
+        ]
+    },
+    {
+        q: "How healthy is the relationship between board and management?",
+        dimension: "Governance",
+        options: [
+            { text: "Strong — mutual trust, clear communication, healthy tension", score: 3 },
+            { text: "Functional — mostly okay but some friction or communication gaps", score: 2 },
+            { text: "Strained — there's tension that affects decision-making", score: 1 },
+            { text: "Problematic — this is actively getting in the way of the organisation's work", score: 0 }
+        ]
+    },
+    {
+        q: "How are your staff going? Not their official wellbeing scores — honestly?",
+        dimension: "Quality",
+        options: [
+            { text: "Good — people are engaged, turnover is low, load is manageable", score: 3 },
+            { text: "Mixed — some people are fine, others are stretched", score: 2 },
+            { text: "Tired — there's a sense of sustained overload", score: 1 },
+            { text: "Critical — we're losing people or people are quietly disengaged", score: 0 }
+        ]
+    },
+    {
+        q: "How well does your organisation measure whether it's actually achieving what it says it's for?",
+        dimension: "Strategy",
+        options: [
+            { text: "Well — we have meaningful outcome measures, not just output counts", score: 3 },
+            { text: "We measure activity but not always impact", score: 2 },
+            { text: "We report to funders but don't really know if we're making a difference", score: 1 },
+            { text: "We don't have a clear measurement framework", score: 0 }
+        ]
+    },
+    {
+        q: "In the last 12 months, has your organisation tried something genuinely new — not just iteration on existing work?",
+        dimension: "Innovation",
+        options: [
+            { text: "Yes — deliberate innovation, with learning and reflection", score: 3 },
+            { text: "Yes — but it was opportunistic rather than strategic", score: 2 },
+            { text: "Small experiments — but nothing significant", score: 1 },
+            { text: "No — we've been in maintenance or survival mode", score: 0 }
+        ]
+    },
+    {
+        q: "How well does your organisation understand the difference between what it's trying to achieve and what it's currently doing to get there?",
+        dimension: "Strategy",
+        options: [
+            { text: "Clearly — there's a strong theory of change and people understand it", score: 3 },
+            { text: "Roughly — the connection exists but isn't always explicit", score: 2 },
+            { text: "Vaguely — there's a gap between mission language and actual activity", score: 1 },
+            { text: "Poorly — activities have drifted from purpose over time", score: 0 }
+        ]
+    },
+    {
+        q: "If you had to identify the one process in your organisation that wastes the most energy, how hard would that be?",
+        dimension: "Process",
+        options: [
+            { text: "Easy — we know exactly where the waste is, and we're working on it", score: 3 },
+            { text: "Easy — we know where it is, but fixing it hasn't been a priority", score: 2 },
+            { text: "Hard — there are too many to pick just one", score: 1 },
+            { text: "Very hard — we haven't looked at this systematically", score: 0 }
+        ]
+    },
+    {
+        q: "How are your finances? Not the formal audit — honestly?",
+        dimension: "Governance",
+        options: [
+            { text: "Healthy — we have reserves, diversified income, and a plan", score: 3 },
+            { text: "Functional — we're okay for now but the buffer is thin", score: 2 },
+            { text: "Precarious — we're dependent on one or two grants renewing", score: 1 },
+            { text: "In crisis — financial sustainability is the issue we're working against constantly", score: 0 }
+        ]
+    },
+    {
+        q: "How quickly can your organisation respond when something externally changes — a policy shift, a funder's priorities, a crisis?",
+        dimension: "Innovation",
+        options: [
+            { text: "Quickly — we have enough slack and decision-making agility", score: 3 },
+            { text: "Adequately — we can respond but it takes time and causes stress", score: 2 },
+            { text: "Slowly — we're usually catching up, not anticipating", score: 1 },
+            { text: "Very slowly — we're too stretched to respond well to change", score: 0 }
+        ]
+    },
+    {
+        q: "Does your organisation have the right mix of skills and knowledge on its board?",
+        dimension: "Governance",
+        options: [
+            { text: "Yes — we've mapped what we need and actively recruit for gaps", score: 3 },
+            { text: "Mostly — but there are some gaps we've lived with for a while", score: 2 },
+            { text: "Uncertain — we've never really assessed this", score: 1 },
+            { text: "No — there are clear gaps affecting our governance quality", score: 0 }
+        ]
+    }
+];
+
+const HEALTH_RESULTS = [
+    { min: 0, max: 15, label: "Significant concerns", text: "Your organisation has significant operational health concerns across multiple areas. This is more common than you might think, especially after several years of sustained pressure. The good news: these problems are fixable. They just need deliberate attention." },
+    { min: 16, max: 25, label: "Areas needing attention", text: "Your organisation has real strengths alongside some meaningful gaps. The pattern of what's working and what isn't is usually telling — it points to where to invest energy first." },
+    { min: 26, max: 35, label: "Mostly healthy with gaps", text: "You're in reasonable health with some specific areas that could be strengthened. The foundation is solid. The work is targeted improvement, not rescue." },
+    { min: 36, max: 45, label: "Healthy organisation", text: "Your organisation is operating well across most dimensions. That's genuinely rare and worth protecting. The risk at this level is complacency — keeping it healthy requires continued attention." }
+];
+
+/* ── Engine (verbatim from quizzes.js:362-490) ── */
+function buildQuiz(containerId, resultsId, warmId, questions, resultsConfig) {
+    const container = document.getElementById(containerId);
+    const resultsEl = document.getElementById(resultsId);
+    const warmEl = warmId ? document.getElementById(warmId) : null;
+    if (!container) return;
+
+    let currentQ = 0;
+    let answers = [];
+    let shuffledOptions = questions.map(q => {
+        const opts = [...q.options];
+        return opts;
+    });
+
+    function renderStart() {
+        container.innerHTML = `
+            <div class="quiz-start">
+                <h3>${questions.length} questions · Client-side only · No data collected</h3>
+                <p>Take about ${Math.ceil(questions.length * 0.5)} minutes. Your answers never leave your browser.</p>
+                <button class="quiz-btn-start" id="${containerId}-start">Start →</button>
+            </div>`;
+        document.getElementById(containerId + '-start').addEventListener('click', function() {
+            renderQuestion(0);
+        });
+    }
+
+    function renderQuestion(idx) {
+        const q = questions[idx];
+        const opts = shuffledOptions[idx];
+        const progress = ((idx) / questions.length) * 100;
+        const selected = answers[idx] !== undefined ? answers[idx] : -1;
+
+        container.innerHTML = `
+            <div class="quiz-question">
+                <div class="quiz-progress-bar"><div class="quiz-progress-fill" style="width:${progress}%"></div></div>
+                <div class="quiz-meta">
+                    <span class="quiz-dimension">${q.dimension}</span>
+                    <span>${idx + 1} / ${questions.length}</span>
+                </div>
+                <div class="quiz-question-text">${q.q}</div>
+                <div class="quiz-options">
+                    ${opts.map((opt, i) => `
+                        <button class="quiz-option${selected === i ? ' selected' : ''}" data-idx="${i}">
+                            <span class="quiz-option-dot"></span>
+                            ${opt.text}
+                        </button>`).join('')}
+                </div>
+                <div class="quiz-nav">
+                    <button class="quiz-btn-back" ${idx === 0 ? 'disabled' : ''} id="${containerId}-back">← Back</button>
+                    <button class="quiz-btn-next" ${selected === -1 ? 'disabled' : ''} id="${containerId}-next">
+                        ${idx === questions.length - 1 ? 'See results →' : 'Next →'}
+                    </button>
+                </div>
+            </div>
+            <div class="quiz-dots">
+                ${questions.map((_, i) => `<button class="quiz-dot ${i === idx ? 'current' : (answers[i] !== undefined ? 'answered' : '')}" data-goto="${i}" aria-label="Question ${i+1}"></button>`).join('')}
+            </div>`;
+
+        container.querySelectorAll('.quiz-option').forEach(btn => {
+            btn.addEventListener('click', function() {
+                answers[idx] = parseInt(this.dataset.idx);
+                container.querySelectorAll('.quiz-option').forEach(b => b.classList.remove('selected'));
+                this.classList.add('selected');
+                document.getElementById(containerId + '-next').disabled = false;
+            });
+        });
+
+        document.getElementById(containerId + '-back').addEventListener('click', function() {
+            if (idx > 0) renderQuestion(idx - 1);
+        });
+
+        document.getElementById(containerId + '-next').addEventListener('click', function() {
+            if (answers[idx] === undefined) return;
+            if (idx < questions.length - 1) {
+                renderQuestion(idx + 1);
+            } else {
+                showResults();
+            }
+        });
+
+        container.querySelectorAll('.quiz-dot').forEach(dot => {
+            dot.addEventListener('click', function() {
+                renderQuestion(parseInt(this.dataset.goto));
+            });
+        });
+    }
+
+    function showResults() {
+        const totalScore = answers.reduce((sum, ansIdx, qIdx) => {
+            return sum + (shuffledOptions[qIdx][ansIdx]?.score || 0);
+        }, 0);
+        const maxScore = questions.length * 3;
+        const pct = Math.round((totalScore / maxScore) * 100);
+
+        const result = resultsConfig.find(r => totalScore >= r.min && totalScore <= r.max) || resultsConfig[resultsConfig.length - 1];
+
+        /* Per-dimension breakdown — added vs embedded version */
+        const dimAgg = {};
+        questions.forEach((qq, i) => {
+            const sc = shuffledOptions[i][answers[i]]?.score || 0;
+            if (!dimAgg[qq.dimension]) dimAgg[qq.dimension] = { score: 0, max: 0 };
+            dimAgg[qq.dimension].score += sc;
+            dimAgg[qq.dimension].max += 3;
+        });
+        const dimRows = Object.keys(dimAgg).map(d => {
+            const a = dimAgg[d];
+            const dpct = Math.round((a.score / a.max) * 100);
+            return `<div style="margin:0.6rem 0;">
+                <div style="display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:0.78rem;color:var(--ash);margin-bottom:0.25rem;">
+                    <span style="color:var(--ember);text-transform:uppercase;letter-spacing:0.06em;">${d}</span>
+                    <span>${a.score} / ${a.max}</span>
+                </div>
+                <div class="quiz-score-track" style="height:6px;"><div class="quiz-score-fill score-fill-ember" style="width:${dpct}%;height:6px;"></div></div>
+            </div>`;
+        }).join('');
+
+        container.innerHTML = '';
+        resultsEl.classList.remove('hidden');
+        resultsEl.innerHTML = `
+            <h3>${result.label}</h3>
+            <div class="quiz-score-bar-wrap">
+                <div class="quiz-score-label">Overall score · ${totalScore} / ${maxScore}</div>
+                <div class="quiz-score-track">
+                    <div class="quiz-score-fill score-fill-ember" style="width:0%" id="${containerId}-fill"></div>
+                </div>
+            </div>
+            <div class="quiz-result-summary">${result.text}</div>
+            <div style="margin-top:1.5rem;">
+                <div class="quiz-score-label">By dimension</div>
+                ${dimRows}
+            </div>
+            <div class="share-row">
+                <button class="share-btn" id="${containerId}-print" type="button">⎙ Print / save as PDF</button>
+                <button class="share-btn" id="${containerId}-copy" type="button">⧉ Copy results</button>
+                <a class="share-btn" href="https://kamunity.org/#chats" target="_blank" rel="noopener">Ask Kai about these →</a>
+                <button class="quiz-btn-reset" id="${containerId}-reset" type="button">Start again</button>
+            </div>`;
+
+        setTimeout(() => {
+            const fill = document.getElementById(containerId + '-fill');
+            if (fill) fill.style.width = pct + '%';
+        }, 100);
+
+        if (warmEl) warmEl.style.display = 'block';
+
+        document.getElementById(containerId + '-reset').addEventListener('click', function() {
+            answers = [];
+            resultsEl.classList.add('hidden');
+            resultsEl.innerHTML = '';
+            if (warmEl) warmEl.style.display = 'none';
+            renderStart();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        document.getElementById(containerId + '-print').addEventListener('click', function() {
+            window.print();
+        });
+
+        document.getElementById(containerId + '-copy').addEventListener('click', async function() {
+            const lines = [
+                `Org Health Check — ${result.label}`,
+                `Overall: ${totalScore} / ${maxScore} (${pct}%)`,
+                ``,
+                ...Object.keys(dimAgg).map(d => `${d}: ${dimAgg[d].score} / ${dimAgg[d].max}`),
+                ``,
+                result.text,
+                ``,
+                `via kamunity.org`
+            ].join('\n');
+            try {
+                await navigator.clipboard.writeText(lines);
+                this.textContent = '✓ Copied';
+                setTimeout(() => { this.textContent = '⧉ Copy results'; }, 2000);
+            } catch (e) {
+                this.textContent = '⚠ Copy failed';
+            }
+        });
+
+        resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    renderStart();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    buildQuiz('health-quiz', 'health-results', null, HEALTH_QUESTIONS, HEALTH_RESULTS);
+});
+</script>
+</body>
+</html>

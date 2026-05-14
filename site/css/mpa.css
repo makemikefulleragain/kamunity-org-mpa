@@ -497,6 +497,18 @@
     border-bottom: 2px solid var(--ember);
 }
 
+.shop-row-label--commons {
+    color: var(--moss);
+    border-bottom-color: var(--moss);
+}
+
+.shop-dynamic-status {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--ash-light);
+    margin: -0.55rem 0 0.8rem;
+}
+
 .shop-row {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -519,6 +531,16 @@
     border-color: var(--ember);
     box-shadow: 0 4px 16px rgba(196, 146, 42, 0.1);
     transform: translateY(-1px);
+}
+
+.shop-card--commons {
+    background: #f6f1e8;
+    border-color: rgba(87, 112, 77, 0.35);
+}
+
+.shop-card--commons:hover {
+    border-color: var(--moss);
+    box-shadow: 0 4px 16px rgba(87, 112, 77, 0.12);
 }
 
 .shop-card-icon {

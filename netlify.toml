@@ -114,8 +114,13 @@
 
 [[redirects]]
   from = "/tools"
-  to = "/#shop"
-  status = 301
+  to = "/tools.html"
+  status = 200
+
+[[redirects]]
+  from = "/tools/"
+  to = "/tools.html"
+  status = 200
 
 [[redirects]]
   from = "/kai"

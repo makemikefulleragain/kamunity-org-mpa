@@ -1,0 +1,17 @@
+{
+  "version": "1.0",
+  "slug": "compliance-harm-observations",
+  "title": "Compliance Harm Observations",
+  "summary": "A browser-only tool for WA NFPs to document frontline compliance harm observations, score them against policy objectives, and generate plain-language advocacy evidence snapshots.",
+  "format": "static-html",
+  "kind": "assessment",
+  "entrypoint": "index.html",
+  "deploy_path": "PROJECTS/kamunity-org-mpa/site/tools/compliance-harm-observations/index.html",
+  "public_url": "https://kamunity-org-mpa.netlify.app/tools/compliance-harm-observations/",
+  "sector_tags": ["advocacy", "policy", "health-wellbeing", "housing", "workforce", "governance", "emergency-relief"],
+  "audience": ["WA NFPs", "frontline workers", "advocates", "policy workers"],
+  "surfaces": { "warehouse": true, "door_picker": true, "door_shop_grid": true, "kamunity_org": false, "kamunity_ai_rooms": false },
+  "commons_library_id": "175107d0-e082-4608-bf8c-fe4ed78b581f",
+  "commons": { "triage_result": "MAKE", "artifact_type": "template", "artifact_content": "Browser-only compliance harm observation tool for WA NFPs. Scores observations against dignity, wellbeing, housing stability, employment pathway dimensions. Generates advocacy evidence snapshots.", "quality_check_passed": true, "factory_origin": "bothy-engine-assisted-promotion-fl-008a", "pattern_id_strategy": "manual_catalog", "source_pattern_id": null },
+  "safety": { "no_tracking": true, "no_personal_data_storage": true, "no_client_secrets": true, "human_review_required": true, "review_notes": "FL-008A assisted Factory promotion. Static HTML inspected locally. No network/storage/secret findings. Browser-only data." }
+}

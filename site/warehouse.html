@@ -467,6 +467,105 @@ function escWh(str) {
   return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 
+function normaliseFactoryToolUrl(outputUrl) {
+  var url = String(outputUrl || '').trim();
+  if (!url) return '';
+  if (/\.html(?:[?#].*)?$/i.test(url)) return url;
+  if (/\/$/.test(url)) return url + 'index.html';
+  return url + '/index.html';
+}
+
+function parseWarehouseBrief(rawContent, fallbackTitle) {
+  var raw = String(rawContent || '').trim();
+  var brief = {
+    title: fallbackTitle || 'Community Build Brief',
+    content: raw,
+    isJson: false
+  };
+  if (!raw) return brief;
+  try {
+    var parsed = JSON.parse(raw);
+    if (parsed && typeof parsed === 'object') {
+      brief.title = parsed.title || parsed.name || brief.title;
+      brief.content = parsed.content || parsed.summary || parsed.description || raw;
+      brief.isJson = Boolean(parsed.title || parsed.content || parsed.summary || parsed.description);
+    }
+  } catch (e) {
+    var loose = parseLooseWarehouseBrief(raw);
+    if (loose.title || loose.content) {
+      brief.title = loose.title || brief.title;
+      brief.content = loose.content || brief.content;
+      brief.isJson = true;
+    }
+  }
+  return brief;
+}
+
+function parseLooseWarehouseBrief(raw) {
+  var result = { title: '', content: '' };
+  var titleMatch = String(raw || '').match(/"title"\s*:\s*"((?:\\.|[^"\\])*)"/);
+  var contentMatch = String(raw || '').match(/"content"\s*:\s*"([\s\S]*)/);
+  if (titleMatch) result.title = decodeJsonishString(titleMatch[1]);
+  if (contentMatch) {
+    var content = contentMatch[1];
+    content = content.replace(/"\s*,\s*"[^"]+"\s*:\s*[\s\S]*$/m, '');
+    content = content.replace(/"\s*}\s*$/m, '');
+    result.content = decodeJsonishString(content);
+  }
+  return result;
+}
+
+function decodeJsonishString(value) {
+  return String(value || '')
+    .replace(/\\n/g, '\n')
+    .replace(/\\"/g, '"')
+    .replace(/\\\\/g, '\\')
+    .replace(/\\\//g, '/')
+    .trim();
+}
+
+function stripMarkdownForSnippet(text) {
+  return String(text || '')
+    .replace(/```[\s\S]*?```/g, ' ')
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/^#{1,6}\s+/gm, '')
+    .replace(/^>\s?/gm, '')
+    .replace(/[*_~>#-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function briefSnippet(content, maxLength) {
+  var text = stripMarkdownForSnippet(content);
+  var limit = maxLength || 260;
+  if (text.length <= limit) return text;
+  return text.slice(0, limit - 1).trim().replace(/[,\s;:]+$/, '') + '…';
+}
+
+function renderBriefContent(text) {
+  var lines = String(text || '').replace(/\\n/g, '\n').split(/\n+/);
+  var html = [];
+  lines.forEach(function(line) {
+    var trimmed = line.trim();
+    if (!trimmed || /^---+$/.test(trimmed)) return;
+    if (/^###\s+/.test(trimmed)) {
+      html.push('<h3>' + escWh(trimmed.replace(/^###\s+/, '')) + '</h3>');
+    } else if (/^##\s+/.test(trimmed)) {
+      html.push('<h2>' + escWh(trimmed.replace(/^##\s+/, '')) + '</h2>');
+    } else if (/^#\s+/.test(trimmed)) {
+      html.push('<h2>' + escWh(trimmed.replace(/^#\s+/, '')) + '</h2>');
+    } else if (/^>\s?/.test(trimmed)) {
+      html.push('<blockquote>' + escWh(trimmed.replace(/^>\s?/, '')) + '</blockquote>');
+    } else if (/^[-*]\s+/.test(trimmed)) {
+      html.push('<p>• ' + escWh(trimmed.replace(/^[-*]\s+/, '')) + '</p>');
+    } else {
+      html.push('<p>' + escWh(trimmed) + '</p>');
+    }
+  });
+  return html.join('');
+}
+
 async function loadFieldTools() {
   try {
     var res = await fetch('https://community-signal.netlify.app/.netlify/functions/warehouse-read');
@@ -479,20 +578,33 @@ async function loadFieldTools() {
     if (!row || !wrap) return;
 
     row.innerHTML = data.tools.map(function(tool) {
+      var brief = parseWarehouseBrief(tool.artifact_content, tool.artifact_title || 'Community Tool');
+      var cardTitle = brief.title || tool.artifact_title || 'Community Tool';
+      var cardBody = briefSnippet(brief.content || tool.triage_reasoning || '', 260);
       var tags = (tool.sector_tags || []).map(function(t) {
         return '<span class="wh-field-tag">' + escWh(t) + '</span>';
       }).join('');
-      var searchData = escWh(tool.artifact_title) + ' ' + escWh(tool.triage_reasoning) + ' ' + (tool.sector_tags || []).join(' ') + ' field community generated';
+      var searchData = escWh(cardTitle) + ' ' + escWh(cardBody) + ' ' + (tool.sector_tags || []).join(' ') + ' field community generated';
 
       // Generate type-specific action button for FactoryK tools
       var actionBtn = '';
-      if (tool.factory_origin) {
+      var outputUrl = normaliseFactoryToolUrl(tool.output_url || '');
+      var hasPublicOutput = /^https?:\/\//i.test(outputUrl);
+      var factoryOrigin = String(tool.factory_origin || '').trim();
+      var hasFactoryOrigin = Boolean(factoryOrigin && factoryOrigin !== 'false' && factoryOrigin !== 'null');
+      var badgeSuffix = hasPublicOutput
+        ? (hasFactoryOrigin ? ' · Factory' : '')
+        : ' · Build brief';
+
+      if (!hasPublicOutput) {
+        actionBtn = '<button class="ask-kai-btn wh-field-view-btn" onclick="openFieldTool(this)" data-tool-id="' + escWh(tool.id) + '" data-tool-title="' + escWh(cardTitle) + '" data-tool-content="' + escWh(tool.artifact_content || '') + '" data-tool-reasoning="' + escWh(tool.triage_reasoning || '') + '">View Build Brief →</button>';
+      } else if (hasFactoryOrigin) {
         // FactoryK-built tool — render based on output_type
         var outputType = tool.output_type || 'url';
         switch(outputType) {
           case 'url':
             // URL tools open in new tab
-            actionBtn = '<a href="' + escWh(tool.output_url || '') + '/index.html" target="_blank" class="ask-kai-btn wh-field-view-btn" style="text-decoration:none;display:inline-block;">Open Tool →</a>';
+            actionBtn = '<a href="' + escWh(outputUrl) + '" target="_blank" rel="noopener noreferrer" class="ask-kai-btn wh-field-view-btn" style="text-decoration:none;display:inline-block;">Open Tool →</a>';
             break;
           case 'download':
             // Downloadable files
@@ -514,13 +626,13 @@ async function loadFieldTools() {
         actionBtn = '<button class="ask-kai-btn wh-field-view-btn" onclick="openFieldTool(this)" data-tool-id="' + escWh(tool.id) + '" data-tool-title="' + escWh(tool.artifact_title) + '" data-tool-content="' + escWh(tool.artifact_content) + '">Open & Use →</button>';
       }
 
-      return '<div class="wh-tool-card" role="listitem" data-search="' + searchData + '" data-tool-id="' + escWh(tool.id) + '" data-output-type="' + escWh(tool.output_type || '') + '" data-output-url="' + escWh(tool.output_url || '') + '">' +
-        '<span class="wh-tool-badge">' + escWh(tool.artifact_type || 'Template') + ' · Community' + (tool.factory_origin ? ' · Factory' : '') + '</span>' +
-        '<h4>' + escWh(tool.artifact_title || 'Community Tool') + '</h4>' +
-        '<p>' + escWh(tool.triage_reasoning || '') + '</p>' +
+      return '<div class="wh-tool-card" role="listitem" data-search="' + searchData + '" data-tool-id="' + escWh(tool.id) + '" data-output-type="' + escWh(tool.output_type || '') + '" data-output-url="' + escWh(tool.output_url || '') + '" data-tool-content="' + escWh(tool.artifact_content || '') + '">' +
+        '<span class="wh-tool-badge">' + escWh(tool.artifact_type || 'Template') + ' · Community' + badgeSuffix + '</span>' +
+        '<h4>' + escWh(cardTitle) + '</h4>' +
+        '<p>' + escWh(cardBody) + '</p>' +
         '<div class="wh-field-tags">' + tags + '</div>' +
         actionBtn +
-        '<button class="ask-kai-btn" data-kai-modal data-kai-context="I\'m in the Commons Warehouse looking at \'' + escWh(tool.artifact_title) + '\'. Can you help me understand how to use this for my organisation?" aria-label="Ask Kai about ' + escWh(tool.artifact_title) + '">Ask Kai \u2192</button>' +
+        '<button class="ask-kai-btn" data-kai-modal data-kai-context="I\'m in the Commons Warehouse looking at \'' + escWh(cardTitle) + '\'. Can you help me understand how to use this for my organisation?" aria-label="Ask Kai about ' + escWh(cardTitle) + '">Ask Kai \u2192</button>' +
         '<button class="optin-notify-btn" onclick="openOptinModal(\'' + escWh((tool.sector_tags || [])[0] || '') + '\')" aria-label="Get notified about new tools in this area">\uD83D\uDD14 Notify me \u2192</button>' +
         '</div>';
     }).join('');
@@ -539,12 +651,18 @@ async function loadFieldTools() {
 function openFieldTool(btn) {
   var title = btn.getAttribute('data-tool-title') || 'Community Tool';
   var content = btn.getAttribute('data-tool-content') || '';
+  var reasoning = btn.getAttribute('data-tool-reasoning') || '';
+  var brief = parseWarehouseBrief(content, title);
   var win = window.open('', '_blank');
   if (!win) return;
-  win.document.write('<!DOCTYPE html><html><head><title>' + escWh(title) + '</title>' +
+  var reasoningBlock = reasoning
+    ? '<section class="reasoning"><h2>Why this was suggested</h2><p>' + escWh(reasoning) + '</p></section>'
+    : '';
+  win.document.write('<!DOCTYPE html><html><head><title>' + escWh(brief.title || title) + '</title>' +
     '<style>body{font-family:Georgia,serif;max-width:800px;margin:2rem auto;padding:1rem;line-height:1.6;color:#2C2318;background:#FAF7F2;}' +
-    'h1{font-size:1.4rem;margin-bottom:1rem;} pre{white-space:pre-wrap;background:#f5f5f0;padding:1rem;border-radius:8px;font-size:0.9rem;}</style>' +
-    '</head><body><h1>' + escWh(title) + '</h1><pre>' + escWh(content) + '</pre>' +
+    'h1{font-size:1.7rem;margin-bottom:1.4rem;} h2{font-size:1.15rem;margin:1.4rem 0 .4rem;} h3{font-size:1rem;margin:1.2rem 0 .35rem;} blockquote{border-left:4px solid #c45a34;margin:1rem 0;padding:.35rem 1rem;background:#fff8ef;} .brief-body p{margin:.65rem 0;} .reasoning{margin-top:2rem;border-top:1px solid #d8cbb9;padding-top:1rem;color:#6b5b4b;font-size:.95rem;}</style>' +
+    '</head><body><h1>' + escWh(brief.title || title) + '</h1><div class="brief-body">' + renderBriefContent(brief.content || content) + '</div>' +
+    reasoningBlock +
     '<p><small>Generated from community signal patterns — Commons Warehouse, Kamunity</small></p>' +
     '</body></html>');
   win.document.close();

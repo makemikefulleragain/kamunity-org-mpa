@@ -1,0 +1,49 @@
+{
+  "version": "1.0",
+  "slug": "housing-crisis-pressure-mapper",
+  "title": "Housing Crisis Pressure Mapper",
+  "summary": "A browser-only pressure mapping tool for WA homelessness and housing NFPs to score service strain, generate a snapshot report, and export advocacy-ready evidence.",
+  "format": "static-html",
+  "kind": "assessment",
+  "entrypoint": "index.html",
+  "deploy_path": "PROJECTS/kamunity-org-mpa/site/tools/housing-crisis-pressure-mapper/index.html",
+  "public_url": "https://kamunity-org-mpa.netlify.app/tools/housing-crisis-pressure-mapper/",
+  "sector_tags": [
+    "housing",
+    "homelessness",
+    "emergency-relief",
+    "advocacy",
+    "policy",
+    "service-capacity",
+    "data-sovereignty"
+  ],
+  "audience": [
+    "WA homelessness NFPs",
+    "housing advocates",
+    "service managers",
+    "sector policy workers"
+  ],
+  "surfaces": {
+    "warehouse": true,
+    "door_picker": true,
+    "door_shop_grid": true,
+    "kamunity_org": false,
+    "kamunity_ai_rooms": false
+  },
+  "commons": {
+    "triage_result": "MAKE",
+    "artifact_type": "template",
+    "artifact_content": "A browser-only Housing Crisis Pressure Mapper that helps WA homelessness and housing NFPs score pressure across capacity, referrals, closures, vulnerability, staffing, funding, policy barriers, and collaboration. It generates an advocacy summary and exports JSON, CSV, or text reports without sending data to a server.",
+    "quality_check_passed": true,
+    "factory_origin": "bothy-engine-assisted-promotion-fl-007d",
+    "pattern_id_strategy": "source_pattern",
+    "source_pattern_id": "d8a162b2-ba85-4741-9f74-6aa0bd1dd2fa"
+  },
+  "safety": {
+    "no_tracking": true,
+    "no_personal_data_storage": true,
+    "no_client_secrets": true,
+    "human_review_required": true,
+    "review_notes": "FL-007D assisted Factory promotion UAT. Static HTML inspected locally, no network/storage/secret/cookie/geolocation findings, user-entered report fields escaped before deploy, public URL returned 200. Data remains browser-only and export-only."
+  }
+}

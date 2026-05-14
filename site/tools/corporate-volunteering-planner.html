@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Corporate Volunteering Partnership Planner | Kamunity</title>
+  <meta name="description" content="A browser-only planning tool for WA NFPs to design, scope, pitch, print, and export corporate volunteering engagements.">
+  <style>
+    :root {
+      --ink: #211d19;
+      --muted: #6f665d;
+      --paper: #fffaf2;
+      --panel: #f4eadc;
+      --line: #d8c9b8;
+      --ember: #a94f2b;
+      --moss: #456b4c;
+      --sky: #315f7d;
+      --gold: #9a7a21;
+      --white: #ffffff;
+      --focus: #143c5a;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    a { color: var(--sky); }
+
+    button, input, textarea, select {
+      font: inherit;
+    }
+
+    button, input, textarea {
+      border-radius: 4px;
+    }
+
+    button:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible,
+    select:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1rem;
+      background: #17130f;
+      color: var(--paper);
+      font-family: "Courier New", monospace;
+      font-size: 0.76rem;
+    }
+
+    .topbar a { color: #f0b08f; text-decoration: none; }
+
+    .actions {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      border: 1px solid transparent;
+      background: var(--ember);
+      color: var(--white);
+      padding: 0.55rem 0.75rem;
+      cursor: pointer;
+      font-family: "Courier New", monospace;
+      font-size: 0.78rem;
+      line-height: 1.2;
+    }
+
+    .btn.secondary {
+      background: transparent;
+      border-color: #8f8172;
+      color: var(--paper);
+    }
+
+    .btn.light {
+      background: var(--paper);
+      border-color: var(--line);
+      color: var(--ink);
+    }
+
+    header, main, footer {
+      width: min(1120px, calc(100% - 2rem));
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 2.5rem 0 1.5rem;
+    }
+
+    .kicker {
+      color: var(--muted);
+      font-family: "Courier New", monospace;
+      font-size: 0.76rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0.2rem 0 0.5rem;
+      font-size: clamp(2rem, 5vw, 4.1rem);
+      line-height: 1.02;
+      font-weight: normal;
+      max-width: 900px;
+    }
+
+    h2 {
+      margin: 0 0 0.75rem;
+      color: var(--ember);
+      font-size: 1.45rem;
+      font-weight: normal;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.45rem;
+    }
+
+    h3 {
+      margin: 1.25rem 0 0.45rem;
+      color: var(--muted);
+      font-family: "Courier New", monospace;
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .intro {
+      max-width: 860px;
+      color: #3b332c;
+      font-size: 1.08rem;
+    }
+
+    .notice {
+      margin: 1rem 0;
+      padding: 1rem;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-left: 5px solid var(--gold);
+    }
+
+    .notice strong {
+      display: block;
+      margin-bottom: 0.3rem;
+      color: #6e5518;
+      font-family: "Courier New", monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 230px minmax(0, 1fr);
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    nav {
+      position: sticky;
+      top: 4.2rem;
+      padding: 1rem;
+      background: var(--panel);
+      border: 1px solid var(--line);
+    }
+
+    nav a {
+      display: block;
+      padding: 0.42rem 0;
+      color: var(--ink);
+      font-family: "Courier New", monospace;
+      font-size: 0.78rem;
+      text-decoration: none;
+      border-bottom: 1px dotted var(--line);
+    }
+
+    section {
+      margin-bottom: 1.25rem;
+      padding: 1.25rem;
+      background: #fffdf8;
+      border: 1px solid var(--line);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .grid.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    label, .label {
+      display: block;
+      margin: 0.75rem 0 0.22rem;
+      color: var(--muted);
+      font-family: "Courier New", monospace;
+      font-size: 0.74rem;
+      letter-spacing: 0.035em;
+      text-transform: uppercase;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: var(--white);
+      color: var(--ink);
+      padding: 0.58rem 0.65rem;
+    }
+
+    textarea {
+      min-height: 5rem;
+      resize: vertical;
+    }
+
+    .checks {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.45rem 1rem;
+      margin: 0.5rem 0 1rem;
+    }
+
+    .check {
+      display: flex;
+      gap: 0.5rem;
+      align-items: flex-start;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 0.95rem;
+      color: var(--ink);
+      text-transform: none;
+      letter-spacing: 0;
+      margin: 0;
+    }
+
+    .check input { margin-top: 0.3rem; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.75rem 0 1rem;
+      font-size: 0.92rem;
+    }
+
+    th {
+      background: var(--panel);
+      color: var(--muted);
+      font-family: "Courier New", monospace;
+      font-size: 0.72rem;
+      font-weight: normal;
+      letter-spacing: 0.035em;
+      text-align: left;
+      text-transform: uppercase;
+    }
+
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.5rem;
+      vertical-align: top;
+    }
+
+    td input, td textarea {
+      min-width: 11rem;
+      border: 0;
+      background: transparent;
+      padding: 0.15rem;
+    }
+
+    td textarea {
+      min-height: 3.2rem;
+    }
+
+    .quote {
+      border-left: 4px solid var(--moss);
+      background: var(--panel);
+      padding: 0.9rem 1rem;
+      margin: 0.75rem 0;
+    }
+
+    .preview {
+      display: none;
+      margin-top: 1rem;
+      background: var(--white);
+      border: 1px solid var(--line);
+      padding: 1.25rem;
+    }
+
+    .preview.active { display: block; }
+
+    .doc-output h1 { font-size: 28pt; }
+    .doc-output h2 { color: #000; border-bottom: 1px solid #999; }
+    .doc-output table { page-break-inside: avoid; }
+
+    footer {
+      padding: 2rem 0 3rem;
+      color: var(--muted);
+      font-family: "Courier New", monospace;
+      font-size: 0.72rem;
+    }
+
+    @media (max-width: 860px) {
+      .layout { grid-template-columns: 1fr; }
+      nav { position: static; }
+      .grid, .grid.three, .checks { grid-template-columns: 1fr; }
+      .topbar { align-items: flex-start; flex-direction: column; }
+      .actions { justify-content: flex-start; }
+      section { padding: 1rem; }
+    }
+
+    @media print {
+      .topbar, nav, .screen-only, .notice, .preview-actions { display: none !important; }
+      body { background: #fff; color: #000; font-size: 11pt; }
+      header, main, footer { width: 100%; }
+      header { padding: 0 0 1rem; }
+      .layout { display: block; }
+      section { border: 0; padding: 0; page-break-inside: avoid; background: #fff; }
+      input, textarea {
+        border: 0 !important;
+        border-bottom: 1px solid #999 !important;
+        background: transparent !important;
+      }
+      textarea { min-height: 3.5rem; }
+      h1 { font-size: 28pt; }
+      h2 { color: #000; page-break-after: avoid; }
+      a { color: #000; text-decoration: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar screen-only">
+    <span>Kamunity free tool · browser-only · no account · <a href="https://kamunity.org">kamunity.org</a></span>
+    <div class="actions" aria-label="Document actions">
+      <button class="btn secondary" type="button" id="previewBtn">Preview document</button>
+      <button class="btn secondary" type="button" id="wordBtn">Export Word</button>
+      <button class="btn secondary" type="button" id="printBtn">Print / PDF</button>
+      <button class="btn" type="button" id="clearBtn">Clear form</button>
+    </div>
+  </div>
+
+  <header>
+    <p class="kicker">WA community sector planner</p>
+    <h1>Corporate Volunteering Partnership Planner</h1>
+    <p class="intro">Design, scope, and pitch a corporate volunteering engagement before you approach a business partner. Complete the planner online, then print it or export a Word-compatible document.</p>
+    <div class="notice">
+      <strong>Privacy and safety</strong>
+      This tool does not send your answers anywhere and does not save them in localStorage. If you are on a shared computer, export or print what you need, then use <b>Clear form</b>. Do not include client-identifying details unless you have permission and a clear reason.
+    </div>
+    <div class="notice">
+      <strong>Limits</strong>
+      This is a planning tool, not legal, insurance, governance, cultural safety, or professional advice. Confirm volunteer coverage with your insurer, use proper consent processes, and get qualified advice for formal partnerships, secondments, IP, contracts, or significant financial exchange.
+    </div>
+  </header>
+
+  <main class="layout">
+    <nav class="screen-only" aria-label="Planner sections">
+      <a href="#org">1. Organisation</a>
+      <a href="#needs">2. What You Need</a>
+      <a href="#engagement">3. Engagement</a>
+      <a href="#pitch">4. Pitch</a>
+      <a href="#after">5. After the Day</a>
+      <a href="#program">6. Build a Program</a>
+      <a href="#preview">Preview / Export</a>
+    </nav>
+
+    <div>
+      <section id="org">
+        <h2>Section 1: Your Organisation at a Glance</h2>
+        <p>Fill this in once. Update it annually.</p>
+        <div class="grid">
+          <div><label for="orgName">Organisation name</label><input id="orgName" data-label="Organisation name" type="text" placeholder="Coastal Futures Community Services"></div>
+          <div><label for="locations">Location/s</label><input id="locations" data-label="Location/s" type="text" placeholder="Perth metropolitan - Fremantle and Cockburn areas"></div>
+          <div><label for="teamSize">Team size</label><input id="teamSize" data-label="Team size" type="text" placeholder="12 staff, 8 regular volunteers"></div>
+          <div><label for="notOffer">What you are not able to offer a corporate partner</label><textarea id="notOffer" data-label="What you are not able to offer a corporate partner" placeholder="Be honest. This saves everyone time."></textarea></div>
+        </div>
+        <label class="label">Primary service area/s</label>
+        <div class="checks" data-check-group="Primary service areas">
+          <label class="check"><input type="checkbox" value="Disability support"> Disability support</label>
+          <label class="check"><input type="checkbox" value="Housing and homelessness"> Housing and homelessness</label>
+          <label class="check"><input type="checkbox" value="Mental health and wellbeing"> Mental health and wellbeing</label>
+          <label class="check"><input type="checkbox" value="Financial counselling and crisis support"> Financial counselling and crisis support</label>
+          <label class="check"><input type="checkbox" value="Aged care"> Aged care</label>
+          <label class="check"><input type="checkbox" value="Youth services"> Youth services</label>
+          <label class="check"><input type="checkbox" value="Family services"> Family services</label>
+          <label class="check"><input type="checkbox" value="Conservation and environment"> Conservation and environment</label>
+          <label class="check"><input type="checkbox" value="Community engagement and capacity building"> Community engagement and capacity building</label>
+        </div>
+        <label for="serviceOther">Other service area</label><input id="serviceOther" data-label="Other service area" type="text">
+        <label for="oneSentence">One sentence about what you do</label><textarea id="oneSentence" data-label="One sentence about what you do" placeholder="We support..."></textarea>
+      </section>
+
+      <section id="needs">
+        <h2>Section 2: What You Actually Need</h2>
+        <p>Most corporate volunteering fails because the NFP said yes to whatever the business wanted. Start with what you need.</p>
+        <h3>2A. Operational gaps volunteers could genuinely fill</h3>
+        <table data-table="Operational gaps">
+          <thead><tr><th>Gap</th><th>What it looks like in practice</th><th>How often</th><th>How many people</th><th>Skill level needed</th></tr></thead>
+          <tbody>
+            <tr><td><textarea placeholder="Garden and outdoor maintenance"></textarea></td><td><textarea placeholder="Weeding, mowing, garden beds"></textarea></td><td><input type="text" placeholder="Quarterly"></td><td><input type="text" placeholder="6-10"></td><td><textarea placeholder="No special skills; physical fitness helpful"></textarea></td></tr>
+            <tr><td><textarea placeholder="IT setup and device support"></textarea></td><td><textarea placeholder="Laptops, tablets, how-to guides"></textarea></td><td><input type="text" placeholder="Biannual"></td><td><input type="text" placeholder="2-4"></td><td><textarea placeholder="Intermediate IT; patient communicators"></textarea></td></tr>
+            <tr><td><textarea placeholder="Administrative and data entry blitz"></textarea></td><td><textarea placeholder="Scanning, filing, spreadsheets"></textarea></td><td><input type="text"></td><td><input type="text"></td><td><textarea></textarea></td></tr>
+            <tr><td><textarea placeholder="Painting and minor repairs"></textarea></td><td><textarea placeholder="Interior painting, patching, light carpentry"></textarea></td><td><input type="text"></td><td><input type="text"></td><td><textarea></textarea></td></tr>
+            <tr><td><textarea placeholder="Add your own"></textarea></td><td><textarea></textarea></td><td><input type="text"></td><td><input type="text"></td><td><textarea></textarea></td></tr>
+          </tbody>
+        </table>
+        <label for="priorityGap">Priority gap selected</label><input id="priorityGap" data-label="Priority gap selected" type="text">
+        <label for="whyNow">Why this one, why now</label><textarea id="whyNow" data-label="Why this one, why now" placeholder="Why would this make the biggest difference right now?"></textarea>
+      </section>
+
+      <section id="engagement">
+        <h2>Section 3: Designing the Engagement</h2>
+        <h3>3A. The Engagement Brief</h3>
+        <div class="grid">
+          <div><label for="engagementTitle">Engagement title</label><input id="engagementTitle" data-label="Engagement title" type="text" placeholder="Green Spaces Day: Supported Living Sites Revamp"></div>
+          <div><label for="dates">Date/timing options</label><input id="dates" data-label="Date/timing options" type="text" placeholder="Saturdays preferred. Available: DATE 1, DATE 2, DATE 3"></div>
+          <div><label for="time">Start and finish time</label><input id="time" data-label="Start and finish time" type="text" placeholder="8:30am-2:30pm"></div>
+          <div><label for="meeting">Meeting point</label><input id="meeting" data-label="Meeting point" type="text" placeholder="Address provided on confirmation"></div>
+          <div><label for="maxGroup">Maximum group size</label><input id="maxGroup" data-label="Maximum group size" type="text" placeholder="10"></div>
+          <div><label for="minGroup">Minimum group size</label><input id="minGroup" data-label="Minimum group size" type="text" placeholder="6"></div>
+        </div>
+        <label for="paragraphVersion">The one-paragraph version</label><textarea id="paragraphVersion" data-label="The one-paragraph version" placeholder="We are looking for a corporate team of..."></textarea>
+
+        <h3>3B. The Day Design</h3>
+        <table data-table="Day design">
+          <thead><tr><th>Time</th><th>Activity</th><th>Who leads</th></tr></thead>
+          <tbody>
+            <tr><td><input type="text" value="8:30am"></td><td><textarea>Arrival, coffee, safety briefing, and site orientation</textarea></td><td><input type="text" placeholder="NFP Operations Coordinator"></td></tr>
+            <tr><td><input type="text" value="9:00am"></td><td><textarea>Introduction to the residents and what the space means to them, if resident-led and resident-consented</textarea></td><td><input type="text"></td></tr>
+            <tr><td><input type="text" value="9:20am"></td><td><textarea>Split into teams</textarea></td><td><input type="text"></td></tr>
+            <tr><td><input type="text" value="11:30am"></td><td><textarea>Morning tea break</textarea></td><td><input type="text" value="Shared"></td></tr>
+            <tr><td><input type="text" value="11:45am"></td><td><textarea>Planting or main activity session</textarea></td><td><input type="text"></td></tr>
+            <tr><td><input type="text" value="12:45pm"></td><td><textarea>Shared lunch</textarea></td><td><input type="text" value="Shared"></td></tr>
+            <tr><td><input type="text" value="1:30pm"></td><td><textarea>Tidy-up, group photo, and short debrief</textarea></td><td><input type="text"></td></tr>
+            <tr><td><input type="text" value="2:30pm"></td><td><textarea>Close</textarea></td><td><input type="text"></td></tr>
+          </tbody>
+        </table>
+
+        <h3>3C. What you provide</h3>
+        <div class="grid">
+          <div><label for="toolsProvided">Tools and equipment</label><textarea id="toolsProvided" data-label="Tools and equipment"></textarea></div>
+          <div><label for="safetyBriefing">Safety briefing and induction</label><textarea id="safetyBriefing" data-label="Safety briefing and induction"></textarea></div>
+          <div><label for="supervision">Supervision ratio</label><textarea id="supervision" data-label="Supervision ratio"></textarea></div>
+          <div><label for="lunch">Lunch</label><textarea id="lunch" data-label="Lunch"></textarea></div>
+          <div><label for="mediaConsent">Photo/media consent process</label><textarea id="mediaConsent" data-label="Photo/media consent process"></textarea></div>
+          <div><label for="insurance">Insurance coverage</label><textarea id="insurance" data-label="Insurance coverage"></textarea></div>
+          <div><label for="impactReport">Post-day impact report</label><textarea id="impactReport" data-label="Post-day impact report"></textarea></div>
+        </div>
+
+        <h3>3D. What the corporate partner provides</h3>
+        <div class="checks" data-check-group="Corporate partner to provide">
+          <label class="check"><input type="checkbox" value="Confirmed headcount 2 weeks before the day"> Confirmed headcount 2 weeks before the day</label>
+          <label class="check"><input type="checkbox" value="Completed volunteer registration form"> Completed volunteer registration form</label>
+          <label class="check"><input type="checkbox" value="Appropriate clothing and footwear"> Appropriate clothing and footwear</label>
+          <label class="check"><input type="checkbox" value="Team leader point of contact"> Team leader point of contact</label>
+          <label class="check"><input type="checkbox" value="Optional materials contribution"> Optional materials contribution</label>
+        </div>
+        <label for="materials">Materials contribution note</label><textarea id="materials" data-label="Materials contribution note" placeholder="We welcome a materials contribution of $200-$500, but it is not required."></textarea>
+      </section>
+
+      <section id="pitch">
+        <h2>Section 4: The Pitch</h2>
+        <h3>4A. Finding the right contact</h3>
+        <p>Look for HR/People and Culture, CSR/ESG, Community Engagement, Operations, Office Manager, or someone with a personal connection to your cause.</p>
+        <div class="grid">
+          <div><label for="targetContact">Target contact at company</label><input id="targetContact" data-label="Target contact at company" type="text"></div>
+          <div><label for="reachThem">How you know them / how you will reach them</label><input id="reachThem" data-label="How you know them / how you will reach them" type="text"></div>
+        </div>
+        <h3>4B. Outreach message</h3>
+        <label for="outreachSubject">Subject</label><input id="outreachSubject" data-label="Outreach subject" type="text" value="A specific volunteering day we have designed for your team">
+        <label for="outreach">Message</label><textarea id="outreach" data-label="Outreach message" rows="10">Hi [Name],
+
+I am [Your name] from [Organisation]. We support [one-line description of who you serve] in [location].
+
+We have designed a structured volunteering day that I think would work well for a team like yours: a hands-on outdoor day at two of our supported living sites. Residents are involved. It is a real day's work with a visible outcome, not a feel-good filler activity.
+
+We keep groups to 10 people max so it is genuinely well-run. We handle the logistics and provide tools, safety briefing, and a post-day impact report your team can share internally.
+
+I have three dates available in [month/quarter]. Would 20 minutes this week or next suit you to hear more?
+
+[Your name, title, contact details]</textarea>
+        <h3>4C. Conversation guide</h3>
+        <div class="quote">Lead with their people: "What do your team usually get out of volunteering days? What has worked, and what has not?"</div>
+        <div class="quote">Be honest about fit: "This engagement is good for teams who want to do something physical and see a direct result."</div>
+        <div class="quote">Name the exchange: "We get a job done that genuinely improves daily life. Your team gets a well-run day and a real connection to the work."</div>
+        <div class="quote">Close with a specific ask: "Which of the three dates works best?"</div>
+      </section>
+
+      <section id="after">
+        <h2>Section 5: After the Day</h2>
+        <h3>5A. Impact report</h3>
+        <div class="checks" data-check-group="Impact report inclusions">
+          <label class="check"><input type="checkbox" value="Before and after photos, with permission"> Before and after photos, with permission</label>
+          <label class="check"><input type="checkbox" value="2-3 staff sentences about what changed"> 2-3 staff sentences about what changed</label>
+          <label class="check"><input type="checkbox" value="Optional consented resident or client quote"> Optional consented resident or client quote</label>
+          <label class="check"><input type="checkbox" value="Specific outcome numbers"> Specific outcome numbers</label>
+          <label class="check"><input type="checkbox" value="Genuine thank you"> Genuine thank you</label>
+          <label class="check"><input type="checkbox" value="One sentence about what comes next"> One sentence about what comes next</label>
+        </div>
+        <label for="impactOutcome">Specific outcome draft</label><textarea id="impactOutcome" data-label="Specific outcome draft" placeholder="Two raised garden beds built. 14 plants in the ground..."></textarea>
+        <h3>5B. Relationship audit</h3>
+        <table data-table="Relationship audit">
+          <thead><tr><th>Question</th><th>Your answer</th></tr></thead>
+          <tbody>
+            <tr><td>Did the day deliver what we needed operationally?</td><td><textarea></textarea></td></tr>
+            <tr><td>Did the corporate team engage genuinely with clients/residents?</td><td><textarea></textarea></td></tr>
+            <tr><td>Was our staff time investment worth it?</td><td><textarea></textarea></td></tr>
+            <tr><td>Would we invite this partner back?</td><td><textarea></textarea></td></tr>
+            <tr><td>Did this lead to any additional relationship?</td><td><textarea></textarea></td></tr>
+            <tr><td>What would we change next time?</td><td><textarea></textarea></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="program">
+        <h2>Section 6: Building a Program</h2>
+        <p>Optional: use this section if one engagement goes well and you want to build a repeatable program.</p>
+        <table>
+          <thead><tr><th>Tier</th><th>Type</th><th>Typical group</th><th>Duration</th><th>Your prep time</th></tr></thead>
+          <tbody>
+            <tr><td>1 - Hands On</td><td>Physical, site-based work</td><td>6-12 people</td><td>Half to full day</td><td>Low, once designed</td></tr>
+            <tr><td>2 - Skilled</td><td>Pro bono professional services</td><td>1-4 people</td><td>Flexible</td><td>Medium, including matching and briefing</td></tr>
+            <tr><td>3 - Embedded</td><td>Longer-term secondment or project</td><td>1 person</td><td>Weeks to months</td><td>High, including supervision and management</td></tr>
+          </tbody>
+        </table>
+        <label for="programNotes">Program notes</label><textarea id="programNotes" data-label="Program notes" placeholder="Start with Tier 1. Only add Tier 2 or 3 when you have the internal capacity."></textarea>
+      </section>
+
+      <section id="preview">
+        <h2>Preview / Export</h2>
+        <p>Generate a clean completed document, then export it as Word or print it. The export is created locally in your browser.</p>
+        <div class="actions preview-actions">
+          <button class="btn light" type="button" id="previewBtn2">Preview document</button>
+          <button class="btn light" type="button" id="wordBtn2">Export Word</button>
+          <button class="btn light" type="button" id="printBtn2">Print / PDF</button>
+        </div>
+        <div class="preview doc-output" id="docPreview" aria-live="polite"></div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    Built for WA community sector organisations. Browser-only, no platform required. Share freely under CC BY-SA 4.0. This tool is a bothy-style planning aid: use it, export it, adapt it, and leave it useful for the next team.
+  </footer>
+
+  <script>
+    const escapeHtml = (value) => String(value || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+
+    const textValue = (selector) => {
+      const el = document.querySelector(selector);
+      return el ? el.value.trim() : "";
+    };
+
+    const fieldBlock = (label, value) => {
+      const clean = escapeHtml(value).replace(/\n/g, "<br>");
+      return `<p><strong>${escapeHtml(label)}:</strong><br>${clean || "<em>Not completed</em>"}</p>`;
+    };
+
+    const checkedList = (groupName) => {
+      const group = document.querySelector(`[data-check-group="${groupName}"]`);
+      if (!group) return "";
+      const items = Array.from(group.querySelectorAll("input[type='checkbox']"))
+        .filter((item) => item.checked)
+        .map((item) => `<li>${escapeHtml(item.value)}</li>`)
+        .join("");
+      return items || "<li><em>None selected</em></li>";
+    };
+
+    const tableHtml = (name) => {
+      const table = document.querySelector(`[data-table="${name}"]`);
+      if (!table) return "";
+      const headers = Array.from(table.querySelectorAll("thead th")).map((th) => th.textContent.trim());
+      const rows = Array.from(table.querySelectorAll("tbody tr")).map((tr) => {
+        const cells = Array.from(tr.children).map((td) => {
+          const control = td.querySelector("input, textarea");
+          return control ? control.value.trim() : td.textContent.trim();
+        });
+        return cells;
+      }).filter((cells) => cells.some(Boolean));
+      if (!rows.length) return "<p><em>Not completed</em></p>";
+      return `<table><thead><tr>${headers.map((h) => `<th>${escapeHtml(h)}</th>`).join("")}</tr></thead><tbody>${rows.map((row) => `<tr>${row.map((cell) => `<td>${escapeHtml(cell).replace(/\n/g, "<br>") || "&nbsp;"}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+    };
+
+    const standardFields = (ids) => ids.map(([id, label]) => fieldBlock(label, textValue(`#${id}`))).join("");
+
+    function buildDocument() {
+      const title = textValue("#engagementTitle") || "Corporate Volunteering Partnership Planner";
+      const generated = new Date().toLocaleDateString("en-AU", { year: "numeric", month: "long", day: "numeric" });
+      return `
+        <article>
+          <h1>${escapeHtml(title)}</h1>
+          <p><strong>Corporate Volunteering Partnership Planner</strong><br>Generated ${escapeHtml(generated)}</p>
+          <p><em>This document was completed locally in the browser. Confirm legal, insurance, consent, cultural safety, and governance matters with qualified humans before proceeding.</em></p>
+
+          <h2>1. Organisation at a Glance</h2>
+          ${standardFields([
+            ["orgName", "Organisation name"],
+            ["locations", "Location/s"],
+            ["teamSize", "Team size"],
+            ["oneSentence", "One sentence about what you do"],
+            ["notOffer", "What you are not able to offer a corporate partner"],
+            ["serviceOther", "Other service area"]
+          ])}
+          <p><strong>Primary service areas:</strong></p><ul>${checkedList("Primary service areas")}</ul>
+
+          <h2>2. What You Actually Need</h2>
+          <h3>Operational gaps</h3>${tableHtml("Operational gaps")}
+          ${standardFields([
+            ["priorityGap", "Priority gap selected"],
+            ["whyNow", "Why this one, why now"]
+          ])}
+
+          <h2>3. Engagement Design</h2>
+          ${standardFields([
+            ["engagementTitle", "Engagement title"],
+            ["paragraphVersion", "One-paragraph version"],
+            ["dates", "Date/timing options"],
+            ["time", "Start and finish time"],
+            ["meeting", "Meeting point"],
+            ["maxGroup", "Maximum group size"],
+            ["minGroup", "Minimum group size"]
+          ])}
+          <h3>Day design</h3>${tableHtml("Day design")}
+          <h3>What you provide</h3>
+          ${standardFields([
+            ["toolsProvided", "Tools and equipment"],
+            ["safetyBriefing", "Safety briefing and induction"],
+            ["supervision", "Supervision ratio"],
+            ["lunch", "Lunch"],
+            ["mediaConsent", "Photo/media consent process"],
+            ["insurance", "Insurance coverage"],
+            ["impactReport", "Post-day impact report"]
+          ])}
+          <h3>Corporate partner to provide</h3><ul>${checkedList("Corporate partner to provide")}</ul>
+          ${fieldBlock("Materials contribution note", textValue("#materials"))}
+
+          <h2>4. Pitch</h2>
+          ${standardFields([
+            ["targetContact", "Target contact at company"],
+            ["reachThem", "How you know them / how you will reach them"],
+            ["outreachSubject", "Outreach subject"],
+            ["outreach", "Outreach message"]
+          ])}
+          <p><strong>Conversation guide:</strong> Lead with their people, be honest about fit, name the exchange clearly, and close with a specific ask.</p>
+
+          <h2>5. After the Day</h2>
+          <h3>Impact report inclusions</h3><ul>${checkedList("Impact report inclusions")}</ul>
+          ${fieldBlock("Specific outcome draft", textValue("#impactOutcome"))}
+          <h3>Relationship audit</h3>${tableHtml("Relationship audit")}
+
+          <h2>6. Building a Program</h2>
+          <p>Start with Tier 1 hands-on engagements. Only add skilled or embedded volunteering when your organisation has the internal capacity to manage them well.</p>
+          ${fieldBlock("Program notes", textValue("#programNotes"))}
+
+          <hr>
+          <p><small>Built for WA community sector organisations. Plain language, no platform required. CC BY-SA 4.0.</small></p>
+        </article>
+      `;
+    }
+
+    function showPreview() {
+      const preview = document.getElementById("docPreview");
+      preview.innerHTML = buildDocument();
+      preview.classList.add("active");
+      preview.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function exportWord() {
+      const content = buildDocument();
+      const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Corporate Volunteering Partnership Planner</title><style>body{font-family:Georgia,serif;line-height:1.5;color:#111}table{border-collapse:collapse;width:100%;margin:12px 0}th,td{border:1px solid #999;padding:6px;vertical-align:top}th{background:#eee;text-align:left}h1,h2,h3{font-family:Georgia,serif}</style></head><body>${content}</body></html>`;
+      const blob = new Blob(["\ufeff", html], { type: "application/msword" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      const org = textValue("#orgName").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "nfp";
+      link.href = url;
+      link.download = `${org}-corporate-volunteering-planner.doc`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function clearForm() {
+      const confirmed = window.confirm("Clear all answers from this page? This cannot be undone.");
+      if (!confirmed) return;
+      document.querySelectorAll("input[type='text'], textarea").forEach((control) => {
+        if (control.id === "outreachSubject") {
+          control.value = "A specific volunteering day we have designed for your team";
+        } else if (control.id === "outreach") {
+          control.value = control.defaultValue;
+        } else if (!control.closest("[data-table='Day design']")) {
+          control.value = "";
+        }
+      });
+      document.querySelectorAll("input[type='checkbox']").forEach((control) => { control.checked = false; });
+      document.getElementById("docPreview").classList.remove("active");
+      document.getElementById("docPreview").innerHTML = "";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    document.getElementById("previewBtn").addEventListener("click", showPreview);
+    document.getElementById("previewBtn2").addEventListener("click", showPreview);
+    document.getElementById("wordBtn").addEventListener("click", exportWord);
+    document.getElementById("wordBtn2").addEventListener("click", exportWord);
+    document.getElementById("printBtn").addEventListener("click", () => window.print());
+    document.getElementById("printBtn2").addEventListener("click", () => window.print());
+    document.getElementById("clearBtn").addEventListener("click", clearForm);
+  </script>
+</body>
+</html>

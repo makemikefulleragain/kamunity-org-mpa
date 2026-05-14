@@ -106,8 +106,8 @@
 <!-- ② SIGNALS + PULSE -->
 <div class="hp-section-wrap">
 <section class="hp-section" id="signals" aria-labelledby="signals-heading">
-    <h2 id="signals-heading">What's happening in the sector</h2>
-    <p class="hp-section-tagline">Latest signals and pulses from the WA community sector.</p>
+    <h2 id="signals-heading">What's happening in the WA community</h2>
+    <p class="hp-section-tagline">Latest signals and stories from where you are.</p>
 
     <div class="signals-grid" id="signals-grid">
         <!-- Column 1: Signals -->
@@ -239,6 +239,13 @@
             <noscript><p class="noscript-note">JavaScript required to run this tool inline.</p></noscript>
         </div>
 
+    </div>
+
+    <!-- Dynamic Commons selections -->
+    <div id="commons-shop-row-wrap" hidden>
+        <div class="shop-row-label shop-row-label--commons">Commons Library — selected tools</div>
+        <div class="shop-dynamic-status" id="commons-shop-status" aria-live="polite"></div>
+        <div class="shop-row" id="commons-shop-row" role="list"></div>
     </div>
 
     <!-- Row 3: Next Steps -->
@@ -629,6 +636,7 @@
 <script src="js/kai.js"></script>
 <script src="js/kai-modal.js"></script>
 <script src="js/supabase-feed.js"></script>
+<script src="js/shop-grid.js"></script>
 <script>
 var kaiDisclosureBtn = document.getElementById('kai-disclosure-btn');
 if (kaiDisclosureBtn) {

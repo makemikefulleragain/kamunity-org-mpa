@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welfare Compliance Misalignment Mapper</title>
+    <style>
+        /* KAMUNITY AESTHETIC - ALL STYLING INLINE */
+        
+        :root {
+            --primary: #2563eb;
+            --primary-light: #3b82f6;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --warning: #ef4444;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --border: #e2e8f0;
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 48px 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 0 0 12px 0;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin: 0 0 32px 0;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* CARDS */
+        .card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            transition: all 0.2s ease;
+            margin-bottom: 24px;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-body {
+            padding: 24px;
+        }
+
+        .card h2 {
+            margin: 0 0 8px 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .card h3 {
+            margin: 0 0 16px 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* FORMS */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.2s ease;
+            background: var(--bg-primary);
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgb(37 99 235 / 0.1);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* BUTTONS */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-light);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-primary);
+            border-color: var(--primary);
+        }
+
+        .btn-success {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        /* SCORING */
+        .score-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .score-item {
+            padding: 16px;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .score-label {
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+
+        .score-input {
+            width: 80px !important;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* EVIDENCE SECTIONS */
+        .evidence-section {
+            margin: 32px 0;
+        }
+
+        .observation {
+            background: var(--bg-tertiary);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .observation-meta {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .observation-text {
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        /* RESULTS */
+        .results {
+            background: var(--bg-primary);
+            border: 2px solid var(--secondary);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 32px 0;
+        }
+
+        .misalignment-score {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .score-display {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--warning);
+            margin-bottom: 8px;
+        }
+
+        .score-interpretation {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        /* UTILITY */
+        .hidden {
+            display: none;
+        }
+
+        .mt-4 {
+            margin-top: 24px;
+        }
+
+        .mb-4 {
+            margin-bottom: 24px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-muted {
+            color: var(--text-muted);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 0 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HERO SECTION -->
+    <div class="hero">
+        <div class="container">
+            <h1>Welfare Compliance Misalignment Mapper</h1>
+            <p>Document frontline observations, measure policy misalignment, generate advocacy evidence</p>
+        </div>
+    </div>
+
+    <div class="container" style="padding-top: 48px; padding-bottom: 48px;">
+        
+        <!-- DATA COLLECTION FORM -->
+        <div class="card">
+            <div class="card-header">
+                <h2>Compliance Observation Entry</h2>
+                <p style="margin: 8px 0 0 0; color: var(--text-secondary);">Record frontline observations of welfare compliance interactions</p>
+            </div>
+            <div class="card-body">
+                <form id="observationForm">
+                    <div class="form-group">
+                        <label for="clientProfile">Client Profile</label>
+                        <select id="clientProfile" required>
+                            <option value="">Select client demographics...</option>
+                            <option value="single-parent">Single parent with dependent children</option>
+                            <option value="disability">Person with disability/health condition</option>
+                            <option value="youth">Young person (18-25)</option>
+                            <option value="older-worker">Older worker (50+)</option>
+                            <option value="culturally-diverse">Culturally and linguistically diverse</option>
+                            <option value="indigenous">Aboriginal and Torres Strait Islander</option>
+                            <option value="multiple-barriers">Multiple complex barriers</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="complianceRequirement">Compliance Requirement</label>
+                        <select id="complianceRequirement" required>
+                            <option value="">Select requirement type...</option>
+                            <option value="job-search">Job search activities/applications</option>
+                            <option value="appointments">Mandatory appointments</option>
+                            <option value="training">Training/education participation</option>
+                            <option value="work-for-dole">Work for the Dole activities</option>
+                            <option value="reporting">Regular reporting requirements</option>
+                            <option value="drug-testing">Drug testing compliance</option>
+                            <option value="asset-reporting">Asset/income reporting</option>
+                            <option value="residency-proof">Proof of residency/accommodation</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="observedOutcome">Observed Outcome</label>
+                        <textarea id="observedOutcome" placeholder="Describe what happened to the client as a result of this compliance requirement..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="barrierContext">Barrier/Context</label>
+                        <textarea id="barrierContext" placeholder="What barriers or circumstances affected the client's ability to comply?"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="serviceResponse">Service Provider Response</label>
+                        <textarea id="serviceResponse" placeholder="How did your organization respond? What support was provided?"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Add Observation</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- POLICY ALIGNMENT SCORING -->
+        <div class="card" id="scoringSection" style="display: none;">
+            <div class="card-header">
+                <h2>Policy Misalignment Scoring</h2>
+                <p style="margin: 8px 0 0 0; color: var(--text-secondary);">Rate how this observation aligns with stated policy objectives (1 = complete misalignment, 5 = perfect alignment)</p>
+            </div>
+            <div class="card-body">
+                <div class="score-grid">
+                    <div class="score-item">
+                        <div class="score-label">Dignity & Respect</div>
+                        <input type="number" class="score-input" id="dignityScore" min="1" max="5" placeholder="1-5">
+                    </div>
+                    <div class="score-item">
+                        <div class="score-label">Wellbeing Outcomes</div>
+                        <input type="number" class="score-input" id="wellbeingScore" min="1" max="5" placeholder="1-5">
+                    </div>
+                    <div class="score-item">
+                        <div class="score-label">Housing Stability</div>
+                        <input type="number" class="score-input" id="housingScore" min="1" max="5" placeholder="1-5">
+                    </div>
+                    <div class="score-item">
+                        <div class="score-label">Employment Pathway</div>
+                        <input type="number" class="score-input" id="employmentScore" min="1" max="5" placeholder="1-5">
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <button type="button" class="btn btn-success" onclick="calculateMisalignment()">Calculate Misalignment</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- OBSERVATIONS DISPLAY -->
+        <div class="card" id="observationsDisplay" style="display: none;">
+            <div class="card-header">
+                <h2>Recorded Observations</h2>
+            </div>
+            <div class="card-body">
+                <div id="observationsList"></div>
+            </div>
+        </div>
+
+        <!-- RESULTS & EVIDENCE SNAPSHOT -->
+        <div class="card" id="resultsSection" style="display: none;">
+            <div class="card-header">
+                <h2>Advocacy Evidence Snapshot</h2>
+            </div>
+            <div class="card-body">
+                <div class="results">
+                    <div class="misalignment-score">
+                        <div class="score-display" id="overallScore">0.0</div>
+                        <div class="score-interpretation" id="scoreInterpretation">No data yet</div>
+                    </div>
+                    
+                    <div id="evidenceSummary">
+                        <h3>Key Findings</h3>
+                        <div id="findingsText"></div>
+                        
+                        <h3>Structural Misalignment Evidence</h3>
+                        <div id="misalignmentEvidence"></div>
+                        
+                        <h3>Recommendations for Policy Reform</h3>
+                        <div id="recommendations"></div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-4">
+                    <button type="button" class="btn btn-primary" onclick="downloadReport()">📄 Download Full Report</button>
+                    <button type="button" class="btn btn-secondary" onclick="copyToClipboard()">📋 Copy for Submission</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // CORE DATA STORAGE
+        let observations = [];
+        let currentObservation = null;
+
+        // FORM SUBMISSION
+        document.getElementById('observationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const observation = {
+                id: Date.now(),
+                clientProfile: document.getElementById('clientProfile').value,
+                complianceRequirement: document.getElementById('complianceRequirement').value,
+                observedOutcome: document.getElementById('observedOutcome').value,
+                barrierContext: document.getElementById('barrierContext').value,
+                serviceResponse: document.getElementById('serviceResponse').value,
+                timestamp: new Date().toLocaleDateString()
+            };
+            
+            observations.push(observation);
+            currentObservation = observation;
+            
+            // Show scoring section
+            document.getElementById('scoringSection').style.display = 'block';
+            document.getElementById('scoringSection').scrollIntoView({ behavior: 'smooth' });
+            
+            // Update observations display
+            updateObservationsDisplay();
+            
+            // Clear form
+            this.reset();
+        });
+
+        // UPDATE OBSERVATIONS DISPLAY
+        function updateObservationsDisplay() {
+            const container = document.getElementById('observationsList');
+            const display = document.getElementById('observationsDisplay');
+            
+            if (observations.length === 0) {
+                display.style.display = 'none';
+                return;
+            }
+            
+            display.style.display = 'block';
+            
+            container.innerHTML = observations.map(obs => `
+                <div class="observation">
+                    <div class="observation-meta">
+                        <span><strong>${obs.clientProfile.replace('-', ' ')}</strong></span>
+                        <span>${obs.complianceRequirement.replace('-', ' ')}</span>
+                        <span>${obs.timestamp}</span>
+                    </div>
+                    <div class="observation-text">
+                        "${obs.observedOutcome}"
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // CALCULATE MISALIGNMENT SCORE
+        function calculateMisalignment() {
+            const dignity = parseInt(document.getElementById('dignityScore').value) || 0;
+            const wellbeing = parseInt(document.getElementById('wellbeingScore').value) || 0;
+            const housing = parseInt(document.getElementById('housingScore').value) || 0;
+            const employment = parseInt(document.getElementById('employmentScore').value) || 0;
+            
+            if (dignity === 0 || wellbeing === 0 || housing === 0 || employment === 0) {
+                alert('Please provide scores for all four dimensions');
+                return;
+            }
+            
+            // Add scores to current observation
+            if (currentObservation) {
+                currentObservation.scores = {
+                    dignity: dignity,
+                    wellbeing: wellbeing,
+                    housing: housing,
+                    employment: employment
+                };
+            }
+            
+            // Calculate overall misalignment (lower scores = higher misalignment)
+            const average = (dignity + wellbeing + housing + employment) / 4;
+            const misalignmentScore = 5 - average + 1; // Invert scale: 1 = aligned, 5 = severely misaligned
+            
+            // Update display
+            document.getElementById('overallScore').textContent = misalignmentScore.toFixed(1);
+            
+            let interpretation = '';
+            if (misalignmentScore >= 4) {
+                interpretation = 'SEVERE MISALIGNMENT - Policy outcomes directly contradict stated objectives';
+            } else if (misalignmentScore >= 3) {
+                interpretation = 'SIGNIFICANT MISALIGNMENT - Policy creates barriers to stated goals';
+            } else if (misalignmentScore >= 2) {
+                interpretation = 'MODERATE MISALIGNMENT - Mixed outcomes, some policy conflicts';
+            } else {
+                interpretation = 'MINOR MISALIGNMENT - Generally aligned with minor issues';
+            }
+            
+            document.getElementById('scoreInterpretation').textContent = interpretation;
+            
+            // Generate evidence summary
+            generateEvidenceSummary();
+            
+            // Show results
+            document.getElementById('resultsSection').style.display = 'block';
+            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+            
+            // Clear scoring inputs
+            document.getElementById('dignityScore').value = '';
+            document.getElementById('wellbeingScore').value = '';
+            document.getElementById('housingScore').value = '';
+            document.getElementById('employmentScore').value = '';
+        }
+
+        // GENERATE EVIDENCE SUMMARY
+        function generateEvidenceSummary() {
+            const scoredObservations = observations.filter(obs => obs.scores);
+            
+            if (scoredObservations.length === 0) return;
+            
+            // Calculate aggregated scores
+            let totalDignity = 0, totalWellbeing = 0, totalHousing = 0, totalEmployment = 0;
+            
+            scoredObservations.forEach(obs => {
+                totalDignity += obs.scores.dignity;
+                totalWellbeing += obs.scores.wellbeing;
+                totalHousing += obs.scores.housing;
+                totalEmployment += obs.scores.employment;
+            });
+            
+            const count = scoredObservations.length;
+            const avgDignity = totalDignity / count;
+            const avgWellbeing = totalWellbeing / count;
+            const avgHousing = totalHousing / count;
+            const avgEmployment = totalEmployment / count;
+            
+            // Generate findings
+            const findings = [
+                `Analysis of ${count} frontline compliance observations reveals systematic misalignment between punitive welfare requirements and stated policy objectives.`,
+                `Dignity & Respect outcomes: ${avgDignity.toFixed(1)}/5 (${getDimensionAssessment(avgDignity)})`,
+                `Wellbeing outcomes: ${avgWellbeing.toFixed(1)}/5 (${getDimensionAssessment(avgWellbeing)})`,
+                `Housing stability: ${avgHousing.toFixed(1)}/5 (${getDimensionAssessment(avgHousing)})`,
+                `Employment pathway effectiveness: ${avgEmployment.toFixed(1)}/5 (${getDimensionAssessment(avgEmployment)})`
+            ];
+            
+            document.getElementById('findingsText').innerHTML = findings.map(f => `<p>• ${f}</p>`).join('');
+            
+            // Generate misalignment evidence
+            const evidence = [
+                'Compliance regimes designed to incentivize employment are creating barriers to sustainable work pathways',
+                'Punitive measures targeting poverty-related non-compliance undermine dignity and agency',
+                'Administrative burden diverts resources from direct support provision',
+                'One-size-fits-all requirements fail to account for complex individual circumstances'
+            ];
+            
+            document.getElementById('misalignmentEvidence').innerHTML = evidence.map(e => `<p>• ${e}</p>`).join('');
+            
+            // Generate recommendations
+            const recommendations = [
+                'Replace punitive compliance with strengths-based support frameworks',
+                'Implement trauma-informed, culturally appropriate assessment processes',
+                'Increase caseworker discretion to tailor requirements to individual circumstances',
+                'Redirect compliance administration funding to direct support services',
+                'Establish independent oversight of compliance decision-making impacts'
+            ];
+            
+            document.getElementById('recommendations').innerHTML = recommendations.map(r => `<p>• ${r}</p>`).join('');
+        }
+
+        function getDimensionAssessment(score) {
+            if (score <= 2) return 'severe misalignment';
+            if (score <= 3) return 'significant misalignment';
+            if (score <= 4) return 'moderate misalignment';
+            return 'minor concerns';
+        }
+
+        // DOWNLOAD REPORT
+        function downloadReport() {
+            const content = generateFullReport();
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `welfare_compliance_misalignment_report_${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+
+        // COPY TO CLIPBOARD
+        function copyToClipboard() {
+            const content = generateFullReport();
+            navigator.clipboard.writeText(content).then(() => {
+                alert('Report copied to clipboard - ready for pasting into submissions');
+            });
+        }
+
+        // GENERATE FULL REPORT
+        function generateFullReport() {
+            const date = new Date().toLocaleDateString();
+            const scoredObservations = observations.filter(obs => obs.scores);
+            
+            let report = `WELFARE COMPLIANCE MISALIGNMENT REPORT
+Generated: ${date}
+Observations: ${observations.length} total, ${scoredObservations.length} scored
+
+EXECUTIVE SUMMARY
+${document.getElementById('findingsText').textContent}
+
+STRUCTURAL MISALIGNMENT EVIDENCE
+${document.getElementById('misalignmentEvidence').textContent}
+
+DETAILED OBSERVATIONS
+`;
+
+            observations.forEach((obs, index) => {
+                report += `
+Observation ${index + 1} (${obs.timestamp})
+Client Profile: ${obs.clientProfile.replace('-', ' ')}
+Compliance Requirement: ${obs.complianceRequirement.replace('-', ' ')}
+Observed Outcome: ${obs.observedOutcome}
+Barriers/Context: ${obs.barrierContext}
+Service Response: ${obs.serviceResponse}
+`;
+                
+                if (obs.scores) {
+                    report += `Policy Alignment Scores:
+  - Dignity & Respect: ${obs.scores.dignity}/5
+  - Wellbeing Outcomes: ${obs.scores.wellbeing}/5
+  - Housing Stability: ${obs.scores.housing}/5
+  - Employment Pathway: ${obs.scores.employment}/5
+`;
+                }
+            });
+
+            report += `
+RECOMMENDATIONS FOR POLICY REFORM
+${document.getElementById('recommendations').textContent}
+
+---
+Generated by Welfare Compliance Misalignment Mapper
+Community tool by FactoryK - factoryK.org
+`;
+
+            return report;
+        }
+    </script>
+</body>
+</html>

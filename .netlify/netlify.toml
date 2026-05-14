@@ -1,15 +1,11 @@
+functionsDirectory = "/Users/mikef76/Library/CloudStorage/OneDrive-Personal/1 KomUnity/1a New KU Plans/Dev_Code/Kamunity-Tabletop-Plan/PROJECTS/kamunity-org-mpa/site/netlify/functions"
+functionsDirectoryOrigin = "config-v1"
 headersOrigin = "config"
 redirectsOrigin = "config"
 plugins = []
-functionsDirectory = "/Users/mikef76/Library/CloudStorage/OneDrive-Personal/1 KomUnity/1a New KU Plans/Dev_Code/Kamunity-Tabletop-Plan/PROJECTS/kamunity-org-mpa/site/netlify/functions"
-functionsDirectoryOrigin = "config-v1"
-
-[functions]
-
-[functions."*"]
-node_bundler = "esbuild"
 
 [build]
+edge_functions = "/Users/mikef76/Library/CloudStorage/OneDrive-Personal/1 KomUnity/1a New KU Plans/Dev_Code/Kamunity-Tabletop-Plan/PROJECTS/kamunity-org-mpa/netlify/edge-functions"
 publish = "/Users/mikef76/Library/CloudStorage/OneDrive-Personal/1 KomUnity/1a New KU Plans/Dev_Code/Kamunity-Tabletop-Plan/PROJECTS/kamunity-org-mpa/site"
 publishOrigin = "config"
 functions = "/Users/mikef76/Library/CloudStorage/OneDrive-Personal/1 KomUnity/1a New KU Plans/Dev_Code/Kamunity-Tabletop-Plan/PROJECTS/kamunity-org-mpa/site/netlify/functions"
@@ -29,6 +25,15 @@ NODE_VERSION = "22"
 
 [build.services]
 
+[[edge_functions]]
+function = "kai-cors"
+path = "/.netlify/functions/kai-proxy"
+
+[functions]
+
+[functions."*"]
+node_bundler = "esbuild"
+
 [[headers]]
 for = "/*"
 
@@ -38,6 +43,14 @@ X-Content-Type-Options = "nosniff"
 Referrer-Policy = "strict-origin-when-cross-origin"
 Permissions-Policy = "camera=(), microphone=(), geolocation=()"
 Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; connect-src 'self' https://api.anthropic.com; img-src 'self' data:; frame-ancestors 'none'"
+
+[[headers]]
+for = "/.netlify/functions/*"
+
+[headers.values]
+Access-Control-Allow-Origin = "*"
+Access-Control-Allow-Headers = "Content-Type"
+Access-Control-Allow-Methods = "POST, OPTIONS, GET"
 
 [[headers]]
 for = "/*"
@@ -76,6 +89,25 @@ for = "/sitemap.xml"
 [headers.values]
 Content-Type = "application/xml; charset=utf-8"
 Cache-Control = "public, max-age=86400"
+
+[[headers]]
+for = "/door-gen-template.html"
+
+[headers.values]
+X-Robots-Tag = "noindex, nofollow"
+Cache-Control = "public, max-age=0, must-revalidate"
+
+[[redirects]]
+from = "/door-gen-template"
+to = "/door-gen-template.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
 
 [[redirects]]
 from = "/news"
@@ -175,8 +207,20 @@ force = false
 
 [[redirects]]
 from = "/tools"
-to = "/#shop"
-status = 301.0
+to = "/tools.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/tools/"
+to = "/tools.html"
+status = 200.0
 force = false
 
 [redirects.query]
@@ -283,9 +327,9 @@ force = false
 
 [[redirects]]
 from = "/org-health-check"
-to = "/#shop"
+to = "https://kamunity-org-health.netlify.app/"
 status = 301.0
-force = false
+force = true
 
 [redirects.query]
 
