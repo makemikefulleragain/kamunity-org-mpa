@@ -1,1 +1,0 @@
-module.exports = require('./site/netlify/functions/kai-proxy.js')
