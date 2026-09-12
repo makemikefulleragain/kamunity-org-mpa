@@ -31,7 +31,7 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "no-referrer"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; connect-src 'self' https://community-signal.netlify.app https://api.anthropic.com; img-src 'self' data:; form-action 'self' https://kamunity-org-mpa.netlify.app; frame-ancestors 'none'"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; connect-src 'self' https://phoenix-node.netlify.app https://api.anthropic.com; img-src 'self' data:; form-action 'self' https://kamunity-org-mpa.netlify.app; frame-ancestors 'none'"
 
 # ── Agent discovery file headers ─────────────────────────────────────────────
 [[headers]]

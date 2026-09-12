@@ -97,8 +97,8 @@
         </a>
     </div>
 
-    <div class="signal-teaser" id="signal-teaser" aria-label="Community Signal update">
-        From the Community Signal network — updated weekly from the WA community sector.
+    <div class="signal-teaser" id="signal-teaser" aria-label="Kamunity News update">
+        From Phoenix Node — updated from reviewed WA community-sector stories.
     </div>
 </section>
 </div>
@@ -115,7 +115,7 @@
             <div class="signals-col-label">Signals</div>
             <div id="signals-col">
                 <div class="signals-fallback" role="status" aria-live="polite">
-                    Signal pipeline loading — <a href="https://community-signal.netlify.app" target="_blank" rel="noopener noreferrer">view live signals →</a>
+                    Phoenix stories loading — <a href="/news">view Kamunity News →</a>
                 </div>
             </div>
         </div>
@@ -125,7 +125,7 @@
             <div class="signals-col-label">Pulse</div>
             <div id="pulse-col">
                 <div class="signals-fallback" role="status" aria-live="polite">
-                    Pulse loading — <a href="https://community-signal.netlify.app" target="_blank" rel="noopener noreferrer">view sector pulse →</a>
+                    Phoenix stories loading — <a href="/news">view Kamunity News →</a>
                 </div>
             </div>
         </div>
@@ -317,7 +317,31 @@
 </section>
 </div>
 
-<!-- ④ EMBEDDED CHATS -->
+<!-- ④ KAMUNITY ROOMS -->
+<div class="hp-section-wrap" id="rooms-section-wrap" hidden>
+<section class="hp-section rooms-section" id="rooms" aria-labelledby="rooms-heading">
+    <div class="rooms-heading-row">
+        <div>
+            <h2 id="rooms-heading">Kamunity Rooms</h2>
+            <p class="hp-section-tagline">The rooms we should be in, and the one we just made ourselves... and you can too.</p>
+        </div>
+        <a class="rooms-heading-link" href="https://kamunity.ai/discover" target="_blank" rel="noopener noreferrer" aria-label="Explore public rooms on Kamunity.AI in a new tab">Explore rooms ↗</a>
+    </div>
+    <p class="rooms-status" id="rooms-status" aria-live="polite"></p>
+
+    <div class="rooms-group" id="rooms-ai-group" hidden>
+        <div class="rooms-group-label">Rooms we should be in</div>
+        <div class="rooms-row" id="rooms-ai-row" role="list"></div>
+    </div>
+
+    <div class="rooms-group" id="rooms-phoenix-group" hidden>
+        <div class="rooms-group-label">The one we just made ourselves</div>
+        <div class="rooms-row" id="rooms-phoenix-row" role="list"></div>
+    </div>
+</section>
+</div>
+
+<!-- ⑤ EMBEDDED CHATS -->
 <div class="hp-section-wrap">
 <section class="hp-section" id="chats" aria-labelledby="chats-heading">
     <h2 id="chats-heading">Start a conversation</h2>
@@ -637,6 +661,7 @@
 <script src="js/kai-modal.js"></script>
 <script src="js/supabase-feed.js"></script>
 <script src="js/shop-grid.js"></script>
+<script src="js/rooms.js"></script>
 <script>
 var kaiDisclosureBtn = document.getElementById('kai-disclosure-btn');
 if (kaiDisclosureBtn) {

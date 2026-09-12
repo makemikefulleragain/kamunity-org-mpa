@@ -1,6 +1,6 @@
 /* ============================================================
    KAMUNITY MPA — supabase-feed.js
-   Fetches latest signals + pulses from Community Signal API
+   Fetches latest public Phoenix stories for the homepage excerpt.
    Static fallback if unavailable (Doug Test)
    No data sent. Read-only. Constitutional Principle 5.
    ============================================================ */
@@ -8,7 +8,8 @@
 (function () {
     'use strict';
 
-    var CS_ENDPOINT = 'https://community-signal.netlify.app/.netlify/functions/signals-read?mode=public&limit=3';
+    var PHOENIX_NEWS_ENDPOINT = window.PHOENIX_NEWS_ENDPOINT ||
+        'https://phoenix-node.netlify.app/.netlify/functions/public-mpa-news';
 
     var signalsCol = document.getElementById('signals-col');
     var pulseCol   = document.getElementById('pulse-col');
@@ -34,13 +35,46 @@
 
         var tags = (item.tags || []).slice(0, 2).join(' · ');
         var age  = formatAge(item.published_at || item.created_at);
+        var title = item.summary || item.title || 'Phoenix story';
+        var detail = item.title && item.summary && item.title !== item.summary ? item.title : '';
+        var storyId = item.id || item.public_id || '';
+        var href = storyId ? '/news?story=' + encodeURIComponent(storyId) : '/news';
 
-        card.innerHTML =
-            '<div class="signal-card-tag">' + (tags || 'Sector') + '</div>' +
-            '<h4>' + (item.summary || item.title || 'Signal') + '</h4>' +
-            '<div class="signal-card-date">' + (item.source_name || 'Community Signal') + ' · ' + age + '</div>' +
-            (item.why_matters ? '<p>' + item.why_matters + '</p>' : '') +
-            '<a href="/#chats" class="ask-kai-btn">Ask Kai about this →</a>';
+        var tagEl = document.createElement('div');
+        tagEl.className = 'signal-card-tag';
+        tagEl.textContent = tags || item.category || 'Phoenix story';
+
+        var heading = document.createElement('h4');
+        heading.textContent = title;
+
+        var dateEl = document.createElement('div');
+        dateEl.className = 'signal-card-date';
+        dateEl.textContent = (item.source_name || 'Phoenix Node') + (age ? ' · ' + age : '');
+
+        var actions = document.createElement('div');
+        actions.className = 'news-card-actions';
+
+        var readLink = document.createElement('a');
+        readLink.href = href;
+        readLink.className = 'ask-kai-btn';
+        readLink.textContent = 'Read on News →';
+
+        var askLink = document.createElement('a');
+        askLink.href = '/#chats';
+        askLink.className = 'ask-kai-btn';
+        askLink.textContent = 'Ask Kai →';
+
+        card.appendChild(tagEl);
+        card.appendChild(heading);
+        card.appendChild(dateEl);
+        if (detail) {
+            var detailEl = document.createElement('p');
+            detailEl.textContent = detail;
+            card.appendChild(detailEl);
+        }
+        actions.appendChild(readLink);
+        actions.appendChild(askLink);
+        card.appendChild(actions);
 
         return card;
     }
@@ -48,28 +82,32 @@
     function showFallback(col) {
         col.innerHTML =
             '<div class="signals-fallback">' +
-            'Signal pipeline loading — ' +
-            '<a href="https://community-signal.netlify.app" target="_blank" rel="noopener noreferrer">view live signals →</a>' +
+            'Phoenix stories loading — ' +
+            '<a href="/news">view Kamunity News →</a>' +
             '</div>';
+    }
+
+    function freshUrl(url) {
+        var sep = url.indexOf('?') === -1 ? '?' : '&';
+        return url + sep + '_=' + Date.now();
     }
 
     async function loadFeed() {
         try {
-            var resp = await fetch(CS_ENDPOINT, { signal: AbortSignal.timeout(6000) });
+            var resp = await fetch(freshUrl(PHOENIX_NEWS_ENDPOINT + '?limit=6'), {
+                cache: 'no-store',
+                signal: AbortSignal.timeout(6000)
+            });
             if (!resp.ok) throw new Error('Feed error ' + resp.status);
 
             var data = await resp.json();
-            var items = Array.isArray(data) ? data : (data.signals || data.items || []);
+            var items = Array.isArray(data.items) ? data.items : [];
 
             if (!items.length) throw new Error('No items');
 
-            var signals = items.filter(function (i) { return !i.type || i.type === 'signal'; }).slice(0, 3);
-            var pulses  = items.filter(function (i) { return i.type && i.type !== 'signal'; }).slice(0, 3);
-
-            /* Fallback: if no type split, just split the list in half */
-            if (!pulses.length && signals.length > 1) {
-                pulses  = signals.splice(Math.floor(signals.length / 2));
-            }
+            var midpoint = Math.ceil(items.length / 2);
+            var signals = items.slice(0, midpoint).slice(0, 3);
+            var pulses  = items.slice(midpoint).slice(0, 3);
 
             if (signalsCol) {
                 if (signals.length) {
@@ -92,8 +130,8 @@
             /* Update teaser with live count */
             if (teaserEl && items.length) {
                 teaserEl.textContent =
-                    items.length + ' new signal' + (items.length !== 1 ? 's' : '') +
-                    ' this week from the WA community sector.';
+                    items.length + ' Phoenix ' + (items.length === 1 ? 'story is' : 'stories are') +
+                    ' currently available from Kamunity News.';
             }
 
         } catch (err) {
