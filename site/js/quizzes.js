@@ -447,6 +447,12 @@ function buildQuiz(containerId, resultsId, warmId, questions, resultsConfig) {
     }
 
     function showResults() {
+        // Dot navigation can skip questions. Never score missing answers as zero.
+        const firstUnanswered = questions.findIndex((q, i) => shuffledOptions[i][answers[i]] === undefined);
+        if (firstUnanswered !== -1) {
+            renderQuestion(firstUnanswered);
+            return;
+        }
         const totalScore = answers.reduce((sum, ansIdx, qIdx) => {
             return sum + (shuffledOptions[qIdx][ansIdx]?.score || 0);
         }, 0);
