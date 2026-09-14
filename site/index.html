@@ -210,21 +210,15 @@
             <p>12-question check. Where does your organisation actually stand with AI adoption?</p>
             <div class="shop-card-meta">~10 min · client-side only</div>
             <div class="shop-card-actions">
-                <button class="shop-btn" onclick="toggleQuiz('aiready')" aria-expanded="false" id="aiready-toggle">Start check</button>
+                <a class="shop-btn" href="https://kamunity-ai-readiness.netlify.app/">Open AI Readiness →</a>
                 <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm looking at the AI Readiness Check. Can you help me understand what AI readiness actually means for a community organisation and what to do with the results?" aria-label="Ask Kai about the AI Readiness Check">Ask Kai →</button>
             </div>
-            <div class="quiz-embed" id="aiready-embed" aria-label="AI Readiness quiz">
-                <div id="aiready-quiz"></div>
-                <div id="aiready-results" class="hidden"></div>
-                <div id="aiready-warm" style="display:none;"><p style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--ash);margin-top:1rem;">Want to talk through what this means? <button class="ask-kai-btn" data-kai-modal data-kai-context="I've just completed the AI Readiness Check. Can you help me understand my results and what steps my organisation should take next?" style="display:inline;background:none;border:none;padding:0;color:var(--sky);cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;text-decoration:underline;">Ask Kai →</button></p></div>
-            </div>
-            <noscript><a href="https://kamunity-ai-readiness.netlify.app" target="_blank" rel="noopener noreferrer" class="shop-btn--secondary shop-btn">Open standalone →</a></noscript>
         </div>
 
         <div class="shop-card" role="listitem">
             <span class="shop-card-icon" aria-hidden="true">🌱</span>
             <h4>Org Health Check</h4>
-            <p>Structured diagnostic across strategy, process, quality, innovation, and governance.</p>
+            <p>Reflection aid across strategy, process, quality, innovation, and governance.</p>
             <div class="shop-card-meta">~10 min · client-side only</div>
             <div class="shop-card-actions">
                 <button class="shop-btn" onclick="toggleQuiz('healthcheck')" aria-expanded="false" id="healthcheck-toggle">Start check</button>
@@ -232,6 +226,7 @@
                 <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm looking at the Org Health Check. Can you help me understand what it measures across strategy, process, quality, innovation, and governance?" aria-label="Ask Kai about the Org Health Check">Ask Kai →</button>
             </div>
             <div class="quiz-embed" id="healthcheck-embed" aria-label="Org Health Check quiz">
+                <p>Version 1: a reflection aid, not a validated diagnostic. Question weighting: Strategy 3, Quality 2, Process 3, Innovation 3, Governance 4. Each question contributes up to three points; Governance has more overall weight than Quality.</p>
                 <div id="health-quiz"></div>
                 <div id="health-results" class="hidden"></div>
                 <div id="health-warm" style="display:none;"><p style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--ash);margin-top:1rem;">Want to talk through what this means? <button class="ask-kai-btn" data-kai-modal data-kai-context="I've just completed the Org Health Check. Can you help me understand my results across strategy, process, quality, innovation, and governance?" style="display:inline;background:none;border:none;padding:0;color:var(--sky);cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;text-decoration:underline;">Ask Kai →</button></p></div>

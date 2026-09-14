@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Org Health Check — Kamunity</title>
-<meta name="description" content="A 15-question diagnostic of organisational health across strategy, process, quality, innovation and governance. Free, client-side, no data collected.">
+<meta name="description" content="A 15-question organisational reflection aid across strategy, process, quality, innovation and governance. Free, client-side, no data collected.">
 <meta name="robots" content="index,follow">
 <meta name="theme-color" content="#b8522e">
 <meta property="og:title" content="Org Health Check — Kamunity">
-<meta property="og:description" content="Structured diagnostic across strategy, process, quality, innovation and governance. ~10 minutes. Client-side only.">
+<meta property="og:description" content="Reflection aid across strategy, process, quality, innovation and governance. ~10 minutes. Client-side only.">
 <meta property="og:type" content="website">
 
 <!-- Fonts: Google Fonts CDN. Disclosed in footer. Remove this <link> + add @font-face if you need fully offline. -->
@@ -397,10 +397,11 @@
     <section class="hero">
       <div class="hero-eyebrow">~10 minutes · No data collected</div>
       <h1 class="hero-title">Org Health Check</h1>
-      <p class="hero-sub">A structured diagnostic across <strong>strategy, process, quality, innovation, and governance</strong> — designed for small community-sector organisations.</p>
+      <p class="hero-sub">A reflection aid across <strong>strategy, process, quality, innovation, and governance</strong> — designed for small community-sector organisations.</p>
       <div class="how-to">
         <strong>How to use this:</strong> Answer 15 questions honestly — pick the option that <em>most closely</em> matches your reality, not the one that sounds best. Your answers never leave this browser. At the end you'll see a summary band; print it, screenshot it, or take it into a board conversation.
       </div>
+      <p class="how-to"><strong>Version 1 · Reflection aid, not a validated diagnostic.</strong> The 15 questions are weighted by count: Strategy 3, Quality 2, Process 3, Innovation 3 and Governance 4. Each question contributes up to three points, so Governance contributes more to the overall score than Quality.</p>
     </section>
 
     <main>
@@ -582,7 +583,7 @@ const HEALTH_RESULTS = [
     { min: 0, max: 15, label: "Significant concerns", text: "Your organisation has significant operational health concerns across multiple areas. This is more common than you might think, especially after several years of sustained pressure. The good news: these problems are fixable. They just need deliberate attention." },
     { min: 16, max: 25, label: "Areas needing attention", text: "Your organisation has real strengths alongside some meaningful gaps. The pattern of what's working and what isn't is usually telling — it points to where to invest energy first." },
     { min: 26, max: 35, label: "Mostly healthy with gaps", text: "You're in reasonable health with some specific areas that could be strengthened. The foundation is solid. The work is targeted improvement, not rescue." },
-    { min: 36, max: 45, label: "Healthy organisation", text: "Your organisation is operating well across most dimensions. That's genuinely rare and worth protecting. The risk at this level is complacency — keeping it healthy requires continued attention." }
+    { min: 36, max: 45, label: "Healthy organisation", text: "Your organisation is operating well across most dimensions. These strengths are worth protecting. The risk at this level is complacency — keeping it healthy requires continued attention." }
 ];
 
 /* ── Engine (verbatim from quizzes.js:362-490) ── */
