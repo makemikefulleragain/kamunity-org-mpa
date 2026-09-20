@@ -10,6 +10,7 @@
 
     var PHOENIX_NEWS_ENDPOINT = window.PHOENIX_NEWS_ENDPOINT ||
         'https://phoenix-node.netlify.app/.netlify/functions/public-mpa-news';
+    var PHOENIX_NEWS_SCHEMA = 'phoenix-mpa-news/v1';
 
     var signalsCol = document.getElementById('signals-col');
     var pulseCol   = document.getElementById('pulse-col');
@@ -101,7 +102,10 @@
             if (!resp.ok) throw new Error('Feed error ' + resp.status);
 
             var data = await resp.json();
-            var items = Array.isArray(data.items) ? data.items : [];
+            if (!data || data.schema_version !== PHOENIX_NEWS_SCHEMA || !Array.isArray(data.items)) {
+                throw new Error('Unexpected Phoenix news feed schema');
+            }
+            var items = data.items;
 
             if (!items.length) throw new Error('No items');
 

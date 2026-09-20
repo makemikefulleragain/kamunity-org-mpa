@@ -9,6 +9,7 @@
 
     var PHOENIX_TOOLS_ENDPOINT = window.PHOENIX_TOOLS_ENDPOINT ||
         'https://phoenix-node.netlify.app/.netlify/functions/public-mpa-tools';
+    var PHOENIX_TOOLS_SCHEMA = 'phoenix-mpa-tools/v1';
     var rowWrap = document.getElementById('commons-shop-row-wrap');
     var row = document.getElementById('commons-shop-row');
     var status = document.getElementById('commons-shop-status');
@@ -100,7 +101,7 @@
 
         items.forEach(function (item) {
             var url = normaliseUrl(item && item.output_url);
-            if (!url || seen.has(url)) return;
+            if (!/^https:\/\//i.test(url) || seen.has(url)) return;
             seen.add(url);
             cards.push(renderCard(item));
         });
@@ -128,7 +129,10 @@
             return response.json();
         })
         .then(function (payload) {
-            var items = Array.isArray(payload.items) ? payload.items.map(mapPhoenixTool) : [];
+            if (!payload || payload.schema_version !== PHOENIX_TOOLS_SCHEMA || !Array.isArray(payload.items)) {
+                throw new Error('Unexpected Phoenix tools feed schema');
+            }
+            var items = payload.items.map(mapPhoenixTool);
             showItems(items, 'phoenix');
         })
         .catch(function () {

@@ -567,6 +567,7 @@ function renderBriefContent(text) {
 }
 
 var PHOENIX_TOOLS_ENDPOINT = window.PHOENIX_TOOLS_ENDPOINT || 'https://phoenix-node.netlify.app/.netlify/functions/public-mpa-tools';
+var PHOENIX_TOOLS_SCHEMA = 'phoenix-mpa-tools/v1';
 
 function freshPhoenixUrl(url) {
   var sep = url.indexOf('?') === -1 ? '?' : '&';
@@ -578,7 +579,7 @@ async function loadFieldTools() {
     var res = await fetch(freshPhoenixUrl(PHOENIX_TOOLS_ENDPOINT + '?limit=6'), { cache: 'no-store' });
     if (!res.ok) return;
     var data = await res.json();
-    if (!data.items || data.items.length === 0) return;
+    if (!data || data.schema_version !== PHOENIX_TOOLS_SCHEMA || !Array.isArray(data.items) || data.items.length === 0) return;
 
     var row = document.getElementById('field-tools-row');
     var wrap = document.getElementById('aisle-field-wrap');

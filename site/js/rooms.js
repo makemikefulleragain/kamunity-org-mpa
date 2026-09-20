@@ -8,6 +8,7 @@
 
     var PHOENIX_ROOMS_ENDPOINT = window.PHOENIX_ROOMS_ENDPOINT ||
         'https://phoenix-node.netlify.app/.netlify/functions/public-mpa-rooms';
+    var PHOENIX_ROOMS_SCHEMA = 'phoenix-mpa-rooms/v1';
     var KAMUNITY_ROOMS_ENDPOINT = window.KAMUNITY_ROOMS_ENDPOINT ||
         '/.netlify/functions/kamunity-rooms';
 
@@ -44,16 +45,18 @@
         var evidence = item.evidence || {};
         var signalCount = Number(evidence.signal_count || 0);
         var sourceCount = Number(evidence.source_count || 0);
+        var artifactUrl = text(artifact.url);
+        var isLiveRoom = item.kind === 'public_room' && /^https:\/\//i.test(artifactUrl);
         return {
             source: 'phoenix',
-            kind: item.kind || 'room_brief',
+            kind: isLiveRoom ? 'public_room' : 'room_brief',
             title: item.title,
             summary: item.summary,
-            url: artifact.url,
-            action_label: artifact.label || '',
+            url: isLiveRoom ? artifactUrl : '',
+            action_label: isLiveRoom ? artifact.label || 'Open room' : '',
             meta: signalCount + ' signal' + (signalCount === 1 ? '' : 's') +
                 ' · ' + sourceCount + ' source' + (sourceCount === 1 ? '' : 's'),
-            eyebrow: item.kind === 'public_room' ? 'LIVE ROOM' : 'ROOM BRIEF'
+            eyebrow: isLiveRoom ? 'LIVE ROOM' : 'ROOM BRIEF'
         };
     }
 
@@ -82,7 +85,8 @@
     function renderCard(item) {
         var title = text(item.title) || 'Kamunity room';
         var summary = text(item.summary) || 'A public room or room brief from the Kamunity ecosystem.';
-        var url = text(item.url);
+        var candidateUrl = text(item.url);
+        var url = /^https:\/\//i.test(candidateUrl) ? candidateUrl : '';
         var actionLabel = text(item.action_label) || (url ? 'Open room' : '');
         var kaiContext = 'I am looking at the Kamunity Rooms card "' + title + '". Can you help me understand who this room is for and whether it is useful for my work?';
 
@@ -148,7 +152,10 @@
             return Array.isArray(payload.items) ? payload.items.map(mapKamunityRoom) : [];
         }),
         fetchJson(PHOENIX_ROOMS_ENDPOINT + '?limit=3').then(function (payload) {
-            return Array.isArray(payload.items) ? payload.items.map(mapPhoenixRoom) : [];
+            if (!payload || payload.schema_version !== PHOENIX_ROOMS_SCHEMA || !Array.isArray(payload.items)) {
+                throw new Error('Unexpected Phoenix rooms feed schema');
+            }
+            return payload.items.map(mapPhoenixRoom);
         })
     ]).then(function (results) {
         var aiItems = results[0].status === 'fulfilled' ? results[0].value : [];

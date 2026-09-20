@@ -10,6 +10,7 @@
 
     var PHOENIX_NEWS_ENDPOINT = window.PHOENIX_NEWS_ENDPOINT ||
         'https://phoenix-node.netlify.app/.netlify/functions/public-mpa-news';
+    var PHOENIX_NEWS_SCHEMA = 'phoenix-mpa-news/v1';
 
     var tabBar      = document.getElementById('news-tab-bar');
     var panel       = document.getElementById('news-panel');
@@ -48,6 +49,13 @@
     function freshUrl(url) {
         var sep = url.indexOf('?') === -1 ? '?' : '&';
         return url + sep + '_=' + Date.now();
+    }
+
+    function requirePhoenixNewsFeed(payload) {
+        if (!payload || payload.schema_version !== PHOENIX_NEWS_SCHEMA || !Array.isArray(payload.items)) {
+            throw new Error('Unexpected Phoenix news feed schema');
+        }
+        return payload;
     }
 
     function formatAge(dateStr) {
@@ -231,8 +239,8 @@
                 signal: AbortSignal.timeout(8000)
             });
             if (!res.ok) throw new Error('Feed error ' + res.status);
-            var data = await res.json();
-            allItems = (data.items || []).map(mapPhoenixNewsItem);
+            var data = requirePhoenixNewsFeed(await res.json());
+            allItems = data.items.map(mapPhoenixNewsItem);
             allItems.sort(function (a, b) {
                 var da = new Date(a.published_at || a.created_at || 0);
                 var db = new Date(b.published_at || b.created_at || 0);
@@ -283,7 +291,7 @@
                 cache: 'no-store'
             });
             if (!res.ok) throw new Error('HTTP ' + res.status);
-            var data = await res.json();
+            var data = requirePhoenixNewsFeed(await res.json());
             var story = data.story || (data.items && data.items[0]);
             if (!story) {
                 document.getElementById('story-modal-title').textContent = 'Story not found';

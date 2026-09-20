@@ -8,8 +8,8 @@ Canonical repository: https://github.com/makemikefulleragain/kamunity-org-mpa (m
 
 Run `npm run verify` with Node 22 or later for script/inline-script checks and public rooms-proxy contract tests. There are no installed test dependencies. Generated `.netlify` files stay local and are not source-controlled.
 
-Local browser checks on 12 September passed tool-tag handling and the news dialog at 1360, 768 and 375 pixel widths using synthetic data. Public homepage stories/tools loaded, but live rooms and news requests also timed out; deterministic UI checks do not certify reliable live delivery. Test fixtures were local only.
+Local browser checks on 21 September passed a fixture-only Phoenix → MPA journey at 1360×900 and 375×812: public homepage stories/tools/room briefs, a news deep-link, the warehouse action and horizontal-overflow/error checks. The cross-repository suite now has 17 producer/consumer checks, including private-field canaries, explicit schema rejection, HTTPS-only actions and safe fallbacks. These deterministic checks do not certify reliable live delivery; fixtures remained local and no platform data was written.
 
-Release gates: reliable feed checks, authenticated end-to-end publication in a chosen test environment, contact/Kai delivery checks, content and accessibility UAT, traceable deployment and an approved domain/rollback plan. The selected showcase includes VinoCode, Sovereignty Audit, AI Readiness and Org Health; remaining public copy/navigation still needs alignment with that decision and the GGA/Mycelium retirement.
+Release gates: isolated authenticated Phoenix publication followed by live edge/feed checks, contact/Kai delivery checks, content and accessibility UAT, traceable deployment, and an approved domain/rollback plan. The selected showcase includes VinoCode, Sovereignty Audit, AI Readiness and Org Health; remaining public copy/navigation still needs alignment with that decision and the GGA/Mycelium retirement.
 
 Authoritative register: `Dev_Code/portfolio-audit/PHASE_1_CANONICAL_PORTFOLIO_REGISTER_2026-09-12.md`.
