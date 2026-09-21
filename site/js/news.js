@@ -9,7 +9,9 @@
     'use strict';
 
     var PHOENIX_NEWS_ENDPOINT = window.PHOENIX_NEWS_ENDPOINT ||
-        'https://phoenix-node.netlify.app/.netlify/functions/public-mpa-news';
+        (typeof window !== 'undefined' && window.location && (window.location.hostname.includes('deploy-preview-') || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+            ? '/.netlify/functions/phoenix-proxy?feed=news'
+            : 'https://phoenix-node.netlify.app/.netlify/functions/public-mpa-news');
     var PHOENIX_NEWS_SCHEMA = 'phoenix-mpa-news/v1';
 
     var tabBar      = document.getElementById('news-tab-bar');

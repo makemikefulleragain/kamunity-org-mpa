@@ -7,7 +7,9 @@
     'use strict';
 
     var PHOENIX_ROOMS_ENDPOINT = window.PHOENIX_ROOMS_ENDPOINT ||
-        'https://phoenix-node.netlify.app/.netlify/functions/public-mpa-rooms';
+        (typeof window !== 'undefined' && window.location && (window.location.hostname.includes('deploy-preview-') || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+            ? '/.netlify/functions/phoenix-proxy?feed=rooms'
+            : 'https://phoenix-node.netlify.app/.netlify/functions/public-mpa-rooms');
     var PHOENIX_ROOMS_SCHEMA = 'phoenix-mpa-rooms/v1';
     var KAMUNITY_ROOMS_ENDPOINT = window.KAMUNITY_ROOMS_ENDPOINT ||
         '/.netlify/functions/kamunity-rooms';

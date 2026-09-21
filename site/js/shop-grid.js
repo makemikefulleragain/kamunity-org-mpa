@@ -8,7 +8,9 @@
     'use strict';
 
     var PHOENIX_TOOLS_ENDPOINT = window.PHOENIX_TOOLS_ENDPOINT ||
-        'https://phoenix-node.netlify.app/.netlify/functions/public-mpa-tools';
+        (typeof window !== 'undefined' && window.location && (window.location.hostname.includes('deploy-preview-') || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+            ? '/.netlify/functions/phoenix-proxy?feed=tools'
+            : 'https://phoenix-node.netlify.app/.netlify/functions/public-mpa-tools');
     var PHOENIX_TOOLS_SCHEMA = 'phoenix-mpa-tools/v1';
     var rowWrap = document.getElementById('commons-shop-row-wrap');
     var row = document.getElementById('commons-shop-row');
