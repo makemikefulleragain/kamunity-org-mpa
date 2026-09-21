@@ -33,9 +33,18 @@
         return String(value || '').replace(/\s+/g, ' ').trim();
     }
 
-    function freshUrl(url) {
-        var sep = url.indexOf('?') === -1 ? '?' : '&';
-        return url + sep + '_=' + Date.now();
+    function buildFeedUrl(endpoint, params) {
+        var sep = endpoint.indexOf('?') === -1 ? '?' : '&';
+        var parts = [];
+        if (params) {
+            for (var key in params) {
+                if (Object.prototype.hasOwnProperty.call(params, key) && params[key] !== undefined && params[key] !== null) {
+                    parts.push(encodeURIComponent(key) + '=' + encodeURIComponent(params[key]));
+                }
+            }
+        }
+        parts.push('_=' + Date.now());
+        return endpoint + sep + parts.join('&');
     }
 
     function fetchJson(url) {
@@ -156,10 +165,10 @@
     }
 
     Promise.allSettled([
-        fetchJson(KAMUNITY_ROOMS_ENDPOINT + '?limit=3').then(function (payload) {
+        fetchJson(buildFeedUrl(KAMUNITY_ROOMS_ENDPOINT, { limit: 3 })).then(function (payload) {
             return Array.isArray(payload.items) ? payload.items.map(mapKamunityRoom) : [];
         }),
-        fetchJson(PHOENIX_ROOMS_ENDPOINT + '?limit=3').then(function (payload) {
+        fetchJson(buildFeedUrl(PHOENIX_ROOMS_ENDPOINT, { limit: 3 })).then(function (payload) {
             if (!payload || payload.schema_version !== PHOENIX_ROOMS_SCHEMA || !Array.isArray(payload.items)) {
                 throw new Error('Unexpected Phoenix rooms feed schema');
             }

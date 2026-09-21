@@ -96,14 +96,23 @@
             '</div>';
     }
 
-    function freshUrl(url) {
-        var sep = url.indexOf('?') === -1 ? '?' : '&';
-        return url + sep + '_=' + Date.now();
+    function buildFeedUrl(endpoint, params) {
+        var sep = endpoint.indexOf('?') === -1 ? '?' : '&';
+        var parts = [];
+        if (params) {
+            for (var key in params) {
+                if (Object.prototype.hasOwnProperty.call(params, key) && params[key] !== undefined && params[key] !== null) {
+                    parts.push(encodeURIComponent(key) + '=' + encodeURIComponent(params[key]));
+                }
+            }
+        }
+        parts.push('_=' + Date.now());
+        return endpoint + sep + parts.join('&');
     }
 
     async function loadFeed() {
         try {
-            var resp = await fetch(freshUrl(PHOENIX_NEWS_ENDPOINT + '?limit=6'), {
+            var resp = await fetch(buildFeedUrl(PHOENIX_NEWS_ENDPOINT, { limit: 6 }), {
                 cache: 'no-store',
                 signal: AbortSignal.timeout(6000)
             });

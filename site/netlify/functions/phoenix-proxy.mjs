@@ -8,6 +8,14 @@ const CORS = {
 
 export const DEFAULT_PHOENIX_ORIGIN = 'https://phoenix-node.netlify.app';
 
+export const PRODUCTION_MPA_HOSTS = new Set([
+    'kamunity-org-mpa.netlify.app',
+    'kamunity.org',
+    'www.kamunity.org',
+]);
+
+export const DEPLOY_PREVIEW_HOST_PATTERN = /^deploy-preview-\d+--kamunity-org-mpa\.netlify\.app$/;
+
 const ALLOWED_FEEDS = {
     news: {
         path: '/.netlify/functions/public-mpa-news',
@@ -29,18 +37,55 @@ const ALLOWED_FEEDS = {
     },
 };
 
-export function resolvePhoenixOrigin(env = process.env) {
-    // Only deploy-preview context may honor a preview origin override
-    if (!env || env.CONTEXT !== 'deploy-preview') {
+export function extractRequestHost(event) {
+    if (!event) return null;
+    if (typeof event.rawUrl === 'string' && event.rawUrl.trim()) {
+        try {
+            const parsed = new URL(event.rawUrl);
+            return parsed.hostname.toLowerCase();
+        } catch {
+            // fallback to headers
+        }
+    }
+    const headers = event.headers || {};
+    const hostHeader = headers.host || headers.Host || headers['x-forwarded-host'];
+    if (typeof hostHeader === 'string' && hostHeader.trim()) {
+        const candidate = hostHeader.split(':')[0].trim().toLowerCase();
+        if (candidate) return candidate;
+    }
+    return null;
+}
+
+export function resolvePhoenixOrigin(eventOrHost, env = process.env) {
+    let host = null;
+    if (typeof eventOrHost === 'string') {
+        host = eventOrHost.trim().toLowerCase();
+    } else if (eventOrHost && typeof eventOrHost === 'object') {
+        host = extractRequestHost(eventOrHost);
+    }
+
+    if (!host) {
+        return null;
+    }
+
+    // 1. Production MPA host always uses production Phoenix origin,
+    // even if a preview variable is accidentally present.
+    if (PRODUCTION_MPA_HOSTS.has(host)) {
         return DEFAULT_PHOENIX_ORIGIN;
     }
 
-    const configuredOrigin = env.PHOENIX_PREVIEW_ORIGIN;
-    if (!configuredOrigin) {
-        return DEFAULT_PHOENIX_ORIGIN;
+    // 2. Deploy-preview host
+    if (DEPLOY_PREVIEW_HOST_PATTERN.test(host)) {
+        const configuredOrigin = env?.PHOENIX_PREVIEW_ORIGIN;
+        if (!configuredOrigin) {
+            // Deploy preview without valid override fails closed
+            return null;
+        }
+        return validateHttpsNetlifyOrigin(configuredOrigin);
     }
 
-    return validateHttpsNetlifyOrigin(configuredOrigin);
+    // 3. Any missing, forged, or unrecognised host fails closed
+    return null;
 }
 
 export function validateHttpsNetlifyOrigin(candidate) {
@@ -102,7 +147,7 @@ export const handler = async (event) => {
         });
     }
 
-    const origin = resolvePhoenixOrigin(process.env);
+    const origin = resolvePhoenixOrigin(event, process.env);
     if (!origin) {
         return json(502, {
             error: 'invalid_preview_origin_configuration',

@@ -54,9 +54,18 @@
         });
     }
 
-    function freshUrl(url) {
-        var sep = url.indexOf('?') === -1 ? '?' : '&';
-        return url + sep + '_=' + Date.now();
+    function buildFeedUrl(endpoint, params) {
+        var sep = endpoint.indexOf('?') === -1 ? '?' : '&';
+        var parts = [];
+        if (params) {
+            for (var key in params) {
+                if (Object.prototype.hasOwnProperty.call(params, key) && params[key] !== undefined && params[key] !== null) {
+                    parts.push(encodeURIComponent(key) + '=' + encodeURIComponent(params[key]));
+                }
+            }
+        }
+        parts.push('_=' + Date.now());
+        return endpoint + sep + parts.join('&');
     }
 
     function requirePhoenixNewsFeed(payload) {
@@ -242,7 +251,7 @@
     /* Load data */
     async function loadNews() {
         try {
-            var res = await fetch(freshUrl(PHOENIX_NEWS_ENDPOINT + '?limit=30'), {
+            var res = await fetch(buildFeedUrl(PHOENIX_NEWS_ENDPOINT, { limit: 30 }), {
                 cache: 'no-store',
                 signal: AbortSignal.timeout(8000)
             });
@@ -294,8 +303,7 @@
             history.pushState({ story: storyId }, '', '/news?story=' + encodeURIComponent(storyId));
         }
         try {
-            var sep = PHOENIX_NEWS_ENDPOINT.indexOf('?') === -1 ? '?' : '&';
-            var res = await fetch(freshUrl(PHOENIX_NEWS_ENDPOINT + sep + 'story_id=' + encodeURIComponent(storyId)), {
+            var res = await fetch(buildFeedUrl(PHOENIX_NEWS_ENDPOINT, { story_id: storyId }), {
                 cache: 'no-store'
             });
             if (!res.ok) throw new Error('HTTP ' + res.status);

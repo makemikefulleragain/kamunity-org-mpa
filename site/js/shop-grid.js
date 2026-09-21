@@ -126,12 +126,21 @@
         rowWrap.hidden = false;
     }
 
-    function freshUrl(url) {
-        var sep = url.indexOf('?') === -1 ? '?' : '&';
-        return url + sep + '_=' + Date.now();
+    function buildFeedUrl(endpoint, params) {
+        var sep = endpoint.indexOf('?') === -1 ? '?' : '&';
+        var parts = [];
+        if (params) {
+            for (var key in params) {
+                if (Object.prototype.hasOwnProperty.call(params, key) && params[key] !== undefined && params[key] !== null) {
+                    parts.push(encodeURIComponent(key) + '=' + encodeURIComponent(params[key]));
+                }
+            }
+        }
+        parts.push('_=' + Date.now());
+        return endpoint + sep + parts.join('&');
     }
 
-    fetch(freshUrl(PHOENIX_TOOLS_ENDPOINT + '?limit=6'), { cache: 'no-store', headers: { 'Accept': 'application/json' } })
+    fetch(buildFeedUrl(PHOENIX_TOOLS_ENDPOINT, { limit: 6 }), { cache: 'no-store', headers: { 'Accept': 'application/json' } })
         .then(function (response) {
             if (!response.ok) throw new Error('shop grid unavailable');
             return response.json();
