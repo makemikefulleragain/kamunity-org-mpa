@@ -30,7 +30,8 @@ const ALLOWED_FEEDS = {
 };
 
 export function resolvePhoenixOrigin(env = process.env) {
-    if (!env || env.CONTEXT === 'production' || !env.CONTEXT) {
+    // Only deploy-preview context may honor a preview origin override
+    if (!env || env.CONTEXT !== 'deploy-preview') {
         return DEFAULT_PHOENIX_ORIGIN;
     }
 
@@ -39,16 +40,43 @@ export function resolvePhoenixOrigin(env = process.env) {
         return DEFAULT_PHOENIX_ORIGIN;
     }
 
-    return validateHttpsOrigin(configuredOrigin);
+    return validateHttpsNetlifyOrigin(configuredOrigin);
 }
 
-export function validateHttpsOrigin(candidate) {
+export function validateHttpsNetlifyOrigin(candidate) {
+    if (typeof candidate !== 'string') return null;
+    const trimmed = candidate.trim();
+    if (!trimmed) return null;
+
     try {
-        const url = new URL(candidate);
+        const url = new URL(trimmed);
         if (url.protocol !== 'https:') return null;
         if (url.username || url.password) return null;
-        if (url.pathname !== '/' && url.pathname !== '') return null;
-        if (url.search || url.hash) return null;
+        if (url.port) return null;
+        if ((url.pathname !== '/' && url.pathname !== '') || url.search || url.hash) return null;
+
+        const hostname = url.hostname.toLowerCase();
+
+        // Must end strictly with .netlify.app
+        if (!hostname.endsWith('.netlify.app')) return null;
+
+        // Reject raw IPs and localhost
+        if (/^[\d.]+$/.test(hostname) || hostname.includes(':') || hostname.startsWith('[')) return null;
+        if (hostname.includes('localhost')) return null;
+
+        const subdomain = hostname.slice(0, -'.netlify.app'.length);
+        if (!subdomain) return null;
+
+        // Reject IP-like or purely numeric subdomains
+        if (/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/.test(subdomain) || /^[\d.]+$/.test(subdomain)) {
+            return null;
+        }
+
+        // Valid Netlify subdomain characters: letters, numbers, hyphens
+        if (!/^[a-z0-9]+([a-z0-9-]*[a-z0-9]+)?(\.[a-z0-9]+([a-z0-9-]*[a-z0-9]+)?)*$/.test(subdomain)) {
+            return null;
+        }
+
         return url.origin;
     } catch {
         return null;
@@ -101,6 +129,7 @@ export const handler = async (event) => {
     try {
         const response = await fetch(upstreamUrl, {
             headers: { Accept: 'application/json' },
+            redirect: 'error',
             signal: controller.signal,
         });
 

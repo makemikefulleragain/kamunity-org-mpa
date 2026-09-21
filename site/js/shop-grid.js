@@ -7,8 +7,14 @@
 (function () {
     'use strict';
 
+    function isMpaDeployPreview() {
+        if (typeof window === 'undefined' || !window.location || !window.location.hostname) return false;
+        var host = window.location.hostname.toLowerCase();
+        if (host === 'localhost' || host === '127.0.0.1') return true;
+        return /^deploy-preview-\d+--kamunity-org-mpa\.netlify\.app$/.test(host);
+    }
     var PHOENIX_TOOLS_ENDPOINT = window.PHOENIX_TOOLS_ENDPOINT ||
-        (typeof window !== 'undefined' && window.location && (window.location.hostname.includes('deploy-preview-') || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+        (isMpaDeployPreview()
             ? '/.netlify/functions/phoenix-proxy?feed=tools'
             : 'https://phoenix-node.netlify.app/.netlify/functions/public-mpa-tools');
     var PHOENIX_TOOLS_SCHEMA = 'phoenix-mpa-tools/v1';

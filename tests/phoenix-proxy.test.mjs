@@ -4,7 +4,7 @@ import {
   DEFAULT_PHOENIX_ORIGIN,
   handler,
   resolvePhoenixOrigin,
-  validateHttpsOrigin,
+  validateHttpsNetlifyOrigin,
 } from '../site/netlify/functions/phoenix-proxy.mjs';
 
 const originalFetch = globalThis.fetch;
@@ -21,27 +21,42 @@ afterEach(() => {
   process.env = originalEnv;
 });
 
-test('origin resolution: production defaults remain unchanged', () => {
-  assert.equal(resolvePhoenixOrigin({}), DEFAULT_PHOENIX_ORIGIN);
+test('origin resolution: non-deploy-preview contexts strictly ignore the preview override', () => {
+  // Undefined context defaults to production origin
+  assert.equal(
+    resolvePhoenixOrigin({ PHOENIX_PREVIEW_ORIGIN: 'https://preview-override.netlify.app' }),
+    DEFAULT_PHOENIX_ORIGIN
+  );
 
+  // Production context strictly ignores PHOENIX_PREVIEW_ORIGIN
   assert.equal(
     resolvePhoenixOrigin({
       CONTEXT: 'production',
-      PHOENIX_PREVIEW_ORIGIN: 'https://preview-override.example.org',
+      PHOENIX_PREVIEW_ORIGIN: 'https://preview-override.netlify.app',
+    }),
+    DEFAULT_PHOENIX_ORIGIN
+  );
+
+  // Branch-deploy context strictly ignores PHOENIX_PREVIEW_ORIGIN
+  assert.equal(
+    resolvePhoenixOrigin({
+      CONTEXT: 'branch-deploy',
+      PHOENIX_PREVIEW_ORIGIN: 'https://preview-override.netlify.app',
     }),
     DEFAULT_PHOENIX_ORIGIN
   );
 });
 
-test('origin resolution: preview configuration selects only approved preview origin', () => {
+test('origin resolution: deploy-preview context honors exact expected Netlify preview origin', () => {
   assert.equal(
     resolvePhoenixOrigin({
       CONTEXT: 'deploy-preview',
-      PHOENIX_PREVIEW_ORIGIN: 'https://phoenix-preview-123.netlify.app',
+      PHOENIX_PREVIEW_ORIGIN: 'https://phoenix-preview-temp.netlify.app',
     }),
-    'https://phoenix-preview-123.netlify.app'
+    'https://phoenix-preview-temp.netlify.app'
   );
 
+  // Deploy preview without override falls back safely to production default
   assert.equal(
     resolvePhoenixOrigin({
       CONTEXT: 'deploy-preview',
@@ -50,22 +65,24 @@ test('origin resolution: preview configuration selects only approved preview ori
   );
 });
 
-test('origin resolution: unsafe or malformed origins are rejected', () => {
-  assert.equal(validateHttpsOrigin('http://insecure-site.example.org'), null);
-  assert.equal(validateHttpsOrigin('javascript:alert(1)'), null);
-  assert.equal(validateHttpsOrigin('https://user:pass@evil.example.org'), null);
-  assert.equal(validateHttpsOrigin('not-a-valid-url'), null);
-  assert.equal(validateHttpsOrigin('https://valid.example.org/path-not-allowed'), null);
-  assert.equal(validateHttpsOrigin('https://valid.example.org?query=not-allowed'), null);
-  assert.equal(validateHttpsOrigin('https://clean-origin.netlify.app'), 'https://clean-origin.netlify.app');
+test('origin resolution: arbitrary HTTPS domains and non-Netlify origins are rejected', () => {
+  assert.equal(validateHttpsNetlifyOrigin('https://evil-attacker.com'), null);
+  assert.equal(validateHttpsNetlifyOrigin('https://example.org'), null);
+  assert.equal(validateHttpsNetlifyOrigin('https://phoenix-node.com'), null);
+  assert.equal(validateHttpsNetlifyOrigin('https://kamunity.org'), null);
+});
 
-  assert.equal(
-    resolvePhoenixOrigin({
-      CONTEXT: 'deploy-preview',
-      PHOENIX_PREVIEW_ORIGIN: 'http://insecure-site.example.org',
-    }),
-    null
-  );
+test('origin resolution: localhost, IP addresses, ports and malformed inputs are rejected', () => {
+  assert.equal(validateHttpsNetlifyOrigin('http://phoenix-preview.netlify.app'), null); // Insecure HTTP
+  assert.equal(validateHttpsNetlifyOrigin('https://localhost'), null);
+  assert.equal(validateHttpsNetlifyOrigin('https://localhost:8888'), null);
+  assert.equal(validateHttpsNetlifyOrigin('https://127.0.0.1'), null);
+  assert.equal(validateHttpsNetlifyOrigin('https://192.168.1.100.netlify.app'), null); // Raw IP
+  assert.equal(validateHttpsNetlifyOrigin('https://phoenix.netlify.app:8443'), null); // Non-default port
+  assert.equal(validateHttpsNetlifyOrigin('https://user:pass@phoenix.netlify.app'), null); // Credentials
+  assert.equal(validateHttpsNetlifyOrigin('https://phoenix.netlify.app/path'), null); // Path present
+  assert.equal(validateHttpsNetlifyOrigin('https://phoenix.netlify.app?q=1'), null); // Query present
+  assert.equal(validateHttpsNetlifyOrigin('not-a-url'), null);
 });
 
 test('proxy handler: method restrictions are enforced', async () => {
@@ -88,20 +105,40 @@ test('proxy handler: invalid feed parameter returns 400', async () => {
 
 test('proxy handler: invalid preview origin returns 502 with masked error', async () => {
   process.env.CONTEXT = 'deploy-preview';
-  process.env.PHOENIX_PREVIEW_ORIGIN = 'http://insecure.example.org';
+  process.env.PHOENIX_PREVIEW_ORIGIN = 'https://non-netlify-domain.org';
 
   const res = await handler({ httpMethod: 'GET', queryStringParameters: { feed: 'news' } });
   assert.equal(res.statusCode, 502);
   assert.equal(JSON.parse(res.body).error, 'invalid_preview_origin_configuration');
 });
 
+test('proxy handler: redirects fail with a masked 502', async () => {
+  process.env.CONTEXT = 'deploy-preview';
+  process.env.PHOENIX_PREVIEW_ORIGIN = 'https://phoenix-preview-temp.netlify.app';
+
+  globalThis.fetch = async (url, options) => {
+    assert.equal(options.redirect, 'error');
+    // Simulate fetch throwing when redirect is encountered
+    const err = new TypeError('Failed to fetch: redirect mode is error');
+    throw err;
+  };
+
+  const res = await handler({ httpMethod: 'GET', queryStringParameters: { feed: 'news' } });
+  assert.equal(res.statusCode, 502);
+  const data = JSON.parse(res.body);
+  assert.equal(data.error, 'phoenix_feed_unavailable');
+  assert.deepEqual(data.items, []);
+  assert.equal(data.message, undefined); // Masked
+});
+
 test('proxy handler: query bounds, upstream calling, and valid payload pass-through', async () => {
   process.env.CONTEXT = 'deploy-preview';
-  process.env.PHOENIX_PREVIEW_ORIGIN = 'https://phoenix-preview-abc.netlify.app';
+  process.env.PHOENIX_PREVIEW_ORIGIN = 'https://phoenix-preview-temp.netlify.app';
 
   let capturedUrl = null;
-  globalThis.fetch = async (url) => {
+  globalThis.fetch = async (url, options) => {
     capturedUrl = url;
+    assert.equal(options.redirect, 'error');
     return {
       ok: true,
       json: async () => ({
@@ -118,9 +155,9 @@ test('proxy handler: query bounds, upstream calling, and valid payload pass-thro
   });
 
   assert.equal(res.statusCode, 200);
-  assert.equal(capturedUrl.origin, 'https://phoenix-preview-abc.netlify.app');
+  assert.equal(capturedUrl.origin, 'https://phoenix-preview-temp.netlify.app');
   assert.equal(capturedUrl.pathname, '/.netlify/functions/public-mpa-news');
-  assert.equal(capturedUrl.searchParams.get('limit'), '100');
+  assert.equal(capturedUrl.searchParams.get('limit'), '100'); // Capped at maxLimit 100
   assert.equal(capturedUrl.searchParams.get('story_id'), 'story-123');
 
   const data = JSON.parse(res.body);
