@@ -189,14 +189,14 @@
             <span class="wh-tool-badge">10 min · Free · Client-side</span>
             <h4>AI Readiness</h4>
             <p>12 questions. Where does your organisation actually stand with AI adoption?</p>
-            <a href="/#shop" class="ask-kai-btn" style="display:inline-block;margin-bottom:0.5rem;">Run it on the homepage →</a><br>
+            <a href="https://kamunity-ai-readiness.netlify.app/" class="ask-kai-btn" style="display:inline-block;margin-bottom:0.5rem;">Open AI Readiness →</a><br>
             <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm in the Commons Warehouse looking at the AI Readiness check. Can you help me understand what AI readiness really means for a small community organisation and what the 12 questions cover?" aria-label="Ask Kai about the AI Readiness check">Ask Kai →</button>
         </div>
 
         <div class="wh-tool-card" role="listitem" data-search="org health check strategy governance diagnostic">
             <span class="wh-tool-badge">10 min · Free · Client-side</span>
             <h4>Org Health Check</h4>
-            <p>Structured diagnostic across strategy, process, quality, innovation, and governance.</p>
+            <p>Reflection aid across strategy, process, quality, innovation, and governance.</p>
             <a href="https://kamunity-org-health.netlify.app/" target="_blank" rel="noopener" class="ask-kai-btn" style="display:inline-block;margin-bottom:0.5rem;">Open the check ↗</a>
             <a href="/#shop" class="ask-kai-btn" style="display:inline-block;margin-bottom:0.5rem;margin-left:0.4rem;">Or run inline →</a><br>
             <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm in the Commons Warehouse looking at the Org Health Check. Can you explain what it measures across strategy, process, quality, innovation and governance, and how I'd use the results?" aria-label="Ask Kai about the Org Health Check">Ask Kai →</button>
@@ -410,7 +410,7 @@
   <div class="optin-modal-box">
     <button class="optin-modal-close" onclick="closeOptinModal()" aria-label="Close">✕</button>
     <h3 id="optin-modal-title">Get notified when we add tools in your area</h3>
-    <p class="optin-modal-desc">We'll email you when something new appears in the Warehouse that matches what you're working on. No spam. Unsubscribe anytime.</p>
+    <p class="optin-modal-desc">Send Mike the areas you care about. No account, no database, no tracking.</p>
     <form id="optin-form" onsubmit="submitOptin(event)">
       <label for="optin-email" class="optin-label">Your email</label>
       <input type="email" id="optin-email" name="email" class="optin-email-input"
@@ -420,11 +420,11 @@
         <div class="optin-tags-grid" id="optin-tags-grid"></div>
       </fieldset>
       <div id="optin-preselect-note" class="optin-preselect-note" style="display:none;"></div>
-      <button type="submit" class="optin-submit-btn" id="optin-submit">Notify me →</button>
-      <p class="optin-small">We don't sell data. We don't track opens. Unsubscribe link in every email.</p>
+      <button type="submit" class="optin-submit-btn" id="optin-submit">Open email draft →</button>
+      <p class="optin-small">This opens your email app with your interests pre-filled. Nothing is sent until you choose to send it.</p>
     </form>
     <div id="optin-success" class="optin-success" style="display:none;">
-      <p>✓ Done. We'll be in touch when something relevant lands in the Warehouse.</p>
+      <p>✓ Email draft opened. Send it when you're ready.</p>
     </div>
     <div id="optin-error" class="optin-error" style="display:none;"></div>
   </div>
@@ -566,77 +566,77 @@ function renderBriefContent(text) {
   return html.join('');
 }
 
+function isMpaDeployPreview() {
+  if (typeof window === 'undefined' || !window.location || !window.location.hostname) return false;
+  var host = window.location.hostname.toLowerCase();
+  if (host === 'localhost' || host === '127.0.0.1') return true;
+  return /^deploy-preview-\d+--kamunity-org-mpa\.netlify\.app$/.test(host);
+}
+var PHOENIX_TOOLS_ENDPOINT = window.PHOENIX_TOOLS_ENDPOINT ||
+  (isMpaDeployPreview()
+    ? '/.netlify/functions/phoenix-proxy?feed=tools'
+    : 'https://phoenix-node.netlify.app/.netlify/functions/public-mpa-tools');
+var PHOENIX_TOOLS_SCHEMA = 'phoenix-mpa-tools/v1';
+
+function buildFeedUrl(endpoint, params) {
+    var sep = endpoint.indexOf('?') === -1 ? '?' : '&';
+    var parts = [];
+    if (params) {
+        for (var key in params) {
+            if (Object.prototype.hasOwnProperty.call(params, key) && params[key] !== undefined && params[key] !== null) {
+                parts.push(encodeURIComponent(key) + '=' + encodeURIComponent(params[key]));
+            }
+        }
+    }
+    parts.push('_=' + Date.now());
+    return endpoint + sep + parts.join('&');
+}
+
 async function loadFieldTools() {
   try {
-    var res = await fetch('https://community-signal.netlify.app/.netlify/functions/warehouse-read');
+    var res = await fetch(buildFeedUrl(PHOENIX_TOOLS_ENDPOINT, { limit: 6 }), { cache: 'no-store' });
     if (!res.ok) return;
     var data = await res.json();
-    if (!data.tools || data.tools.length === 0) return;
+    if (!data || data.schema_version !== PHOENIX_TOOLS_SCHEMA || !Array.isArray(data.items) || data.items.length === 0) return;
 
     var row = document.getElementById('field-tools-row');
     var wrap = document.getElementById('aisle-field-wrap');
     if (!row || !wrap) return;
 
-    row.innerHTML = data.tools.map(function(tool) {
-      var brief = parseWarehouseBrief(tool.artifact_content, tool.artifact_title || 'Community Tool');
-      var cardTitle = brief.title || tool.artifact_title || 'Community Tool';
-      var cardBody = briefSnippet(brief.content || tool.triage_reasoning || '', 260);
-      var tags = (tool.sector_tags || []).map(function(t) {
+    row.innerHTML = data.items.map(function(tool) {
+      var cardTitle = tool.title || 'Phoenix tool';
+      var cardBody = briefSnippet(tool.summary || '', 220);
+      var tags = (tool.tags || []).map(function(t) {
         return '<span class="wh-field-tag">' + escWh(t) + '</span>';
       }).join('');
-      var searchData = escWh(cardTitle) + ' ' + escWh(cardBody) + ' ' + (tool.sector_tags || []).join(' ') + ' field community generated';
+      var evidence = tool.evidence || {};
+      var evidenceLine = (evidence.signal_count || 0) + ' signal' + (evidence.signal_count === 1 ? '' : 's') +
+        ' · ' + (evidence.source_count || 0) + ' source' + (evidence.source_count === 1 ? '' : 's');
+      var artifact = tool.artifact || {};
+      var outputUrl = artifact.url || '';
+      var actionLabel = artifact.label || 'Open tool';
+      var typeLabel = tool.type === 'mini_site' ? 'Mini-site' : tool.type === 'door' ? 'Door' : tool.type === 'widget' ? 'Widget' : 'Tool';
+      var searchData = escWh(cardTitle + ' ' + cardBody + ' ' + (tool.tags || []).join(' ') + ' field phoenix generated community');
+      var actionBtn = /^https:\/\//i.test(outputUrl)
+        ? '<a href="' + escWh(outputUrl) + '" target="_blank" rel="noopener noreferrer" class="ask-kai-btn wh-field-view-btn" style="text-decoration:none;display:inline-block;">' + escWh(actionLabel) + ' →</a>'
+        : '';
 
-      // Generate type-specific action button for FactoryK tools
-      var actionBtn = '';
-      var outputUrl = normaliseFactoryToolUrl(tool.output_url || '');
-      var hasPublicOutput = /^https?:\/\//i.test(outputUrl);
-      var factoryOrigin = String(tool.factory_origin || '').trim();
-      var hasFactoryOrigin = Boolean(factoryOrigin && factoryOrigin !== 'false' && factoryOrigin !== 'null');
-      var badgeSuffix = hasPublicOutput
-        ? (hasFactoryOrigin ? ' · Factory' : '')
-        : ' · Build brief';
-
-      if (!hasPublicOutput) {
-        actionBtn = '<button class="ask-kai-btn wh-field-view-btn" onclick="openFieldTool(this)" data-tool-id="' + escWh(tool.id) + '" data-tool-title="' + escWh(cardTitle) + '" data-tool-content="' + escWh(tool.artifact_content || '') + '" data-tool-reasoning="' + escWh(tool.triage_reasoning || '') + '">View Build Brief →</button>';
-      } else if (hasFactoryOrigin) {
-        // FactoryK-built tool — render based on output_type
-        var outputType = tool.output_type || 'url';
-        switch(outputType) {
-          case 'url':
-            // URL tools open in new tab
-            actionBtn = '<a href="' + escWh(outputUrl) + '" target="_blank" rel="noopener noreferrer" class="ask-kai-btn wh-field-view-btn" style="text-decoration:none;display:inline-block;">Open Tool →</a>';
-            break;
-          case 'download':
-            // Downloadable files
-            actionBtn = '<button class="ask-kai-btn wh-field-view-btn" onclick="downloadFactoryTool(\'' + escWh(tool.id) + '\', \'' + escWh(tool.output_url || '') + '\')">Download →</button>';
-            break;
-          case 'embed':
-            // Embeddable widgets
-            actionBtn = '<button class="ask-kai-btn wh-field-view-btn" onclick="openEmbeddedTool(\'' + escWh(tool.id) + '\', \'' + escWh(tool.output_url || '') + '\')">Try It →</button>';
-            break;
-          case 'content':
-            // Text content — copy to clipboard
-            actionBtn = '<button class="ask-kai-btn wh-field-view-btn" onclick="copyToolContent(\'' + escWh(tool.id) + '\')">Copy to Clipboard →</button>';
-            break;
-          default:
-            actionBtn = '<button class="ask-kai-btn wh-field-view-btn" onclick="openFieldTool(this)" data-tool-id="' + escWh(tool.id) + '" data-tool-title="' + escWh(tool.artifact_title) + '" data-tool-content="' + escWh(tool.artifact_content) + '">Open & Use →</button>';
-        }
-      } else {
-        // Legacy community signal tool — use original behavior
-        actionBtn = '<button class="ask-kai-btn wh-field-view-btn" onclick="openFieldTool(this)" data-tool-id="' + escWh(tool.id) + '" data-tool-title="' + escWh(tool.artifact_title) + '" data-tool-content="' + escWh(tool.artifact_content) + '">Open & Use →</button>';
-      }
-
-      return '<div class="wh-tool-card" role="listitem" data-search="' + searchData + '" data-tool-id="' + escWh(tool.id) + '" data-output-type="' + escWh(tool.output_type || '') + '" data-output-url="' + escWh(tool.output_url || '') + '" data-tool-content="' + escWh(tool.artifact_content || '') + '">' +
-        '<span class="wh-tool-badge">' + escWh(tool.artifact_type || 'Template') + ' · Community' + badgeSuffix + '</span>' +
+      return '<div class="wh-tool-card" role="listitem" data-search="' + searchData + '" data-tool-id="' + escWh(tool.id) + '" data-output-type="' + escWh(tool.type || '') + '" data-output-url="' + escWh(outputUrl) + '">' +
+        '<span class="wh-tool-badge">' + escWh(typeLabel) + ' · Phoenix · ' + escWh(evidenceLine) + '</span>' +
         '<h4>' + escWh(cardTitle) + '</h4>' +
         '<p>' + escWh(cardBody) + '</p>' +
         '<div class="wh-field-tags">' + tags + '</div>' +
         actionBtn +
         '<button class="ask-kai-btn" data-kai-modal data-kai-context="I\'m in the Commons Warehouse looking at \'' + escWh(cardTitle) + '\'. Can you help me understand how to use this for my organisation?" aria-label="Ask Kai about ' + escWh(cardTitle) + '">Ask Kai \u2192</button>' +
-        '<button class="optin-notify-btn" onclick="openOptinModal(\'' + escWh((tool.sector_tags || [])[0] || '') + '\')" aria-label="Get notified about new tools in this area">\uD83D\uDD14 Notify me \u2192</button>' +
+        '<button type="button" class="optin-notify-btn" data-notify-tag="' + escWh((tool.tags || [])[0] || '') + '" aria-label="Get notified about new tools in this area">\uD83D\uDD14 Notify me \u2192</button>' +
         '</div>';
     }).join('');
 
+    row.querySelectorAll('[data-notify-tag]').forEach(function(button) {
+      button.addEventListener('click', function() {
+        openOptinModal(button.getAttribute('data-notify-tag'));
+      });
+    });
     wrap.style.display = '';
 
     // Re-bind Kai modal buttons for dynamically added cards
@@ -737,7 +737,7 @@ var SECTOR_TAGS = [
   { value: 'indigenous-communities', label: 'First Nations' },
 ];
 
-var OPTIN_ENDPOINT = 'https://community-signal.netlify.app/.netlify/functions/opt-in';
+var OPTIN_EMAIL = 'mike@kamunityconsulting.com';
 
 var AISLE_TAG_MAP = {
   'aisle-tools': 'digital-tools',
@@ -755,7 +755,7 @@ function openOptinModal(preselectedTag) {
   document.getElementById('optin-error').style.display = 'none';
   document.getElementById('optin-form').style.display = '';
   document.getElementById('optin-submit').disabled = false;
-  document.getElementById('optin-submit').textContent = 'Notify me \u2192';
+  document.getElementById('optin-submit').textContent = 'Open email draft \u2192';
 
   grid.innerHTML = SECTOR_TAGS.map(function(t) {
     return '<label class="optin-tag-label">' +
@@ -794,33 +794,28 @@ async function submitOptin(e) {
 
   var submitBtn = document.getElementById('optin-submit');
   submitBtn.disabled = true;
-  submitBtn.textContent = 'Saving\u2026';
+  submitBtn.textContent = 'Opening email\u2026';
   document.getElementById('optin-error').style.display = 'none';
 
   try {
-    var res = await fetch(OPTIN_ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: email,
-        sector_tags: tags,
-        consent_source: 'warehouse',
-        consent_text: 'Get notified when new tools are added to the Commons Warehouse in your areas of interest. No spam. Unsubscribe anytime.'
-      }),
-    });
-
-    if (res.ok) {
-      document.getElementById('optin-form').style.display = 'none';
-      document.getElementById('optin-success').style.display = '';
-    } else {
-      var data = await res.json().catch(function() { return {}; });
-      throw new Error(data.error || 'Submission failed');
-    }
+    var subject = 'Warehouse notification interests';
+    var body = [
+      'Please let me know when new Kamunity Warehouse tools land in these areas:',
+      '',
+      tags.map(function(tag) { return '- ' + tag; }).join('\n'),
+      '',
+      'Reply email: ' + email,
+      '',
+      'Source: Commons Warehouse portable opt-in'
+    ].join('\n');
+    window.location.href = 'mailto:' + OPTIN_EMAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    document.getElementById('optin-form').style.display = 'none';
+    document.getElementById('optin-success').style.display = '';
   } catch (err) {
-    document.getElementById('optin-error').textContent = 'Something went wrong: ' + err.message;
+    document.getElementById('optin-error').textContent = 'Something went wrong opening your email app: ' + err.message;
     document.getElementById('optin-error').style.display = '';
     submitBtn.disabled = false;
-    submitBtn.textContent = 'Notify me \u2192';
+    submitBtn.textContent = 'Open email draft \u2192';
   }
 }
 

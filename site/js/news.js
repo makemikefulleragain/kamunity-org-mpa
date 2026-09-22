@@ -8,9 +8,17 @@
 (function () {
     'use strict';
 
-    var CS_BASE = 'https://community-signal.netlify.app/.netlify/functions/';
-    var CS_ENDPOINT = CS_BASE + 'signals-read?mode=public&limit=30';
-    var STORIES_ENDPOINT = CS_BASE + 'post-schedule?mode=public-feed&limit=20';
+    function isMpaDeployPreview() {
+        if (typeof window === 'undefined' || !window.location || !window.location.hostname) return false;
+        var host = window.location.hostname.toLowerCase();
+        if (host === 'localhost' || host === '127.0.0.1') return true;
+        return /^deploy-preview-\d+--kamunity-org-mpa\.netlify\.app$/.test(host);
+    }
+    var PHOENIX_NEWS_ENDPOINT = window.PHOENIX_NEWS_ENDPOINT ||
+        (isMpaDeployPreview()
+            ? '/.netlify/functions/phoenix-proxy?feed=news'
+            : 'https://phoenix-node.netlify.app/.netlify/functions/public-mpa-news');
+    var PHOENIX_NEWS_SCHEMA = 'phoenix-mpa-news/v1';
 
     var tabBar      = document.getElementById('news-tab-bar');
     var panel       = document.getElementById('news-panel');
@@ -21,6 +29,8 @@
     var filterType   = document.getElementById('filter-type');
     var filterCat    = document.getElementById('filter-category');
     var filterSort   = document.getElementById('filter-sort');
+    var storyModal   = document.getElementById('story-modal');
+    var lastModalTrigger = null;
 
     var allItems     = [];
     var visibleCount = 6;
@@ -42,6 +52,27 @@
         return tabTags.some(function (tt) {
             return tags.some(function (t) { return t.includes(tt); });
         });
+    }
+
+    function buildFeedUrl(endpoint, params) {
+        var sep = endpoint.indexOf('?') === -1 ? '?' : '&';
+        var parts = [];
+        if (params) {
+            for (var key in params) {
+                if (Object.prototype.hasOwnProperty.call(params, key) && params[key] !== undefined && params[key] !== null) {
+                    parts.push(encodeURIComponent(key) + '=' + encodeURIComponent(params[key]));
+                }
+            }
+        }
+        parts.push('_=' + Date.now());
+        return endpoint + sep + parts.join('&');
+    }
+
+    function requirePhoenixNewsFeed(payload) {
+        if (!payload || payload.schema_version !== PHOENIX_NEWS_SCHEMA || !Array.isArray(payload.items)) {
+            throw new Error('Unexpected Phoenix news feed schema');
+        }
+        return payload;
     }
 
     function formatAge(dateStr) {
@@ -71,15 +102,15 @@
         var typeCls  = typeInfo[1];
         var age      = formatAge(item.published_at || item.created_at);
         var tags     = (item.tags || []).slice(0, 3).join(' · ');
-        var title    = item.summary || item.title || 'Community Signal';
-        var summary  = item.why_matters || item.body_text || '';
+        var title    = item.title || item.summary || 'Phoenix story';
+        var summary  = item.summary || item.why_matters || item.body_text || '';
 
         var card = document.createElement('div');
         card.className = 'news-card';
         card.setAttribute('data-type', typeLbl);
         card.setAttribute('data-tags', tags.toLowerCase());
 
-        var actionsHtml = '<a href="/#chats" class="ask-kai-btn">Ask Kai about this →</a>';
+        var actionsHtml = '<a href="/#chats" class="ask-kai-btn news-card-ask">Ask Kai about this →</a>';
 
         /* Read aloud for written signals (SpeechSynthesis API — graceful fallback) */
         var readAloudHtml = '';
@@ -103,21 +134,31 @@
 
         var expandHtml = '';
         if (item._full_body && item._full_body.length > 300) {
-            expandHtml = '<button class="ask-kai-btn" onclick="expandStory(this)" data-full="' + encodeURIComponent(item._full_body) + '">Read more</button>';
+            expandHtml = '<button class="ask-kai-btn news-card-read" data-story-open="' + escWh(item._story_id || '') + '">Read more</button>';
         }
 
         var titleHtml = item._story_id
-            ? '<h3><a href="/news?story=' + encodeURIComponent(item._story_id) + '" style="color:inherit;text-decoration:none;">' + escWh(title) + '</a></h3>'
-            : '<h3>' + title + '</h3>';
+            ? '<h3><button class="news-title-button" data-story-open="' + escWh(item._story_id) + '">' + escWh(title) + '</button></h3>'
+            : '<h3>' + escWh(title) + '</h3>';
 
         card.innerHTML =
             '<div class="news-card-type ' + typeCls + '">' + typeLbl + '</div>' +
             titleHtml +
-            (summary ? '<p class="news-card-summary">' + summary + '</p>' : '') +
-            '<div class="news-card-meta">' + (item.source_name || 'Community Signal') + ' · ' + age + (tags ? ' · ' + tags : '') + '</div>' +
+            (summary ? '<p class="news-card-summary">' + escWh(summary) + '</p>' : '') +
+            '<div class="news-card-meta">' + escWh(item.source_name || 'Phoenix Node') + ' · ' + age + (tags ? ' · ' + escWh(tags) : '') + '</div>' +
             '<div class="news-card-actions">' + mediaHtml + expandHtml + actionsHtml + readAloudHtml + '</div>';
 
         return card;
+    }
+
+    if (panel) {
+        panel.addEventListener('click', function (e) {
+            var trigger = e.target.closest('[data-story-open]');
+            if (!trigger) return;
+            e.preventDefault();
+            var storyId = trigger.getAttribute('data-story-open');
+            if (storyId) openStoryModal(storyId, trigger, true);
+        });
     }
 
     function getFilteredItems() {
@@ -189,20 +230,20 @@
         });
     }
 
-    function mapStoryToItem(story) {
-        var content = story.content || '';
-        var firstLine = content.split('\n')[0] || 'Published Story';
-        var rest = content.slice(firstLine.length).trim();
-        var tags = (story.patterns && story.patterns.sector_tags) || [];
+    function mapPhoenixNewsItem(item) {
+        var content = item.body_text || '';
         return {
-            type: 'story',
-            _story_id: story.id,
-            summary: story.patterns && story.patterns.summary ? story.patterns.summary : firstLine.slice(0, 120),
-            why_matters: rest.slice(0, 300) || content.slice(0, 300),
-            tags: tags,
-            source_name: 'Content Studio',
-            published_at: story.published_at,
-            created_at: story.created_at,
+            type: item.type || 'story',
+            _story_id: item.id,
+            title: item.title || item.summary || 'Phoenix story',
+            summary: item.summary || content.slice(0, 220),
+            body_text: content,
+            tags: item.tags || [],
+            category: item.category || '',
+            source_name: item.source_name || 'Phoenix Node',
+            published_at: item.published_at,
+            created_at: item.created_at,
+            evidence: item.evidence || null,
             _full_body: content
         };
     }
@@ -210,25 +251,13 @@
     /* Load data */
     async function loadNews() {
         try {
-            var results = await Promise.allSettled([
-                fetch(CS_ENDPOINT, { signal: AbortSignal.timeout(8000) }),
-                fetch(STORIES_ENDPOINT, { signal: AbortSignal.timeout(8000) })
-            ]);
-
-            var signals = [];
-            var stories = [];
-
-            if (results[0].status === 'fulfilled' && results[0].value.ok) {
-                var sData = await results[0].value.json();
-                signals = Array.isArray(sData) ? sData : (sData.signals || sData.items || []);
-            }
-
-            if (results[1].status === 'fulfilled' && results[1].value.ok) {
-                var stData = await results[1].value.json();
-                stories = (stData.stories || []).map(mapStoryToItem);
-            }
-
-            allItems = signals.concat(stories);
+            var res = await fetch(buildFeedUrl(PHOENIX_NEWS_ENDPOINT, { limit: 30 }), {
+                cache: 'no-store',
+                signal: AbortSignal.timeout(8000)
+            });
+            if (!res.ok) throw new Error('Feed error ' + res.status);
+            var data = requirePhoenixNewsFeed(await res.json());
+            allItems = data.items.map(mapPhoenixNewsItem);
             allItems.sort(function (a, b) {
                 var da = new Date(a.published_at || a.created_at || 0);
                 var db = new Date(b.published_at || b.created_at || 0);
@@ -244,121 +273,115 @@
             }
 
             render();
+            var storyParam = new URLSearchParams(window.location.search).get('story');
+            if (storyParam) openStoryModal(storyParam, null, false);
 
         } catch (err) {
             allItems = [];
             if (panel) {
                 panel.innerHTML =
                     '<div class="signals-fallback" style="grid-column:1/-1;">' +
-                    'News feed loading. View live at ' +
-                    '<a href="https://community-signal.netlify.app" target="_blank" rel="noopener noreferrer">community-signal.netlify.app</a>' +
+                    'News feed loading. Static Kamunity News notes remain available on this page.' +
                     '</div>';
             }
             if (countsEl) countsEl.textContent = 'Feed unavailable — static fallback shown';
         }
     }
 
-    /* ── Routing: single story or list ────────────────────── */
-    var storyParam = new URLSearchParams(window.location.search).get('story');
-    if (storyParam) {
-        showSingleStory(storyParam);
-    } else {
-        loadNews();
-    }
+    loadNews();
 
-    async function showSingleStory(storyId) {
-        var listView  = document.getElementById('story-list-view');
-        var storyView = document.getElementById('story-view');
-        if (listView)  listView.style.display = 'none';
-        if (storyView) storyView.style.display = '';
-        document.getElementById('sr-story-id').value = storyId;
-
+    async function openStoryModal(storyId, trigger, updateUrl) {
+        if (!storyModal) return;
+        lastModalTrigger = trigger || document.activeElement;
+        setStoryModalLoading();
+        storyModal.classList.add('is-open');
+        storyModal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('story-modal-open');
+        var closeBtn = storyModal.querySelector('[data-story-modal-close]');
+        if (closeBtn) closeBtn.focus();
+        if (updateUrl && history.pushState) {
+            history.pushState({ story: storyId }, '', '/news?story=' + encodeURIComponent(storyId));
+        }
         try {
-            var res = await fetch(CS_BASE + 'post-schedule?mode=public-feed&story_id=' + encodeURIComponent(storyId));
+            var res = await fetch(buildFeedUrl(PHOENIX_NEWS_ENDPOINT, { story_id: storyId }), {
+                cache: 'no-store'
+            });
             if (!res.ok) throw new Error('HTTP ' + res.status);
-            var data = await res.json();
-            var story = data.story;
+            var data = requirePhoenixNewsFeed(await res.json());
+            var story = data.story || (data.items && data.items[0]);
             if (!story) {
-                document.getElementById('sv-title').textContent = 'Story not found';
+                document.getElementById('story-modal-title').textContent = 'Story not found';
                 return;
             }
-            var content = story.content || '';
-            var patSummary = story.patterns && story.patterns.summary ? story.patterns.summary : '';
-            var title = patSummary || content.split('\n')[0] || 'Published Story';
-
-            document.getElementById('sv-title').textContent = title;
-            document.getElementById('sv-date').textContent =
-                new Date(story.published_at).toLocaleDateString('en-AU',
-                    { day: 'numeric', month: 'long', year: 'numeric' });
-
-            var tags = (story.patterns && story.patterns.sector_tags) || [];
-            var tagsEl = document.getElementById('sv-tags');
-            if (tagsEl && tags.length) {
-                tagsEl.innerHTML = tags.map(function(t) {
-                    return '<span class="news-tag-badge">' + escWh(t) + '</span>';
-                }).join(' ');
-            }
-
-            var bodyEl = document.getElementById('sv-body');
-            bodyEl.innerHTML = content.split('\n').map(function(line) {
-                return line.trim() ? '<p>' + escWh(line) + '</p>' : '';
-            }).join('');
-
-            document.title = title + ' \u2014 Kamunity News';
+            renderStoryModal(story);
         } catch (err) {
-            document.getElementById('sv-title').textContent = 'Error loading story';
+            document.getElementById('story-modal-title').textContent = 'Error loading story';
         }
     }
 
-}());
+    function setStoryModalLoading() {
+        document.getElementById('story-modal-title').textContent = 'Loading…';
+        document.getElementById('sm-date').textContent = '';
+        document.getElementById('sm-tags').innerHTML = '';
+        document.getElementById('sm-body').innerHTML = '';
+    }
 
-/* Submit story response — engagement capture */
-function submitStoryResponse(e) {
-    e.preventDefault();
-    var storyId = document.getElementById('sr-story-id').value;
-    var text = document.getElementById('sr-text').value.trim();
-    var name = document.getElementById('sr-name').value.trim();
-    var btn = e.target.querySelector('.sr-submit-btn');
+    function renderStoryModal(story) {
+        var content = story.body_text || '';
+        var title = story.title || story.summary || content.split('\n')[0] || 'Published Story';
+        var date = story.published_at || story.created_at;
+        document.getElementById('story-modal-title').textContent = title;
+        document.getElementById('sm-date').textContent = date
+            ? new Date(date).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })
+            : '';
 
-    if (!text) return;
-    btn.disabled = true;
-    btn.textContent = 'Sending…';
+        var tags = story.tags || [];
+        var tagsEl = document.getElementById('sm-tags');
+        tagsEl.innerHTML = tags.map(function(t) {
+            return '<span class="news-tag-badge">' + escWh(t) + '</span>';
+        }).join(' ');
 
-    fetch('https://community-signal.netlify.app/.netlify/functions/post-schedule?mode=story-engagement', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ story_id: storyId, text: text, name: name || null, source: 'news-page' }),
-    }).then(function(res) {
-        if (res.ok) {
-            document.getElementById('story-response-form').style.display = 'none';
-            document.getElementById('sr-success').style.display = '';
-        } else {
-            return res.json().then(function(d) { throw new Error(d.error || 'Submit failed'); });
+        var bodyEl = document.getElementById('sm-body');
+        bodyEl.innerHTML = content.split(/\n+/).map(function(line) {
+            return line.trim() ? '<p>' + escWh(line) + '</p>' : '';
+        }).join('');
+
+        var newsLink = document.getElementById('sm-news-link');
+        if (newsLink && story.id) newsLink.href = '/news?story=' + encodeURIComponent(story.id);
+        document.title = title + ' \u2014 Kamunity News';
+    }
+
+    function closeStoryModal(updateUrl) {
+        if (!storyModal) return;
+        storyModal.classList.remove('is-open');
+        storyModal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('story-modal-open');
+        document.title = 'Kamunity News — Sector Intelligence for the WA Community Sector';
+        if (updateUrl && history.pushState) history.pushState({}, '', '/news');
+        if (lastModalTrigger && typeof lastModalTrigger.focus === 'function') lastModalTrigger.focus();
+    }
+
+    if (storyModal) {
+        storyModal.addEventListener('click', function (e) {
+            if (e.target.closest('[data-story-modal-close]')) closeStoryModal(true);
+        });
+    }
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && storyModal && storyModal.classList.contains('is-open')) {
+            closeStoryModal(true);
         }
-    }).catch(function(err) {
-        btn.disabled = false;
-        btn.textContent = 'Send →';
-        alert('Something went wrong: ' + err.message);
     });
-}
+    window.addEventListener('popstate', function () {
+        var storyParam = new URLSearchParams(window.location.search).get('story');
+        if (storyParam) openStoryModal(storyParam, null, false);
+        else closeStoryModal(false);
+    });
+
+}());
 
 function escWh(s) {
     return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;')
                          .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-/* Expand story — shows full body inline when "Read more" is clicked */
-function expandStory(btn) {
-    var full = decodeURIComponent(btn.getAttribute('data-full') || '');
-    if (!full) return;
-    var card = btn.closest('.news-card');
-    if (!card) return;
-    var summary = card.querySelector('.news-card-summary');
-    if (summary) {
-        summary.style.whiteSpace = 'pre-wrap';
-        summary.textContent = full;
-    }
-    btn.remove();
 }
 
 /* Read aloud — uses SpeechSynthesis, gracefully absent if unavailable */
