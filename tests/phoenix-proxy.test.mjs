@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import assert from "node:assert/strict";
 import { afterEach, beforeEach, test } from "node:test";
 import {
@@ -322,4 +323,35 @@ test("client query builder helper: correctly constructs URLs without duplicate q
   const storyUrl = buildFeedUrl("/.netlify/functions/phoenix-proxy?feed=news", { story_id: "story-abc-123" });
   assert.equal(storyUrl, "/.netlify/functions/phoenix-proxy?feed=news&story_id=story-abc-123&_=12345");
   assert.equal(storyUrl.split("?").length, 2, "must contain exactly one question mark");
+});
+
+test("rooms client script: contains no undefined freshUrl and properly uses buildFeedUrl", () => {
+  const roomsScript = fs.readFileSync(
+    new URL("../site/js/rooms.js", import.meta.url),
+    "utf8"
+  );
+
+  // 1. Must not reference freshUrl anywhere
+  assert.equal(roomsScript.includes("freshUrl"), false, "rooms.js must not contain any reference to undefined freshUrl");
+
+  // 2. Must use buildFeedUrl for Phoenix rooms request
+  assert.equal(
+    roomsScript.includes("fetchJson(buildFeedUrl(PHOENIX_ROOMS_ENDPOINT, { limit: 3 }))"),
+    true,
+    "rooms.js must call fetchJson(buildFeedUrl(PHOENIX_ROOMS_ENDPOINT, { limit: 3 }))"
+  );
+
+  // 3. Verify actual URL produced when evaluated with PHOENIX_ROOMS_ENDPOINT
+  const match = roomsScript.match(/function buildFeedUrl\([\s\S]*?\n    \}/);
+  assert.ok(match, "buildFeedUrl function definition must exist in rooms.js");
+
+  const buildFn = new Function(`return (${match[0]})`)();
+  const generatedUrl = buildFn("/.netlify/functions/phoenix-proxy?feed=rooms", { limit: 3 });
+
+  // 4. Test format: single '?', contains ?feed=rooms&limit=3&_
+  assert.equal(generatedUrl.split("?").length, 2, "must contain exactly one '?' delimiter");
+  assert.ok(
+    generatedUrl.startsWith("/.netlify/functions/phoenix-proxy?feed=rooms&limit=3&_="),
+    "generated URL must have form /.netlify/functions/phoenix-proxy?feed=rooms&limit=3&_="
+  );
 });

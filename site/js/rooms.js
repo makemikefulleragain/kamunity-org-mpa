@@ -48,7 +48,7 @@
     }
 
     function fetchJson(url) {
-        return fetch(freshUrl(url), {
+        return fetch(url, {
             cache: 'no-store',
             headers: { Accept: 'application/json' }
         }).then(function (response) {
