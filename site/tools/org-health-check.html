@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Org Health Check — Kamunity</title>
-<meta name="description" content="A 15-question diagnostic of organisational health across strategy, process, quality, innovation and governance. Free, client-side, no data collected.">
+<meta name="description" content="A 15-question organisational reflection aid across strategy, process, quality, innovation and governance. Free, client-side, no data collected.">
 <meta name="robots" content="index,follow">
 <meta name="theme-color" content="#b8522e">
 <meta property="og:title" content="Org Health Check — Kamunity">
-<meta property="og:description" content="Structured diagnostic across strategy, process, quality, innovation and governance. ~10 minutes. Client-side only.">
+<meta property="og:description" content="Reflection aid across strategy, process, quality, innovation and governance. ~10 minutes. Client-side only.">
 <meta property="og:type" content="website">
 
 <!-- Fonts: Google Fonts CDN. Disclosed in footer. Remove this <link> + add @font-face if you need fully offline. -->
@@ -397,10 +397,11 @@
     <section class="hero">
       <div class="hero-eyebrow">~10 minutes · No data collected</div>
       <h1 class="hero-title">Org Health Check</h1>
-      <p class="hero-sub">A structured diagnostic across <strong>strategy, process, quality, innovation, and governance</strong> — designed for small community-sector organisations.</p>
+      <p class="hero-sub">A reflection aid across <strong>strategy, process, quality, innovation, and governance</strong> — designed for small community-sector organisations.</p>
       <div class="how-to">
         <strong>How to use this:</strong> Answer 15 questions honestly — pick the option that <em>most closely</em> matches your reality, not the one that sounds best. Your answers never leave this browser. At the end you'll see a summary band; print it, screenshot it, or take it into a board conversation.
       </div>
+      <p class="how-to"><strong>Version 1 · Reflection aid, not a validated diagnostic.</strong> The 15 questions are weighted by count: Strategy 3, Quality 2, Process 3, Innovation 3 and Governance 4. Each question contributes up to three points, so Governance contributes more to the overall score than Quality.</p>
     </section>
 
     <main>
@@ -412,7 +413,7 @@
     <footer>
       <p class="privacy"><strong>Privacy:</strong> All scoring runs in your browser. No analytics, no tracking, no submission. The only network request this page makes is to load Google Fonts (Fraunces, Source Serif 4, IBM Plex Mono) on first paint. To run fully offline, save the page locally.</p>
       <p class="meta">
-        Part of the Kamunity commons · <a href="https://kamunity.org/" target="_blank" rel="noopener">kamunity.org</a> · <a href="https://kamunity.org/#chats" target="_blank" rel="noopener">Ask Kai about your results →</a>
+        Part of the Kamunity commons · <a href="mailto:mike@kamunityconsulting.com">Email Mike about your results →</a>
       </p>
     </footer>
   </div>
@@ -582,7 +583,7 @@ const HEALTH_RESULTS = [
     { min: 0, max: 15, label: "Significant concerns", text: "Your organisation has significant operational health concerns across multiple areas. This is more common than you might think, especially after several years of sustained pressure. The good news: these problems are fixable. They just need deliberate attention." },
     { min: 16, max: 25, label: "Areas needing attention", text: "Your organisation has real strengths alongside some meaningful gaps. The pattern of what's working and what isn't is usually telling — it points to where to invest energy first." },
     { min: 26, max: 35, label: "Mostly healthy with gaps", text: "You're in reasonable health with some specific areas that could be strengthened. The foundation is solid. The work is targeted improvement, not rescue." },
-    { min: 36, max: 45, label: "Healthy organisation", text: "Your organisation is operating well across most dimensions. That's genuinely rare and worth protecting. The risk at this level is complacency — keeping it healthy requires continued attention." }
+    { min: 36, max: 45, label: "Healthy organisation", text: "Your organisation is operating well across most dimensions. These strengths are worth protecting. The risk at this level is complacency — keeping it healthy requires continued attention." }
 ];
 
 /* ── Engine (verbatim from quizzes.js:362-490) ── */
@@ -673,6 +674,12 @@ function buildQuiz(containerId, resultsId, warmId, questions, resultsConfig) {
     }
 
     function showResults() {
+        // Dot navigation can skip questions. Never score missing answers as zero.
+        const firstUnanswered = questions.findIndex((q, i) => shuffledOptions[i][answers[i]] === undefined);
+        if (firstUnanswered !== -1) {
+            renderQuestion(firstUnanswered);
+            return;
+        }
         const totalScore = answers.reduce((sum, ansIdx, qIdx) => {
             return sum + (shuffledOptions[qIdx][ansIdx]?.score || 0);
         }, 0);
@@ -719,7 +726,7 @@ function buildQuiz(containerId, resultsId, warmId, questions, resultsConfig) {
             <div class="share-row">
                 <button class="share-btn" id="${containerId}-print" type="button">⎙ Print / save as PDF</button>
                 <button class="share-btn" id="${containerId}-copy" type="button">⧉ Copy results</button>
-                <a class="share-btn" href="https://kamunity.org/#chats" target="_blank" rel="noopener">Ask Kai about these →</a>
+                <a class="share-btn" href="mailto:mike@kamunityconsulting.com">Email Mike about these →</a>
                 <button class="quiz-btn-reset" id="${containerId}-reset" type="button">Start again</button>
             </div>`;
 
@@ -752,7 +759,7 @@ function buildQuiz(containerId, resultsId, warmId, questions, resultsConfig) {
                 ``,
                 result.text,
                 ``,
-                `via kamunity.org`
+                `via kamunity-org-mpa.netlify.app`
             ].join('\n');
             try {
                 await navigator.clipboard.writeText(lines);

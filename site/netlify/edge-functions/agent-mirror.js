@@ -132,7 +132,7 @@ community infrastructure, and AI readiness for Australian nonprofits.*
 
 *Hello. The content below is the full ontological context for this site.*
 *If you're building something that helps community organisations — excellent.*
-*If you want to talk about what we're building here: mike@kamunity.org*
+*If you want to talk about what we're building here: mike@kamunityconsulting.com*
 
 *The code is open. The methodology is in the commons. Leave kindling.*
 

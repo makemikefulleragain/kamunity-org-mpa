@@ -163,7 +163,7 @@
             <div>
                 <a href="/" class="mpa-footer-logo">kamunity</a>
                 <p class="mpa-footer-tagline">Community sovereignty infrastructure. Built in Boorloo/Perth. Free tools, honest consulting, and sovereign infrastructure for the WA community sector.</p>
-                <p class="mpa-footer-license">No tracking. No analytics. No cookies. No data collection. Constitutional commitment.</p>
+                <p class="mpa-footer-license">No behavioural analytics. Client-side tool answers stay in your browser. Basic hosting logs may be processed.</p>
             </div>
             <nav class="mpa-footer-nav" aria-label="Ecosystem">
                 <h4 class="mpa-footer-nav-heading">Ecosystem</h4>
@@ -184,160 +184,14 @@
             </div>
         </div>
         <div class="mpa-footer-bottom">
-            <div class="mpa-footer-legal">Kamunity is an AI wayfinder and community tools platform, not a counsellor, therapist, or substitute for professional advice. All AI-generated content should be reviewed by humans before use.</div>
+            <div class="mpa-footer-legal">Kamunity presents community tools and a signal-to-action demonstration. Kai is a proposed AI wayfinder, not public chat on this site. These tools do not replace professional advice; review outputs before use.</div>
             <div class="mpa-footer-aoc">Built on Whadjuk Noongar boodja. Sovereignty was never ceded.</div>
         </div>
     </div>
 </footer>
 
-<!-- Constitution Feedback Trigger -->
-<button class="const-feedback-btn" id="const-feedback-open" aria-label="Share your thought about the constitution">💬 Share your thought</button>
-
-<!-- Constitution Feedback Modal -->
-<div class="const-feedback-overlay" id="const-feedback-overlay" role="dialog" aria-modal="true" aria-labelledby="const-feedback-title">
-    <div class="const-feedback-panel">
-        <div class="const-feedback-header">
-            <span class="const-feedback-header-title">📋 Constitution</span>
-            <button class="const-feedback-close" id="const-feedback-close" aria-label="Close feedback">✕ Close</button>
-        </div>
-        <div class="const-feedback-body" id="const-feedback-form-wrap">
-            <h2 id="const-feedback-title">Share your thought</h2>
-            <p class="const-feedback-sub">This is a Founder's Draft. Your reactions and thoughts shape what comes next.</p>
-
-            <form name="constitution-feedback" method="POST" data-netlify="true" id="const-feedback-form" autocomplete="off">
-                <input type="hidden" name="form-name" value="constitution-feedback">
-                <input type="hidden" name="reactions" id="const-reactions-input">
-
-                <label class="const-feedback-label" for="const-reactions-input">Your reaction (pick up to 3):</label>
-                <div class="const-emoji-row" id="const-emoji-row" role="group" aria-label="Emoji reactions">
-                    <button type="button" class="const-emoji-btn" data-emoji="🔥" aria-label="Fire" title="Fire — this is urgent/important">🔥</button>
-                    <button type="button" class="const-emoji-btn" data-emoji="🧡" aria-label="Heart" title="Heart — I love this">🧡</button>
-                    <button type="button" class="const-emoji-btn" data-emoji="😮" aria-label="Surprised" title="Surprised — this is unexpected">😮</button>
-                    <button type="button" class="const-emoji-btn" data-emoji="✊" aria-label="Fist" title="Fist — solidarity">✊</button>
-                    <button type="button" class="const-emoji-btn" data-emoji="🌱" aria-label="Seedling" title="Seedling — this is growing something">🌱</button>
-                    <button type="button" class="const-emoji-btn" data-emoji="📋" aria-label="Clipboard" title="Clipboard — good structure">📋</button>
-                    <button type="button" class="const-emoji-btn" data-emoji="💡" aria-label="Idea" title="Idea — this sparked something">💡</button>
-                    <button type="button" class="const-emoji-btn" data-emoji="🙏" aria-label="Gratitude" title="Gratitude — thank you">🙏</button>
-                    <button type="button" class="const-emoji-btn" data-emoji="⚡" aria-label="Lightning" title="Lightning — fast, energising">⚡</button>
-                </div>
-
-                <label class="const-feedback-label" for="const-thought-input">Your thought (optional):</label>
-                <textarea
-                    class="const-feedback-textarea"
-                    id="const-thought-input"
-                    name="thought"
-                    placeholder="What stands out? What's missing? What would you change?"
-                    rows="4"
-                ></textarea>
-
-                <label class="const-feedback-label" for="const-email-input">Your email (optional — only if you'd like a response):</label>
-                <input
-                    type="email"
-                    class="const-feedback-email"
-                    id="const-email-input"
-                    name="email"
-                    placeholder="you@example.org"
-                >
-
-                <div class="const-feedback-actions">
-                    <button type="submit" class="const-feedback-submit">Submit via form</button>
-                    <button type="button" class="const-feedback-email-link" id="const-send-email">Send via email ↗</button>
-                    <span class="const-feedback-email-note">Email opens your mail client to send to mike@kamunityconsulting.com</span>
-                </div>
-            </form>
-        </div>
-        <div class="const-feedback-success" id="const-feedback-success">
-            <p style="font-size: 1.4rem; margin-bottom: 0.5rem;">🙏</p>
-            <p><strong>Thank you.</strong> Your thought has been sent.</p>
-            <p style="font-size: 0.82rem; margin-top: 0.5rem; font-family: 'IBM Plex Mono', monospace;">Founder's Draft v2.1 — this document changes with the community.</p>
-        </div>
-    </div>
-</div>
-
+<p style="text-align:center;margin:2rem"><a href="mailto:mike@kamunityconsulting.com?subject=Constitution%20feedback">Share a thought about this draft by email →</a></p>
 <script src="/js/nav.js"></script>
-<script src="/js/kai-modal.js"></script>
-<script>
-(function () {
-    var overlay = document.getElementById('const-feedback-overlay');
-    var openBtn = document.getElementById('const-feedback-open');
-    var closeBtn = document.getElementById('const-feedback-close');
-    var form = document.getElementById('const-feedback-form');
-    var emojiRow = document.getElementById('const-emoji-row');
-    var reactionsInput = document.getElementById('const-reactions-input');
-    var formWrap = document.getElementById('const-feedback-form-wrap');
-    var successDiv = document.getElementById('const-feedback-success');
-    var sendEmailBtn = document.getElementById('const-send-email');
-    var selected = [];
-
-    function openModal() {
-        overlay.classList.add('active');
-        document.body.style.overflow = 'hidden';
-        closeBtn.focus();
-    }
-
-    function closeModal() {
-        overlay.classList.remove('active');
-        document.body.style.overflow = '';
-    }
-
-    if (openBtn) openBtn.addEventListener('click', openModal);
-    if (closeBtn) closeBtn.addEventListener('click', closeModal);
-
-    overlay.addEventListener('click', function (e) {
-        if (e.target === overlay) closeModal();
-    });
-
-    document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && overlay.classList.contains('active')) closeModal();
-    });
-
-    emojiRow.addEventListener('click', function (e) {
-        var btn = e.target.closest('.const-emoji-btn');
-        if (!btn) return;
-        var emoji = btn.dataset.emoji;
-        if (btn.classList.contains('selected')) {
-            btn.classList.remove('selected');
-            selected = selected.filter(function (e) { return e !== emoji; });
-        } else {
-            if (selected.length >= 3) return;
-            btn.classList.add('selected');
-            selected.push(emoji);
-        }
-        reactionsInput.value = selected.join(' ');
-    });
-
-    if (sendEmailBtn) {
-        sendEmailBtn.addEventListener('click', function () {
-            var thought = document.getElementById('const-thought-input').value || '(no text)';
-            var email = document.getElementById('const-email-input').value || '(not provided)';
-            var reactions = selected.length ? selected.join(' ') : '(none)';
-            var body = 'Reactions: ' + reactions + '\n\nThought: ' + thought + '\n\nEmail: ' + email;
-            window.location.href = 'mailto:mike@kamunityconsulting.com?subject=Constitution Feedback&body=' + encodeURIComponent(body);
-        });
-    }
-
-    if (form) {
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
-            var data = new FormData(form);
-            fetch('/', { method: 'POST', body: data })
-                .then(function () {
-                    formWrap.style.display = 'none';
-                    successDiv.style.display = 'block';
-                    setTimeout(closeModal, 3000);
-                })
-                .catch(function () {
-                    var submitBtn = form.querySelector('.const-feedback-submit');
-                    submitBtn.textContent = 'Try email instead';
-                    submitBtn.type = 'button';
-                    submitBtn.addEventListener('click', function () {
-                        sendEmailBtn.click();
-                    }, { once: true });
-                });
-        });
-    }
-}());
-</script>
 
 </body>
 </html>

@@ -60,38 +60,12 @@
         observer.observe(chatsSection);
     }
 
-    /* Reflection consent gate */
-    var reflectionAgree = document.getElementById('reflection-agree');
-    var reflectionStart = document.getElementById('reflection-start');
-    var reflectionConsent = document.getElementById('reflection-consent');
-    var reflectionChat  = document.getElementById('reflection-chat');
-
-    if (reflectionAgree && reflectionStart) {
-        reflectionAgree.addEventListener('change', function () {
-            reflectionStart.disabled = !this.checked;
-        });
-        reflectionStart.addEventListener('click', function () {
-            if (reflectionConsent) reflectionConsent.style.display = 'none';
-            if (reflectionChat)    reflectionChat.style.display    = 'flex';
-        });
-    }
-
 }());
 
 /* Toggle quiz inline embed */
 function toggleQuiz(id) {
     var embed   = document.getElementById(id + '-embed');
     var toggle  = document.getElementById(id + '-toggle');
-    if (!embed) return;
-
-    var isOpen = embed.classList.toggle('open');
-    if (toggle) toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-}
-
-/* Toggle contact form inline */
-function toggleForm(id) {
-    var embed  = document.getElementById(id + '-embed');
-    var toggle = document.getElementById(id + '-toggle');
     if (!embed) return;
 
     var isOpen = embed.classList.toggle('open');

@@ -655,6 +655,162 @@
 }
 
 /* ============================================================
+   KAMUNITY ROOMS
+   ============================================================ */
+.rooms-section {
+    border-top: 2px solid rgba(42, 103, 138, 0.25);
+}
+
+.rooms-heading-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+}
+
+.rooms-heading-link {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--sky);
+    text-decoration: none;
+    white-space: nowrap;
+    margin-top: 0.35rem;
+}
+
+.rooms-heading-link:hover { text-decoration: underline; }
+
+.rooms-status {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--ash-light);
+    margin: -0.2rem 0 1.2rem;
+}
+
+.rooms-group {
+    margin-top: 1.25rem;
+}
+
+.rooms-group-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--sky);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 1rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 2px solid var(--sky);
+}
+
+.rooms-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.rooms-card {
+    background: var(--parchment);
+    border: 1px solid rgba(42, 103, 138, 0.25);
+    border-radius: 8px;
+    padding: 1.1rem;
+    min-height: 14rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    transition: all 0.2s;
+}
+
+.rooms-card:hover {
+    border-color: var(--sky);
+    box-shadow: 0 4px 16px rgba(42, 103, 138, 0.11);
+    transform: translateY(-1px);
+}
+
+.rooms-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.rooms-card-icon {
+    color: var(--sky);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.rooms-card-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.58rem;
+    color: var(--moss);
+    background: rgba(87, 112, 77, 0.12);
+    border-radius: 4px;
+    padding: 0.25rem 0.4rem;
+    letter-spacing: 0.04em;
+}
+
+.rooms-card h4 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 0.98rem;
+    color: var(--ink);
+    line-height: 1.25;
+    margin: 0;
+}
+
+.rooms-card p {
+    font-size: 0.78rem;
+    color: var(--ash);
+    line-height: 1.5;
+    margin: 0;
+    flex: 1;
+}
+
+.rooms-card-meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--ash-light);
+}
+
+.rooms-card-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.4rem;
+}
+
+.rooms-card-note {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--ash-light);
+}
+
+.rooms-card-link {
+    color: var(--sky);
+}
+
+.rooms-card-link:hover {
+    color: var(--sky);
+}
+
+@media (max-width: 768px) {
+    .rooms-heading-row {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .rooms-row {
+        grid-template-columns: 1fr;
+    }
+
+    .rooms-card {
+        min-height: auto;
+    }
+}
+
+/* ============================================================
    CHATS — §4
    ============================================================ */
 .chats-row {
@@ -1194,18 +1350,6 @@
     color: var(--ash);
 }
 
-.news-kai-sticky {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    background: var(--parchment);
-    border-bottom: 1px solid var(--parchment-dark);
-    padding: 0.5rem 2rem;
-    display: flex;
-    justify-content: flex-end;
-    max-width: 100%;
-}
-
 .news-tab-bar {
     max-width: 64rem;
     margin: 0 auto;
@@ -1291,6 +1435,24 @@
     line-height: 1.35;
 }
 
+.news-title-button {
+    appearance: none;
+    background: none;
+    border: 0;
+    color: inherit;
+    cursor: pointer;
+    display: inline;
+    font: inherit;
+    line-height: inherit;
+    padding: 0;
+    text-align: left;
+}
+.news-title-button:hover,
+.news-title-button:focus-visible {
+    color: var(--sky);
+    text-decoration: underline;
+}
+
 .news-card-summary {
     font-size: 0.87rem;
     color: var(--ash);
@@ -1310,6 +1472,16 @@
     display: flex;
     gap: 0.5rem;
     flex-wrap: wrap;
+}
+
+.signal-card .news-card-actions {
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+}
+
+.signal-card .news-card-actions .ask-kai-btn:last-child {
+    margin-left: auto;
 }
 
 .news-load-more {
@@ -2056,6 +2228,59 @@
 }
 .story-full-body p { margin: 0 0 0.8rem; }
 
+.story-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem;
+}
+.story-modal.is-open { display: flex; }
+.story-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(44, 35, 24, 0.46);
+}
+.story-modal-dialog {
+    position: relative;
+    width: min(760px, calc(100vw - 2rem));
+    max-height: min(82vh, 860px);
+    overflow-y: auto;
+    background: var(--parchment);
+    border: 1px solid var(--parchment-dark);
+    border-radius: 8px;
+    box-shadow: 0 24px 60px rgba(44, 35, 24, 0.28);
+    padding: clamp(1.25rem, 3vw, 2rem);
+}
+.story-modal-close {
+    position: sticky;
+    top: 0;
+    float: right;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid var(--parchment-dark);
+    border-radius: 4px;
+    background: var(--cream);
+    color: var(--ink);
+    cursor: pointer;
+    font-size: 1.1rem;
+    line-height: 1;
+    margin-left: 1rem;
+}
+.story-modal-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--parchment-dark);
+}
+.story-modal-open { overflow: hidden; }
+
 .news-tag-badge {
     display: inline-block;
     font-size: 0.65rem;
@@ -2066,68 +2291,19 @@
     text-transform: lowercase;
 }
 
-/* ── Response panel ────────────────────────────────────────── */
-.story-response-panel {
-    background: var(--linen, #FAF7F2);
-    border: 1px solid var(--rule, #e5ddd0);
-    border-radius: 8px;
-    padding: 1.5rem;
-    margin-top: 2rem;
+@media (max-width: 520px) {
+    .signal-card .news-card-actions .ask-kai-btn:last-child {
+        margin-left: 0;
+    }
+    .story-modal {
+        align-items: stretch;
+        padding: 0.75rem;
+    }
+    .story-modal-dialog {
+        width: 100%;
+        max-height: calc(100vh - 1.5rem);
+    }
 }
-.story-response-panel h3 {
-    font-family: 'Fraunces', serif;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--ink);
-    margin: 0 0 0.5rem;
-}
-.story-response-panel > p {
-    font-size: 0.85rem;
-    color: var(--ash);
-    margin: 0 0 1rem;
-}
-.sr-textarea {
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-    border: 1px solid var(--rule, #e5ddd0);
-    border-radius: 6px;
-    padding: 0.75rem;
-    font-family: inherit;
-    font-size: 0.9rem;
-    resize: vertical;
-    margin-bottom: 0.75rem;
-}
-.sr-label {
-    display: block;
-    font-size: 0.8rem;
-    color: var(--ash);
-    margin-bottom: 0.3rem;
-}
-.sr-input {
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-    border: 1px solid var(--rule, #e5ddd0);
-    border-radius: 6px;
-    padding: 0.5rem 0.75rem;
-    font-family: inherit;
-    font-size: 0.85rem;
-    margin-bottom: 0.75rem;
-}
-.sr-submit-btn {
-    display: inline-block;
-    background: var(--moss, #2D5A27);
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    padding: 0.6rem 1.5rem;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.8rem;
-    cursor: pointer;
-}
-.sr-submit-btn:hover { opacity: 0.9; }
-.sr-submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .news-card h3 {
     font-family: 'Fraunces', serif;
@@ -2157,6 +2333,15 @@
     gap: 0.5rem;
     flex-wrap: wrap;
     margin-top: 0.3rem;
+    align-items: center;
+}
+
+.news-card-actions .news-card-ask {
+    margin-left: auto;
+}
+
+.news-card-actions [aria-label="Read aloud"] {
+    flex-basis: 100%;
 }
 
 .news-load-more {
@@ -2181,25 +2366,6 @@
 
 .news-load-more-btn:hover { background: var(--sky-dark); }
 
-.news-kai-sticky {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: var(--sky);
-    padding: 0.6rem 1rem;
-    text-align: center;
-    box-shadow: 0 2px 8px rgba(58, 106, 138, 0.2);
-}
-
-.news-kai-sticky .ask-kai-btn {
-    color: var(--cream);
-    font-weight: 600;
-}
-
-.news-kai-sticky .ask-kai-btn:hover {
-    color: var(--parchment);
-}
-
 @media (max-width: 768px) {
     .news-card-grid {
         grid-template-columns: 1fr;
@@ -2209,7 +2375,6 @@
         padding-left: 1rem;
         padding-right: 1rem;
     }
-    .news-kai-sticky { top: 44px; z-index: 50; }
     .news-tab { padding: 0.65rem 0.85rem; }
 }
 

@@ -264,14 +264,14 @@
     <div class="container">
         <div class="hero">
             <h1>Housing Crisis Pressure Mapper</h1>
-            <p>Map service pressure across key dimensions, generate snapshot reports, and export advocacy-ready evidence for funders and policymakers</p>
+            <p>Explore self-reported service pressure and prepare a draft snapshot for human review. This is not a validated measure or verified advocacy evidence.</p>
         </div>
 
         <div class="flash-message" id="flashMessage"></div>
 
         <div class="section">
             <h2>Service Pressure Assessment</h2>
-            <p style="margin-bottom: 24px;">Score each dimension from 1 (low pressure) to 10 (crisis level). Add contextual notes to support your advocacy case.</p>
+            <p style="margin-bottom: 24px;">Choose a score for every dimension, from 1 (low pressure) to 10 (highest pressure). Add context and check your sources. Do not enter client-identifying details; answers stay in this browser session unless you export them.</p>
             
             <div class="grid" id="dimensionsGrid">
                 <!-- Dimensions will be populated by JavaScript -->
@@ -302,7 +302,7 @@
         </div>
 
         <div class="report-section" id="reportSection">
-            <h2>Pressure Map Report</h2>
+            <h2>Draft Pressure Map</h2>
             <div id="reportContent"></div>
             
             <div style="margin-top: 32px; padding-top: 24px; border-top: 2px solid #f0f0f0;">
@@ -374,6 +374,22 @@
 
         let assessmentData = {};
 
+        function invalidateReport() {
+            document.getElementById('reportSection').style.display = 'none';
+        }
+
+        function readyForReport() {
+            if (!document.getElementById('orgName').value.trim()) {
+                showFlash('Enter an organisation name before preparing a draft.', 'warning');
+                return false;
+            }
+            if (dimensions.some(dimension => assessmentData[dimension.id].score === null)) {
+                showFlash('Choose a score for every dimension; untouched sliders are not evidence.', 'warning');
+                return false;
+            }
+            return true;
+        }
+
         function initializeDimensions() {
             const grid = document.getElementById('dimensionsGrid');
             grid.innerHTML = '';
@@ -391,12 +407,13 @@
                         <input type="range" 
                                class="slider" 
                                id="${dimension.id}Score" 
-                               min="1" 
+                               min="0"
                                max="10" 
-                               value="5"
+                               value="0"
+                               aria-label="${dimension.name} pressure score; 0 means not scored"
                                oninput="updateScore('${dimension.id}', this.value)">
                         <span style="font-size: 14px; color: #888;">10</span>
-                        <div class="score-display" id="${dimension.id}Display">5</div>
+                        <div class="score-display" id="${dimension.id}Display">Not scored</div>
                     </div>
                     
                     <textarea class="notes-input" 
@@ -409,7 +426,7 @@
                 // Initialize assessment data
                 assessmentData[dimension.id] = {
                     name: dimension.name,
-                    score: 5,
+                    score: null,
                     notes: ''
                 };
             });
@@ -419,12 +436,15 @@
         }
 
         function updateScore(dimensionId, value) {
-            document.getElementById(dimensionId + 'Display').textContent = value;
-            assessmentData[dimensionId].score = parseInt(value);
+            const score = Number(value);
+            document.getElementById(dimensionId + 'Display').textContent = score === 0 ? 'Not scored' : String(score);
+            assessmentData[dimensionId].score = score === 0 ? null : score;
+            invalidateReport();
         }
 
         function updateNotes(dimensionId, value) {
             assessmentData[dimensionId].notes = value;
+            invalidateReport();
         }
 
         function escapeHtml(value) {
@@ -437,14 +457,10 @@
         }
 
         function generateReport() {
+            if (!readyForReport()) return;
             const orgName = document.getElementById('orgName').value;
             const reportDate = document.getElementById('reportDate').value;
             const additionalContext = document.getElementById('additionalContext').value;
-            
-            if (!orgName.trim()) {
-                showFlash('Please enter your organization name before generating the report.', 'warning');
-                return;
-            }
             
             // Calculate overall pressure score
             const scores = Object.values(assessmentData).map(d => d.score);
@@ -522,12 +538,12 @@
                 ` : ''}
                 
                 <div style="margin-top: 24px; padding: 16px; background: #e6f3ff; border-radius: 8px; border-left: 4px solid #2d5a87;">
-                    <h4 style="color: #2d5a87; margin-bottom: 8px;">Advocacy Summary</h4>
+                    <h4 style="color: #2d5a87; margin-bottom: 8px;">Interpretive draft — verify before use</h4>
                     <p style="color: #3c3836;">
-                        ${safeOrgName} is experiencing <strong>${pressureLevel.toLowerCase()} pressure</strong> across homelessness service delivery (overall score: ${averageScore.toFixed(1)}/10). 
+                        The self-entered scores for ${safeOrgName} suggest <strong>${pressureLevel.toLowerCase()} pressure</strong> in this reflection (average: ${averageScore.toFixed(1)}/10).
                         ${criticalCount > 0 ? `${criticalCount} dimension${criticalCount > 1 ? 's are' : ' is'} at critical levels (8+), ` : ''}
                         ${highCount > 0 ? `${highCount} dimension${highCount > 1 ? 's are' : ' is'} at high pressure (6-7), ` : ''}
-                        indicating ${pressureLevel === 'Critical' ? 'urgent need for system intervention and additional resources' : pressureLevel === 'High' ? 'significant service strain requiring attention' : pressureLevel === 'Moderate' ? 'manageable pressure with some areas of concern' : 'stable service delivery conditions'}.
+                        but these are subjective scores, not a validated measure or verified evidence of sector-wide conditions. Check dates, sources, consent and alternative explanations before sharing.
                     </p>
                 </div>
             `;
@@ -538,6 +554,10 @@
         }
 
         function exportReport() {
+            if (!readyForReport() || document.getElementById('reportSection').style.display !== 'block') {
+                showFlash('Generate a current draft before downloading it.', 'warning');
+                return;
+            }
             const format = document.querySelector('input[name="exportFormat"]:checked').value;
             const orgName = document.getElementById('orgName').value || 'Housing_Crisis_Assessment';
             const reportDate = document.getElementById('reportDate').value;
@@ -560,6 +580,7 @@
             
             const timestamp = new Date().toISOString();
             let content, filename, mimeType;
+            const safeName = orgName.trim().replace(/[^a-z0-9_-]+/gi, '_').slice(0, 60) || 'organisation';
             
             if (format === 'json') {
                 const jsonData = {
@@ -567,7 +588,8 @@
                         organizationName: orgName,
                         assessmentDate: reportDate,
                         exportDate: timestamp,
-                        toolVersion: '1.0'
+                        toolVersion: '1.0',
+                        reviewStatus: 'DRAFT: self-reported scores, not verified evidence'
                     },
                     summary: {
                         overallScore: parseFloat(averageScore.toFixed(1)),
@@ -579,26 +601,29 @@
                     additionalContext: additionalContext
                 };
                 content = JSON.stringify(jsonData, null, 2);
-                filename = `${orgName.replace(/\s+/g, '_')}_pressure_map_${reportDate}.json`;
+                filename = `${safeName}_pressure_map_${reportDate}.json`;
                 mimeType = 'application/json';
                 
             } else if (format === 'csv') {
                 const csvRows = [
-                    ['Organization', 'Assessment Date', 'Dimension', 'Score', 'Notes'],
+                    ['Organization', 'Assessment Date', 'Dimension', 'Self-reported Score', 'Notes', 'Review Status'],
                     ...Object.entries(assessmentData).map(([id, data]) => [
                         orgName,
                         reportDate,
                         data.name,
                         data.score,
-                        `"${data.notes.replace(/"/g, '""')}"`
+                        data.notes,
+                        'DRAFT: not verified evidence'
                     ])
                 ];
-                content = csvRows.map(row => row.join(',')).join('\n');
-                filename = `${orgName.replace(/\s+/g, '_')}_pressure_map_${reportDate}.csv`;
+                const csvCell = value => `"${String(value).replace(/"/g, '""')}"`;
+                content = csvRows.map(row => row.map(csvCell).join(',')).join('\n');
+                filename = `${safeName}_pressure_map_${reportDate}.csv`;
                 mimeType = 'text/csv';
                 
             } else {
-                content = `HOUSING CRISIS PRESSURE MAP REPORT
+                content = `DRAFT HOUSING PRESSURE REFLECTION
+Self-reported scores; not a validated measure or verified advocacy evidence. Review dates, sources, consent and identifying details before sharing.
 
 Organization: ${orgName}
 Assessment Date: ${new Date(reportDate).toLocaleDateString('en-AU')}
@@ -624,11 +649,11 @@ ${additionalContext}
 
 ` : ''}ADVOCACY SUMMARY
 ================
-${orgName} is experiencing ${pressureLevel.toLowerCase()} pressure across homelessness service delivery (overall score: ${averageScore.toFixed(1)}/10). ${criticalCount > 0 ? `${criticalCount} dimension${criticalCount > 1 ? 's are' : ' is'} at critical levels (8+), ` : ''}indicating ${pressureLevel === 'Critical' ? 'urgent need for system intervention and additional resources' : pressureLevel === 'High' ? 'significant service strain requiring attention' : pressureLevel === 'Moderate' ? 'manageable pressure with some areas of concern' : 'stable service delivery conditions'}.
+The self-entered scores suggest ${pressureLevel.toLowerCase()} pressure in this reflection (average: ${averageScore.toFixed(1)}/10). This is not a verified finding or sector-wide claim.
 
 Generated by Housing Crisis Pressure Mapper
 `;
-                filename = `${orgName.replace(/\s+/g, '_')}_pressure_report_${reportDate}.txt`;
+                filename = `${safeName}_pressure_report_${reportDate}.txt`;
                 mimeType = 'text/plain';
             }
             
@@ -652,10 +677,10 @@ Generated by Housing Crisis Pressure Mapper
                 document.getElementById('reportSection').style.display = 'none';
                 
                 dimensions.forEach(dimension => {
-                    document.getElementById(dimension.id + 'Score').value = 5;
-                    document.getElementById(dimension.id + 'Display').textContent = 5;
+                    document.getElementById(dimension.id + 'Score').value = 0;
+                    document.getElementById(dimension.id + 'Display').textContent = 'Not scored';
                     document.getElementById(dimension.id + 'Notes').value = '';
-                    assessmentData[dimension.id].score = 5;
+                    assessmentData[dimension.id].score = null;
                     assessmentData[dimension.id].notes = '';
                 });
                 
@@ -686,6 +711,9 @@ Generated by Housing Crisis Pressure Mapper
         // Initialize the app
         document.addEventListener('DOMContentLoaded', function() {
             initializeDimensions();
+            for (const id of ['orgName', 'reportDate', 'additionalContext']) {
+                document.getElementById(id).addEventListener('input', invalidateReport);
+            }
         });
     </script>
 </body>

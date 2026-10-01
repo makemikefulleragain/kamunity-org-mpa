@@ -1,0 +1,10 @@
+{
+  "name": "kamunity-org-mpa",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "verify:static": "node scripts/verify-static.mjs",
+    "verify": "npm run verify:static && npm test"
+  },
+  "engines": { "node": ">=22" }
+}

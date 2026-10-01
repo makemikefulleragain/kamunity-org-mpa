@@ -308,6 +308,14 @@
     .doc-output h2 { color: #000; border-bottom: 1px solid #999; }
     .doc-output table { page-break-inside: avoid; }
 
+    @media screen {
+      .layout > div, section { min-width: 0; }
+      section > table {
+        display: block;
+        overflow-x: auto;
+      }
+    }
+
     footer {
       padding: 2rem 0 3rem;
       color: var(--muted);

@@ -7,7 +7,7 @@
     <meta name="description" content="Signals and pulses from the WA community sector. Policy changes, funding news, sector commentary, and community practice. Filtered and organised by Kamunity.">
     <meta name="robots" content="index, follow">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://kamunity.org/news">
+    <meta property="og:url" content="https://kamunity-org-mpa.netlify.app/news">
     <meta property="og:title" content="Kamunity News — Sector Intelligence">
     <meta property="og:description" content="Signals and pulses from the WA community sector. No algorithm. No engagement optimisation.">
     <meta name="twitter:card" content="summary">
@@ -48,41 +48,22 @@
 <main>
 <div class="hp-page-body">
 
-<!-- STICKY ASK KAI -->
-<div class="news-kai-sticky" role="complementary" aria-label="Ask Kai">
-    <a href="/#chats" class="ask-kai-btn">Ask Kai about what you're reading ↗</a>
-</div>
-
-<!-- SINGLE STORY VIEW (hidden by default) -->
-<div id="story-view" style="display:none;">
-<div class="hp-section-wrap">
-  <a href="/news" class="story-back-link">← All stories</a>
-  <article class="story-full">
+<!-- STORY MODAL -->
+<div class="story-modal" id="story-modal" aria-hidden="true">
+  <div class="story-modal-backdrop" data-story-modal-close></div>
+  <article class="story-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="story-modal-title">
+    <button class="story-modal-close" type="button" data-story-modal-close aria-label="Close story">×</button>
     <div class="story-full-meta">
-      <span class="story-full-date" id="sv-date"></span>
-      <span id="sv-tags"></span>
+      <span class="story-full-date" id="sm-date"></span>
+      <span id="sm-tags"></span>
     </div>
-    <h1 id="sv-title" class="story-full-title">Loading…</h1>
-    <div id="sv-body" class="story-full-body"></div>
-    <div class="story-response-panel">
-      <h3>Did this resonate?</h3>
-      <p>Share a thought, push back, or ask a question. We read every response.</p>
-      <form id="story-response-form" onsubmit="submitStoryResponse(event)">
-        <input type="hidden" id="sr-story-id">
-        <textarea id="sr-text" placeholder="Your thoughts…" rows="4"
-                  class="sr-textarea" maxlength="1000" required></textarea>
-        <label for="sr-name" class="sr-label">Your name (optional)</label>
-        <input type="text" id="sr-name" placeholder="e.g. Priya from Housing First"
-               class="sr-input" maxlength="100">
-        <button type="submit" class="sr-submit-btn">Send →</button>
-        <p class="optin-small">No account needed. We don't publish responses without permission.</p>
-      </form>
-      <div id="sr-success" style="display:none;">
-        <p>✓ Thank you. We'll read this and may be in touch.</p>
-      </div>
+    <h1 id="story-modal-title" class="story-full-title">Loading…</h1>
+    <div id="sm-body" class="story-full-body"></div>
+    <div class="story-modal-actions">
+      <a href="/news" class="ask-kai-btn" id="sm-news-link">All News →</a>
+      <a href="mailto:mike@kamunityconsulting.com?subject=Kamunity%20News" class="ask-kai-btn">Ask Mike by email →</a>
     </div>
   </article>
-</div>
 </div>
 
 <!-- STORY LIST VIEW -->
@@ -141,11 +122,11 @@
 
     <div class="news-card" data-static-fallback="true">
         <div class="news-card-type news-card-type--signal">Signal</div>
-        <h3>Kamunity News — live signals load when connected</h3>
-        <p class="news-card-summary">This page pulls live sector signals and pulses from the Community Signal network. When JavaScript is available and the network is reachable, cards populate automatically. Without JS or offline, use the direct links below.</p>
-        <div class="news-card-meta">Kamunity · kamunity.org/news</div>
+        <h3>Kamunity News — Phoenix stories load when connected</h3>
+        <p class="news-card-summary">This page can show reviewed articles, pattern stories, and newsletter items from Phoenix Node. When JavaScript is available and the Phoenix feed is reachable, cards populate automatically. Without JS or offline, this static guide remains readable.</p>
+        <div class="news-card-meta">Kamunity MPA · live feed status depends on Phoenix</div>
         <div class="news-card-actions">
-            <a href="https://community-signal.netlify.app" target="_blank" rel="noopener noreferrer" class="ask-kai-btn">Community Signal live feed →</a>
+            <a href="mailto:mike@kamunityconsulting.com?subject=Kamunity%20News" class="ask-kai-btn">Ask Mike by email →</a>
         </div>
     </div>
 
@@ -153,17 +134,17 @@
         <div class="news-card-type news-card-type--signal">What's in the feed</div>
         <h3>What Kamunity News covers</h3>
         <p class="news-card-summary">Five tabs: <strong>Latest</strong> (everything), <strong>Sector Intelligence</strong> (WA community sector analysis), <strong>Community Practice</strong> (orgs sharing what works), <strong>AI &amp; Tech</strong> (technology that matters for community orgs), <strong>Policy &amp; Funding</strong> (grant rounds, policy changes, funding news). Cards include read-aloud for written content and YouTube embeds via youtube-nocookie.com.</p>
-        <div class="news-card-meta">Kamunity · Updated weekly from community sources</div>
+        <div class="news-card-meta">Kamunity · Check each item's source and date</div>
         <div class="news-card-actions">
-            <a href="/#chats" class="ask-kai-btn">Ask Kai about the sector →</a>
+            <a href="mailto:mike@kamunityconsulting.com?subject=Kamunity%20News" class="ask-kai-btn">Ask Mike by email →</a>
         </div>
     </div>
 
     <div class="news-card" data-static-fallback="true">
         <div class="news-card-type news-card-type--pulse">Pulse</div>
         <h3>Community organisations publishing their own signals</h3>
-        <p class="news-card-summary">Pulse cards come from community organisations using Kamunity infrastructure to publish their own stories, updates, and sector intelligence. Video, audio, and written formats. No algorithm decides what appears — curated by context, not engagement. The first pulse is from GGA × Kamunity, representing ~95 WA agricultural organisations.</p>
-        <div class="news-card-meta">Community Signal Pulse · <a href="https://gga-kamunity.netlify.app" target="_blank" rel="noopener noreferrer">GGA × Kamunity →</a></div>
+        <p class="news-card-summary">Pulse cards are for community organisations using Kamunity infrastructure to publish their own stories, updates, and sector intelligence. Video, audio, and written formats. No algorithm decides what appears — curated by context, not engagement.</p>
+        <div class="news-card-meta">Kamunity Pulse · public stories and updates</div>
         <div class="news-card-actions">
             <a href="/my-kamunity" class="ask-kai-btn">See My Kamunity+ →</a>
         </div>
@@ -188,7 +169,7 @@
             <div>
                 <a href="/" class="mpa-footer-logo">kamunity</a>
                 <p class="mpa-footer-tagline">Community sovereignty infrastructure. Built in Boorloo/Perth. Free tools, honest consulting, and sovereign infrastructure for the WA community sector.</p>
-                <p class="mpa-footer-license">No tracking. No analytics. No cookies. No data collection. Constitutional commitment.</p>
+                <p class="mpa-footer-license">No behavioural analytics. Client-side tool answers stay in your browser. Basic hosting logs may be processed.</p>
             </div>
             <nav class="mpa-footer-nav" aria-label="Ecosystem">
                 <h4 class="mpa-footer-nav-heading">Ecosystem</h4>
@@ -209,18 +190,17 @@
             </div>
         </div>
         <div class="mpa-footer-bottom">
-            <div class="mpa-footer-legal">Kamunity is an AI wayfinder and community tools platform, not a counsellor, therapist, or substitute for professional advice. All AI-generated content should be reviewed by humans before use.</div>
+            <div class="mpa-footer-legal">Kamunity presents community tools and a signal-to-action demonstration. Kai is a proposed AI wayfinder, not public chat on this site. These tools do not replace professional advice; review outputs before use.</div>
             <div class="mpa-footer-aoc">Built on Whadjuk Noongar boodja. Sovereignty was never ceded.</div>
         </div>
     </div>
 </footer>
 
 <!-- Kai FAB -->
-<button class="kai-fab" id="kai-fab" data-kai-modal data-kai-context="I've been reading Kamunity News. Can you help me understand any of these topics or find something specific?" aria-label="Talk to Kai">K</button>
+<a class="kai-fab" href="mailto:mike@kamunityconsulting.com" aria-label="Email Mike">✉</a>
 
 <script src="/js/nav.js"></script>
 <script src="/js/news.js"></script>
-<script src="/js/kai-modal.js"></script>
 
 </body>
 </html>
