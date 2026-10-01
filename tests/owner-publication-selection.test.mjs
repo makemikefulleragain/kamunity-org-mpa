@@ -83,6 +83,16 @@ test('Ring Zero is presented as an unconfirmed pilot without conflicting prices'
     assert.doesNotMatch(html, /six weeks to constitutional independence|\$0 Hard-to-Love Fund|\$4,500(?![^<]*audit)|Founding Community Rate/i, path);
   }
   assert.match(source('ring-zero.html'), /not yet a fixed-price public offer/i);
+  assert.doesNotMatch(source('ring-zero.html'), /Free forever/i);
+});
+
+test('public privacy copy describes client-side answers without promising zero operational data', () => {
+  for (const path of ['index.html', 'news.html', 'warehouse.html', 'about.html', 'constitution.html', 'my-kamunity.html']) {
+    const html = source(path);
+    assert.match(html, /Basic hosting logs may be processed/, path);
+    assert.doesNotMatch(html, /No data collection\. Constitutional commitment/, path);
+  }
+  assert.match(source('tools.html'), /No account or answer submission/);
 });
 
 test('discovery files identify the separate MPA origin and exclude rejected pages', () => {

@@ -281,7 +281,7 @@
             if (panel) {
                 panel.innerHTML =
                     '<div class="signals-fallback" style="grid-column:1/-1;">' +
-                    'News feed loading. Static Kamunity News notes remain available on this page.' +
+                    'News feed temporarily unavailable. Please try again later or email Mike.' +
                     '</div>';
             }
             if (countsEl) countsEl.textContent = 'Feed unavailable — static fallback shown';
