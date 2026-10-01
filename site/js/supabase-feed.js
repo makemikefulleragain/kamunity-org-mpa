@@ -88,10 +88,10 @@
         return card;
     }
 
-    function showFallback(col) {
+    function showFallback(col, message) {
         col.innerHTML =
             '<div class="signals-fallback">' +
-            'Phoenix stories loading — ' +
+            message + ' — ' +
             '<a href="/news">view Kamunity News →</a>' +
             '</div>';
     }
@@ -124,7 +124,12 @@
             }
             var items = data.items;
 
-            if (!items.length) throw new Error('No items');
+            if (!items.length) {
+                if (signalsCol) showFallback(signalsCol, 'No reviewed Phoenix stories available right now');
+                if (pulseCol) showFallback(pulseCol, 'No reviewed Phoenix stories available right now');
+                if (teaserEl) teaserEl.textContent = 'New reviewed community stories will appear here when available.';
+                return;
+            }
 
             var midpoint = Math.ceil(items.length / 2);
             var signals = items.slice(0, midpoint).slice(0, 3);
@@ -135,7 +140,7 @@
                     signalsCol.innerHTML = '';
                     signals.forEach(function (s) { signalsCol.appendChild(renderCard(s)); });
                 } else {
-                    showFallback(signalsCol);
+                    showFallback(signalsCol, 'No additional reviewed stories yet');
                 }
             }
 
@@ -144,7 +149,7 @@
                     pulseCol.innerHTML = '';
                     pulses.forEach(function (p) { pulseCol.appendChild(renderCard(p)); });
                 } else {
-                    showFallback(pulseCol);
+                    showFallback(pulseCol, 'No additional reviewed stories yet');
                 }
             }
 
@@ -156,8 +161,8 @@
             }
 
         } catch (err) {
-            if (signalsCol) showFallback(signalsCol);
-            if (pulseCol)   showFallback(pulseCol);
+            if (signalsCol) showFallback(signalsCol, 'Phoenix stories temporarily unavailable');
+            if (pulseCol)   showFallback(pulseCol, 'Phoenix stories temporarily unavailable');
         }
     }
 
