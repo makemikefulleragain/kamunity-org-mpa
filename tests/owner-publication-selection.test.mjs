@@ -95,6 +95,15 @@ test('public privacy copy describes client-side answers without promising zero o
   assert.match(source('tools.html'), /No account or answer submission/);
 });
 
+test('indicative half-day workshop rates use the owner-selected higher figures consistently', () => {
+  for (const path of ['index.html', 'services.html', 'tools/handout-consulting.html']) {
+    const html = source(path);
+    assert.match(html, /\$1,500/);
+    assert.match(html, /\$3,000/);
+    assert.doesNotMatch(html, /\$550|\$880/);
+  }
+});
+
 test('discovery files identify the separate MPA origin and exclude rejected pages', () => {
   const sitemap = source('sitemap.xml');
   assert.equal([...sitemap.matchAll(/<loc>/g)].length, 26);
