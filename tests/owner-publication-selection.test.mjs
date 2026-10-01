@@ -39,6 +39,15 @@ test('Warehouse discovers selected planner and excludes rejected cards and opt-i
   assert.doesNotMatch(html, /candid-donut-4ec289/);
   assert.doesNotMatch(html, /id="optin-modal"|onclick="openOptinModal/);
   assert.match(html, /Historical example/);
+  assert.match(html, /Community Signal/);
+  assert.doesNotMatch(html, /href="https:\/\/community-signal\.netlify\.app"/);
+  assert.match(html, /Community%20Signal%20walkthrough/);
+});
+
+test('corporate planner contains wide tables within horizontal scroll regions', () => {
+  const html = source('tools/corporate-volunteering-planner.html');
+  assert.match(html, /\.layout > div, section\s*\{\s*min-width:\s*0;\s*\}/);
+  assert.match(html, /section > table\s*\{\s*display:\s*block;\s*overflow-x:\s*auto;/);
 });
 
 test('Warehouse tool actions never reveal local paths or open non-HTTPS links', () => {
