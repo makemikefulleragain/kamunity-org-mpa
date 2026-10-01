@@ -8,14 +8,6 @@
 [functions]
   node_bundler = "esbuild"
 
-# ── Edge Functions ──────────────────────────────────────────────────────────────
-# Kai CORS: intercepts kai-proxy responses and adds CORS headers at the edge.
-# Netlify CDN strips custom headers from serverless function responses.
-# Edge Functions run AT the CDN layer and headers persist to the browser.
-[[edge_functions]]
-  function = "kai-cors"
-  path = "/.netlify/functions/kai-proxy"
-
 # ── Security headers (all pages) ─────────────────────────────────────────────
 [[headers]]
   for = "/.netlify/functions/*"
@@ -31,7 +23,7 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "no-referrer"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; connect-src 'self' https://phoenix-node.netlify.app https://api.anthropic.com; img-src 'self' data:; form-action 'self' https://kamunity-org-mpa.netlify.app; frame-ancestors 'none'"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; connect-src 'self' https://phoenix-node.netlify.app; img-src 'self' data:; form-action 'self'; frame-ancestors 'none'"
 
 # ── Agent discovery file headers ─────────────────────────────────────────────
 [[headers]]
@@ -124,8 +116,38 @@
 
 [[redirects]]
   from = "/kai"
-  to = "/#chats"
+  to = "/tools/handout-kai.html"
   status = 301
+
+[[redirects]]
+  from = "/kai.html"
+  to = "/tools/handout-kai.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/kai/reflection.html"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/kai/reflection"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/tools/handout-reflection.html"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/tools/handout-reflection"
+  to = "/"
+  status = 301
+  force = true
 
 [[redirects]]
   from = "/services"
@@ -170,7 +192,7 @@
 
 [[redirects]]
   from = "/reflection"
-  to = "/#chats"
+  to = "https://kamunity-reflection.netlify.app/"
   status = 301
 
 [[redirects]]

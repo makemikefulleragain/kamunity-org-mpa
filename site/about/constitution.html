@@ -25,7 +25,7 @@
     <div class="nav-links" id="nav-links" role="menubar">
         <a href="/" role="menuitem">Home</a>
         <a href="/tools" role="menuitem">Tools</a>
-        <a href="/kai" role="menuitem">Kai</a>
+        <a href="mailto:mike@kamunityconsulting.com" role="menuitem">Email Mike</a>
         <a href="/services" role="menuitem">Services</a>
         <a href="/about" class="active" role="menuitem">About</a>
     </div>
@@ -131,43 +131,13 @@
 
         <p>The Kai constitution is a Founder's Draft. When the Kamunity network reaches 20+ active organisations, a constitutional convention will be held. The community will rewrite it. Every version is publicly archived.</p>
 
-        <p><strong>Kai currently depends on Anthropic's Claude API.</strong> This is a known sovereignty gap. The constitution is model-agnostic — designed to work with any LLM. If Anthropic changes terms in ways that conflict with this constitution, the system is designed to migrate.</p>
+        <p><strong>Kai is a proposed capability, not public chat on this MPA.</strong> Earlier prototypes used third-party models. Any future service would need to disclose its provider, data handling, limitations and exit path before public use.</p>
 
         <hr class="section-divider" aria-hidden="true">
 
         <h2 class="section-h2">Amendment Feedback</h2>
 
-        <p>Anyone can propose an amendment. Amendments to encounter principles require community discussion and rough consensus. Amendments to inviolable principles require a full convention with supermajority. Use the form below to submit feedback or proposed changes.</p>
-
-        <div class="inquiry-form" id="amendment-form">
-            <h3 class="form-heading">Propose an amendment</h3>
-            <p class="form-sub">This goes directly to Mike. All submissions are acknowledged. Substantive proposals are published in the amendment log.</p>
-
-            <form name="amendment" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="amendment-netlify-form">
-                <div class="honeypot-wrap">
-                    <label>Don't fill this out: <input name="bot-field"></label>
-                </div>
-                <input type="hidden" name="form-name" value="amendment">
-
-                <label class="form-label" for="amend-name">Your name <span class="req">*</span></label>
-                <input class="form-input" type="text" id="amend-name" name="name" required autocomplete="name">
-
-                <label class="form-label" for="amend-org">Organisation (optional)</label>
-                <input class="form-input" type="text" id="amend-org" name="organisation" autocomplete="organization">
-
-                <label class="form-label" for="amend-which">Which principle does your amendment relate to?</label>
-                <input class="form-input" type="text" id="amend-which" name="principle" placeholder="e.g. Principle 5 — Data Sovereignty">
-
-                <label class="form-label" for="amend-text">Your proposed amendment or feedback <span class="req">*</span></label>
-                <textarea class="form-textarea" id="amend-text" name="amendment" required rows="5" placeholder="What would you change, and why?"></textarea>
-
-                <button type="submit" class="form-submit">Submit amendment →</button>
-            </form>
-
-            <div class="form-success" id="amend-success">
-                Submitted. Thank you — all proposals are acknowledged within 5 working days.
-            </div>
-        </div>
+        <p>Anyone can propose an amendment. Email your suggestion to <a href="mailto:mike@kamunityconsulting.com?subject=Constitution%20amendment">mike@kamunityconsulting.com</a>. Please do not include sensitive personal details.</p>
 
         <hr class="section-divider" aria-hidden="true">
 
@@ -188,7 +158,7 @@
             <span class="footer-sep">·</span>
             <a href="/tools">Tools</a>
             <span class="footer-sep">·</span>
-            <a href="/kai">Kai</a>
+            <a href="mailto:mike@kamunityconsulting.com">Email Mike</a>
             <span class="footer-sep">·</span>
             <a href="/services">Services</a>
             <span class="footer-sep">·</span>
@@ -204,9 +174,9 @@
     </div>
 </footer>
 
-<a href="/kai" class="kai-fab" aria-label="Talk to Kai">
-    K
-    <span class="kai-fab-tooltip">Talk to Kai</span>
+<a href="mailto:mike@kamunityconsulting.com" class="kai-fab" aria-label="Email Mike">
+    ✉
+    <span class="kai-fab-tooltip">Email Mike</span>
 </a>
 
 <script>
@@ -224,26 +194,6 @@
         hamburger.setAttribute('aria-expanded', open);
     });
 
-    /* Amendment form — Netlify Forms with JS success handling */
-    const amendForm = document.getElementById('amendment-netlify-form');
-    const amendSuccess = document.getElementById('amend-success');
-    if (amendForm) {
-        amendForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const formData = new FormData(amendForm);
-            try {
-                await fetch('/', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: new URLSearchParams(formData).toString()
-                });
-                amendForm.style.display = 'none';
-                amendSuccess.classList.add('visible');
-            } catch (err) {
-                alert('Submission failed. Please email mike@kamunity.org directly.');
-            }
-        });
-    }
 </script>
 
 </body>

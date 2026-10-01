@@ -7,7 +7,7 @@
     <meta name="description" content="The full Kamunity catalogue. Free tools, assessments, sovereign community instances, curated ecosystem tools, and the builds. Zero prices is just the beginning.">
     <meta name="robots" content="index, follow">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://kamunity.org/warehouse">
+    <meta property="og:url" content="https://kamunity-org-mpa.netlify.app/warehouse">
     <meta property="og:title" content="Commons Warehouse — Kamunity">
     <meta property="og:description" content="The full catalogue. Tools, sovereign instances, ecosystem resources. Zero prices is just the beginning.">
     <meta name="twitter:card" content="summary">
@@ -59,10 +59,10 @@
             <input type="search" class="wh-search-input" id="wh-search" placeholder="What are you looking for?" aria-label="Search the warehouse">
             <button class="wh-search-go" id="wh-search-go" aria-label="Search">Go</button>
         </div>
-        <button class="wh-kai-btn" id="wh-kai-btn" data-kai-modal data-kai-context="I'm looking at the Commons Warehouse. Can you walk me through what this is and how to use it?" aria-label="Ask Kai about the Commons Warehouse">Ask Kai →</button>
+        <a class="ask-kai-btn" href="mailto:mike@kamunityconsulting.com">Ask Mike by email →</a>
     </div>
     <p class="wh-no-results" id="wh-no-results" role="status" aria-live="polite">
-        Can't find it? <button class="wh-no-results-kai" data-kai-modal data-kai-context="I'm searching the Commons Warehouse but can't find what I need. Can you help me find the right tool or resource?">Ask Kai →</button>
+        Can't find it? <a class="ask-kai-btn" href="mailto:mike@kamunityconsulting.com">Ask Mike by email →</a>
     </p>
 </header>
 </div>
@@ -71,8 +71,8 @@
 <div class="hp-section-wrap wh-aisle-wrap wh-aisle-wrap--field" id="aisle-field-wrap" style="display:none;">
 <section class="wh-aisle" id="aisle-field" aria-labelledby="aisle-field-heading">
     <div class="wh-aisle-label">From the Field</div>
-    <h2 id="aisle-field-heading">What the sector is building — tools generated from real community patterns</h2>
-    <p class="wh-aisle-intro">These tools were generated because multiple community organisations faced the same challenge. Pattern detected → tool built → reviewed → published here.</p>
+    <h2 id="aisle-field-heading">Public tools from the connected feed</h2>
+    <p class="wh-aisle-intro">Public tools from the connected Phoenix feed appear here when available. Check each item's source, purpose and limitations before using or sharing it; inclusion alone does not prove a sector-wide pattern.</p>
     <div class="wh-aisle-row" id="field-tools-row" role="list">
         <!-- Populated by loadFieldTools() -->
     </div>
@@ -92,7 +92,7 @@
             <h4>AI Safety Checklist</h4>
             <p>What your team needs to know before using any AI tool. One printable page.</p>
             <a href="/tools/ai-safety-checklist.html" target="_blank" rel="noopener noreferrer" class="ask-kai-btn" style="display:inline-block;margin-bottom:0.5rem;">Open &amp; Print →</a><br>
-            <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm in the Commons Warehouse looking at the AI Safety Checklist. Can you help me understand how to use this with my team before we start using AI tools?" aria-label="Ask Kai about the AI Safety Checklist">Ask Kai →</button>
+            <a class="ask-kai-btn" href="mailto:mike@kamunityconsulting.com">Ask Mike by email →</a>
         </div>
 
         <div class="wh-tool-card" role="listitem" data-search="board paper pack template governance digital strategy">
@@ -100,7 +100,7 @@
             <h4>Board Paper Pack</h4>
             <p>Templates for presenting digital strategy, AI policy, or technology decisions to your board.</p>
             <a href="/tools/board-paper-pack.html" target="_blank" rel="noopener noreferrer" class="ask-kai-btn" style="display:inline-block;margin-bottom:0.5rem;">Open &amp; Print →</a><br>
-            <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm in the Commons Warehouse looking at the Board Paper Pack. Can you help me use this to present digital strategy or AI decisions to my board?" aria-label="Ask Kai about the Board Paper Pack">Ask Kai →</button>
+            <a class="ask-kai-btn" href="mailto:mike@kamunityconsulting.com">Ask Mike by email →</a>
         </div>
 
         <div class="wh-tool-card" role="listitem" data-search="grant acquittal helper template reporting funder">
@@ -108,7 +108,42 @@
             <h4>Grant Acquittal Helper</h4>
             <p>Template and checklist for grant acquittal reporting. Covers common funder requirements.</p>
             <a href="/tools/grant-acquittal-helper.html" target="_blank" rel="noopener noreferrer" class="ask-kai-btn" style="display:inline-block;margin-bottom:0.5rem;">Open &amp; Print →</a><br>
-            <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm in the Commons Warehouse looking at the Grant Acquittal Helper. Can you walk me through how to use this for grant reporting?" aria-label="Ask Kai about the Grant Acquittal Helper">Ask Kai →</button>
+            <a class="ask-kai-btn" href="mailto:mike@kamunityconsulting.com">Ask Mike by email →</a>
+        </div>
+
+        <div class="wh-tool-card" role="listitem" data-search="corporate volunteering partnership planner scope pitch print export">
+            <span class="wh-tool-badge">Plan · Print · Export</span>
+            <h4>Corporate Volunteering Partnership Planner</h4>
+            <p>Scope a useful corporate volunteering engagement and draft a partnership brief in your browser. Review the output before sharing it.</p>
+            <a href="/tools/corporate-volunteering-planner.html" class="ask-kai-btn">Open the planner →</a>
+        </div>
+
+        <div class="wh-tool-card" role="listitem" data-search="welfare compliance misalignment frontline observations advocacy">
+            <span class="wh-tool-badge">Draft evidence</span>
+            <h4>Welfare Compliance Misalignment Mapper</h4>
+            <p>Document anonymised observations and prepare an advocacy draft. Human review is essential before use.</p>
+            <a href="/tools/welfare-compliance-misalignment-mapper.html" class="ask-kai-btn">Open the mapper →</a>
+        </div>
+
+        <div class="wh-tool-card" role="listitem" data-search="compliance harm observations brief welfare">
+            <span class="wh-tool-badge">Short brief</span>
+            <h4>Compliance Harm Observations</h4>
+            <p>Turn one anonymised observation into an evidence-aware draft brief, without claiming a verified finding.</p>
+            <a href="/tools/compliance-harm-observations/" class="ask-kai-btn">Prepare a draft →</a>
+        </div>
+
+        <div class="wh-tool-card" role="listitem" data-search="invisible value ledger community contribution">
+            <span class="wh-tool-badge">Reflection</span>
+            <h4>Invisible Value Ledger</h4>
+            <p>Make less-visible contributions easier to discuss and document.</p>
+            <a href="/tools/invisible-value-ledger.html" class="ask-kai-btn">Open the ledger →</a>
+        </div>
+
+        <div class="wh-tool-card" role="listitem" data-search="housing crisis pressure mapper">
+            <span class="wh-tool-badge">Reflection</span>
+            <h4>Housing Crisis Pressure Mapper</h4>
+            <p>Explore housing pressures with a structured, non-diagnostic worksheet.</p>
+            <a href="/tools/housing-crisis-pressure-mapper/" class="ask-kai-btn">Open the mapper →</a>
         </div>
 
         <div class="wh-tool-card" role="listitem" data-search="handout ai readiness assessment quick print">
@@ -116,7 +151,7 @@
             <h4>Handout: AI Readiness</h4>
             <p>One-page summary of the AI Readiness framework. Share with your team or board.</p>
             <a href="/tools/handout-ai-readiness.html" target="_blank" rel="noopener noreferrer" class="ask-kai-btn" style="display:inline-block;margin-bottom:0.5rem;">Open &amp; Print →</a><br>
-            <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm in the Commons Warehouse looking at the AI Readiness handout. Can you explain what AI readiness means for a community organisation and how to use this with my team?" aria-label="Ask Kai about the AI Readiness handout">Ask Kai →</button>
+            <a class="ask-kai-btn" href="mailto:mike@kamunityconsulting.com">Ask Mike by email →</a>
         </div>
 
         <div class="wh-tool-card" role="listitem" data-search="handout sovereignty audit digital independence">
@@ -124,7 +159,7 @@
             <h4>Handout: Sovereignty Audit</h4>
             <p>What does it mean to own your digital infrastructure? One-page primer for your team.</p>
             <a href="/tools/handout-sovereignty-audit.html" target="_blank" rel="noopener noreferrer" class="ask-kai-btn" style="display:inline-block;margin-bottom:0.5rem;">Open &amp; Print →</a><br>
-            <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm in the Commons Warehouse looking at the Sovereignty Audit handout. Can you explain what digital sovereignty means in practice for a community organisation?" aria-label="Ask Kai about the Sovereignty Audit handout">Ask Kai →</button>
+            <a class="ask-kai-btn" href="mailto:mike@kamunityconsulting.com">Ask Mike by email →</a>
         </div>
 
         <div class="wh-tool-card" role="listitem" data-search="handout kai ai wayfinder what is kai">
@@ -132,31 +167,24 @@
             <h4>Handout: Kai</h4>
             <p>What Kai is and what it isn't. One page. Share with anyone wondering about AI tools.</p>
             <a href="/tools/handout-kai.html" target="_blank" rel="noopener noreferrer" class="ask-kai-btn" style="display:inline-block;margin-bottom:0.5rem;">Open &amp; Print →</a><br>
-            <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm in the Commons Warehouse looking at the Kai handout. Can you explain what you are, what you're not, and how a community organisation should think about using you?" aria-label="Ask Kai about the Kai handout">Ask Kai →</button>
+            <a class="ask-kai-btn" href="mailto:mike@kamunityconsulting.com">Ask Mike by email →</a>
         </div>
 
         <div class="wh-tool-card" role="listitem" data-search="handout consulting services fix invent">
             <span class="wh-tool-badge">Quick print</span>
             <h4>Handout: Consulting</h4>
-            <p>What's available from Kamunity Consulting. Prices included. Share before a meeting.</p>
+            <p>Explore Kamunity Consulting services and indicative draft rates. Confirm current terms with Mike.</p>
             <a href="/tools/handout-consulting.html" target="_blank" rel="noopener noreferrer" class="ask-kai-btn" style="display:inline-block;margin-bottom:0.5rem;">Open &amp; Print →</a><br>
-            <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm in the Commons Warehouse looking at the Consulting handout. Can you help me understand which consulting service might be right for my organisation and what the process looks like?" aria-label="Ask Kai about Kamunity Consulting">Ask Kai →</button>
+            <a class="ask-kai-btn" href="mailto:mike@kamunityconsulting.com">Ask Mike by email →</a>
         </div>
 
-        <div class="wh-tool-card" role="listitem" data-search="handout reflection contemplative ai slower mode">
-            <span class="wh-tool-badge">Quick print</span>
-            <h4>Handout: Reflection</h4>
-            <p>What the Reflection tool is for and how it differs from Kai. One page.</p>
-            <a href="/tools/handout-reflection.html" target="_blank" rel="noopener noreferrer" class="ask-kai-btn" style="display:inline-block;margin-bottom:0.5rem;">Open &amp; Print →</a><br>
-            <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm in the Commons Warehouse looking at the Reflection tool handout. Can you explain how Reflection differs from Kai and what kinds of situations it's for?" aria-label="Ask Kai about the Reflection tool">Ask Kai →</button>
-        </div>
 
         <div class="wh-tool-card" role="listitem" data-search="handout ecosystem kamunity overview all tools">
             <span class="wh-tool-badge">Quick print</span>
             <h4>Handout: Ecosystem</h4>
             <p>The full Kamunity ecosystem at a glance. Every site, tool, and connection.</p>
             <a href="/tools/handout-ecosystem.html" target="_blank" rel="noopener noreferrer" class="ask-kai-btn" style="display:inline-block;margin-bottom:0.5rem;">Open &amp; Print →</a><br>
-            <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm in the Commons Warehouse looking at the Ecosystem handout. Can you explain how all the Kamunity sites and tools connect and what the ecosystem is actually for?" aria-label="Ask Kai about the Kamunity Ecosystem">Ask Kai →</button>
+            <a class="ask-kai-btn" href="mailto:mike@kamunityconsulting.com">Ask Mike by email →</a>
         </div>
 
         <div class="wh-tool-card" role="listitem" data-search="handout rooms community kamunity ai">
@@ -164,7 +192,7 @@
             <h4>Handout: Community Rooms</h4>
             <p>What community rooms are and how Kamunity orgs use them. Good for introducing kamunity.ai.</p>
             <a href="/tools/handout-rooms.html" target="_blank" rel="noopener noreferrer" class="ask-kai-btn" style="display:inline-block;margin-bottom:0.5rem;">Open &amp; Print →</a><br>
-            <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm in the Commons Warehouse looking at the Community Rooms handout. Can you explain what community rooms are and how an organisation would actually use them?" aria-label="Ask Kai about Community Rooms">Ask Kai →</button>
+            <a class="ask-kai-btn" href="mailto:mike@kamunityconsulting.com">Ask Mike by email →</a>
         </div>
 
     </div>
@@ -182,7 +210,7 @@
             <h4>Sovereignty Check</h4>
             <p>How dependent is your org on infrastructure you don't control? Four dimensions.</p>
             <a href="/#shop" class="ask-kai-btn" style="display:inline-block;margin-bottom:0.5rem;">Run it on the homepage →</a><br>
-            <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm in the Commons Warehouse looking at the Sovereignty Check. Can you explain what digital sovereignty means for a community organisation and what the four dimensions actually measure?" aria-label="Ask Kai about the Sovereignty Check">Ask Kai →</button>
+            <a class="ask-kai-btn" href="mailto:mike@kamunityconsulting.com">Ask Mike by email →</a>
         </div>
 
         <div class="wh-tool-card" role="listitem" data-search="ai readiness 12 questions assessment organisation">
@@ -190,7 +218,7 @@
             <h4>AI Readiness</h4>
             <p>12 questions. Where does your organisation actually stand with AI adoption?</p>
             <a href="https://kamunity-ai-readiness.netlify.app/" class="ask-kai-btn" style="display:inline-block;margin-bottom:0.5rem;">Open AI Readiness →</a><br>
-            <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm in the Commons Warehouse looking at the AI Readiness check. Can you help me understand what AI readiness really means for a small community organisation and what the 12 questions cover?" aria-label="Ask Kai about the AI Readiness check">Ask Kai →</button>
+            <a class="ask-kai-btn" href="mailto:mike@kamunityconsulting.com">Ask Mike by email →</a>
         </div>
 
         <div class="wh-tool-card" role="listitem" data-search="org health check strategy governance diagnostic">
@@ -199,7 +227,7 @@
             <p>Reflection aid across strategy, process, quality, innovation, and governance.</p>
             <a href="https://kamunity-org-health.netlify.app/" target="_blank" rel="noopener" class="ask-kai-btn" style="display:inline-block;margin-bottom:0.5rem;">Open the check ↗</a>
             <a href="/#shop" class="ask-kai-btn" style="display:inline-block;margin-bottom:0.5rem;margin-left:0.4rem;">Or run inline →</a><br>
-            <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm in the Commons Warehouse looking at the Org Health Check. Can you explain what it measures across strategy, process, quality, innovation and governance, and how I'd use the results?" aria-label="Ask Kai about the Org Health Check">Ask Kai →</button>
+            <a class="ask-kai-btn" href="mailto:mike@kamunityconsulting.com">Ask Mike by email →</a>
         </div>
 
     </div>
@@ -220,7 +248,7 @@
             <h4>Vine-o-Code</h4>
             <p>The build methodology that underlies everything here. Constitutional, phased, AI-assisted. Fork it for your own builds.</p>
             <a href="https://vine-o-coding.netlify.app" target="_blank" rel="noopener noreferrer" class="ask-kai-btn" style="display:inline-block;margin-bottom:0.5rem;">See the methodology →</a><br>
-            <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm in the Commons Warehouse looking at Vine-o-Code. Can you explain how this constitutional build methodology works and whether my organisation could use it to build our own tools?" aria-label="Ask Kai about Vine-o-Code">Ask Kai →</button>
+            <a class="ask-kai-btn" href="mailto:mike@kamunityconsulting.com">Ask Mike by email →</a>
         </div>
 
         <div class="wh-tool-card" role="listitem" data-search="factoryk narrative showcase build story">
@@ -228,7 +256,7 @@
             <h4>FactoryK</h4>
             <p>Narrative showcase of how Kamunity was built. The decisions, the tensions, the things that didn't work.</p>
             <a href="https://factoryk1.netlify.app" target="_blank" rel="noopener noreferrer" class="ask-kai-btn" style="display:inline-block;margin-bottom:0.5rem;">Visit FactoryK →</a><br>
-            <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm in the Commons Warehouse looking at FactoryK. Can you tell me what this is and what I'd learn from it about how Kamunity was built?" aria-label="Ask Kai about FactoryK">Ask Kai →</button>
+            <a class="ask-kai-btn" href="mailto:mike@kamunityconsulting.com">Ask Mike by email →</a>
         </div>
 
         <div class="wh-tool-card" role="listitem" data-search="community signal sector intelligence pipeline RSS">
@@ -236,16 +264,9 @@
             <h4>Community Signal</h4>
             <p>Sector RSS → pattern recognition → live intelligence. The pipeline that feeds Kamunity News.</p>
             <a href="https://community-signal.netlify.app" target="_blank" rel="noopener noreferrer" class="ask-kai-btn" style="display:inline-block;margin-bottom:0.5rem;">Visit Community Signal →</a><br>
-            <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm in the Commons Warehouse looking at Community Signal. Can you explain how this sector intelligence pipeline works and how it feeds into Kamunity News?" aria-label="Ask Kai about Community Signal">Ask Kai →</button>
+            <a class="ask-kai-btn" href="mailto:mike@kamunityconsulting.com">Ask Mike by email →</a>
         </div>
 
-        <div class="wh-tool-card" role="listitem" data-search="mycelium AI encounter archive constitutional">
-            <span class="wh-tool-badge">Archive</span>
-            <h4>The Mycelium</h4>
-            <p>AI encounter archive. Constitutional AI interactions, saved and searchable. The network's collective memory.</p>
-            <a href="https://candid-donut-4ec289.netlify.app" target="_blank" rel="noopener noreferrer" class="ask-kai-btn" style="display:inline-block;margin-bottom:0.5rem;">Visit The Mycelium →</a><br>
-            <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm in the Commons Warehouse looking at The Mycelium. Can you explain what an AI encounter archive is and how the network's collective memory works?" aria-label="Ask Kai about The Mycelium">Ask Kai →</button>
-        </div>
 
     </div>
 </section>
@@ -253,66 +274,51 @@
 <!-- AISLE 4: ECOSYSTEM TOOLS -->
 <section class="wh-aisle" id="aisle-ecosystem" aria-labelledby="aisle4-heading">
     <div class="wh-aisle-label">Aisle 4</div>
-    <h2 id="aisle4-heading">Ecosystem Tools — we didn't build these, but they're good</h2>
-    <p style="font-size:0.88rem;color:var(--ash);margin-bottom:1.5rem;">Honest curation. These tools earned a recommendation. Kamunity doesn't build or maintain these — trust your own judgement.</p>
+    <h2 id="aisle4-heading">Ecosystem Tools — options to explore</h2>
+    <p style="font-size:0.88rem;color:var(--ash);margin-bottom:1.5rem;">These are independent third-party services, not Kamunity products. Check current features, privacy terms and prices on each provider's site before deciding to use one.</p>
 
     <div class="wh-aisle-row" role="list">
 
         <div class="wh-tool-card" role="listitem" data-search="loomio decisions worker coop democratic governance">
             <span class="wh-tool-badge">Decisions</span>
             <h4>Loomio</h4>
-            <p>Democratic decision-making for organisations. Worker cooperative. Built for community organisations.</p>
-            <p style="font-size:0.82rem;color:var(--ash);font-style:italic;margin-bottom:0.5rem;">Why we recommend it: worker-owned, purpose-built for community orgs, open source core.</p>
-            <div class="wh-sovereignty-score sovereignty-high">▲ High sovereignty</div>
-            <p style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--ash);margin-bottom:0.5rem;">Cost: Free tier available · Paid from ~$99/yr</p>
+            <p>A decision-making platform to examine if your organisation needs structured group proposals and discussion.</p>
             <a href="https://www.loomio.com" target="_blank" rel="noopener noreferrer" class="ask-kai-btn" style="display:inline-block;margin-bottom:0.5rem;">Visit Loomio →</a><br>
-            <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm in the Commons Warehouse looking at Loomio. Can you help me understand if democratic decision-making software like this is right for my organisation, and what to watch out for when adopting it?" aria-label="Ask Kai about Loomio">Ask Kai →</button>
+            <a class="ask-kai-btn" href="mailto:mike@kamunityconsulting.com">Ask Mike by email →</a>
         </div>
 
         <div class="wh-tool-card" role="listitem" data-search="humanitix ticketing events charity australia">
             <span class="wh-tool-badge">Event ticketing</span>
             <h4>Humanitix</h4>
-            <p>Event ticketing platform that donates booking fees to charity. Australian-built.</p>
-            <p style="font-size:0.82rem;color:var(--ash);font-style:italic;margin-bottom:0.5rem;">Why we recommend it: AU-owned, social enterprise, fees go to charity, good for NFPs.</p>
-            <div class="wh-sovereignty-score sovereignty-medium">◆ Medium sovereignty</div>
-            <p style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--ash);margin-bottom:0.5rem;">Cost: Free to use · Booking fees to charity</p>
+            <p>An event-ticketing option to compare for community events. Check its current fee model and terms directly.</p>
             <a href="https://humanitix.com" target="_blank" rel="noopener noreferrer" class="ask-kai-btn" style="display:inline-block;margin-bottom:0.5rem;">Visit Humanitix →</a><br>
-            <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm in the Commons Warehouse looking at Humanitix. Can you help me understand whether this is a good fit for event ticketing for my community organisation?" aria-label="Ask Kai about Humanitix">Ask Kai →</button>
+            <a class="ask-kai-btn" href="mailto:mike@kamunityconsulting.com">Ask Mike by email →</a>
         </div>
 
         <div class="wh-tool-card" role="listitem" data-search="element matrix chat open source federated messaging">
             <span class="wh-tool-badge">Team chat</span>
             <h4>Element / Matrix</h4>
-            <p>Open-source, federated messaging. You can self-host. No vendor lock-in. No surveillance.</p>
-            <p style="font-size:0.82rem;color:var(--ash);font-style:italic;margin-bottom:0.5rem;">Why we recommend it: genuinely open, self-hostable, federated — the bothy of team chat.</p>
-            <div class="wh-sovereignty-score sovereignty-high">▲ High sovereignty</div>
-            <p style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--ash);margin-bottom:0.5rem;">Cost: Free · Self-host or Element's hosted service</p>
+            <p>A messaging option built around the Matrix protocol. Assess hosting, moderation and support needs before adopting it.</p>
             <a href="https://element.io" target="_blank" rel="noopener noreferrer" class="ask-kai-btn" style="display:inline-block;margin-bottom:0.5rem;">Visit Element →</a><br>
-            <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm in the Commons Warehouse looking at Element and Matrix. Can you explain what federated messaging means in practice and whether self-hosting chat is realistic for a small community organisation?" aria-label="Ask Kai about Element and Matrix">Ask Kai →</button>
+            <a class="ask-kai-btn" href="mailto:mike@kamunityconsulting.com">Ask Mike by email →</a>
         </div>
 
         <div class="wh-tool-card" role="listitem" data-search="limesurvey formbricks surveys open source forms">
             <span class="wh-tool-badge">Surveys &amp; forms</span>
             <h4>LimeSurvey / Formbricks</h4>
-            <p>Open-source survey tools. Self-hostable. No data extraction. LimeSurvey is the established one; Formbricks is the modern one.</p>
-            <p style="font-size:0.82rem;color:var(--ash);font-style:italic;margin-bottom:0.5rem;">Why we recommend it: open source, self-hostable, no vendor lock-in on your survey data.</p>
-            <div class="wh-sovereignty-score sovereignty-high">▲ High sovereignty</div>
-            <p style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--ash);margin-bottom:0.5rem;">Cost: Free (self-host) · Hosted tiers available</p>
+            <p>Two survey platforms to compare. Check current hosting options, data terms and pricing with each provider.</p>
             <a href="https://limesurvey.org" target="_blank" rel="noopener noreferrer" class="ask-kai-btn" style="display:inline-block;margin-bottom:0.3rem;">LimeSurvey →</a><br>
             <a href="https://formbricks.com" target="_blank" rel="noopener noreferrer" class="ask-kai-btn" style="display:inline-block;margin-bottom:0.5rem;">Formbricks →</a><br>
-            <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm in the Commons Warehouse looking at open-source survey tools like LimeSurvey and Formbricks. Can you help me choose between them for my organisation's needs?" aria-label="Ask Kai about open-source survey tools">Ask Kai →</button>
+            <a class="ask-kai-btn" href="mailto:mike@kamunityconsulting.com">Ask Mike by email →</a>
         </div>
 
         <div class="wh-tool-card" role="listitem" data-search="volunteer tracking jibble track it forward hours">
             <span class="wh-tool-badge">Volunteer tracking</span>
             <h4>Track It Forward / Jibble</h4>
-            <p>Volunteer hour tracking. Track It Forward is purpose-built for volunteer organisations; Jibble has a generous free tier.</p>
-            <p style="font-size:0.82rem;color:var(--ash);font-style:italic;margin-bottom:0.5rem;">Why we recommend it: purpose-built for community orgs, affordable, low overhead to run.</p>
-            <div class="wh-sovereignty-score sovereignty-medium">◆ Medium sovereignty</div>
-            <p style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--ash);margin-bottom:0.5rem;">Cost: Free tier · Track It Forward from $20/mo</p>
+            <p>Two options for tracking time or volunteering. Compare their current features, data policies and pricing.</p>
             <a href="https://www.trackitforward.com" target="_blank" rel="noopener noreferrer" class="ask-kai-btn" style="display:inline-block;margin-bottom:0.3rem;">Track It Forward →</a><br>
             <a href="https://www.jibble.io" target="_blank" rel="noopener noreferrer" class="ask-kai-btn" style="display:inline-block;margin-bottom:0.5rem;">Jibble →</a><br>
-            <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm in the Commons Warehouse looking at volunteer tracking tools. Can you help me work out whether Track It Forward or Jibble is the better fit for my organisation's volunteer management?" aria-label="Ask Kai about volunteer tracking tools">Ask Kai →</button>
+            <a class="ask-kai-btn" href="mailto:mike@kamunityconsulting.com">Ask Mike by email →</a>
         </div>
 
     </div>
@@ -328,42 +334,32 @@
     <div class="wh-aisle-row" role="list">
 
         <div class="wh-tool-card" role="listitem" data-search="GGA grower group alliance sovereign instance WA agricultural">
-            <span class="wh-tool-badge">Live instance</span>
+            <span class="wh-tool-badge">Historical example</span>
             <h4>GGA × Kamunity</h4>
-            <p>Grower Group Alliance sovereign instance. ~95 member agricultural organisations across WA. Ring 1 + Ring 2 built. Constitutionally independent.</p>
+            <p>Preserved example from an earlier GGA direction. This is historical material, not a currently offered or endorsed live instance.</p>
             <a href="https://gga-kamunity.netlify.app" target="_blank" rel="noopener noreferrer" class="ask-kai-btn" style="display:inline-block;margin-bottom:0.5rem;">Visit GGA × Kamunity →</a><br>
-            <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm in the Commons Warehouse looking at the GGA × Kamunity instance. Can you explain what a sovereign community instance is and how this model could apply to my organisation?" aria-label="Ask Kai about GGA Kamunity instance">Ask Kai →</button>
+            <a class="ask-kai-btn" href="mailto:mike@kamunityconsulting.com">Ask Mike by email →</a>
         </div>
 
         <div class="wh-tool-card" role="listitem" data-search="von neumann path 6 weeks onboarding independence">
             <span class="wh-tool-badge">Programme</span>
             <h4>Von Neumann Path</h4>
-            <p>Six-week onboarding to constitutional independence. Constitution, capability transfer, federation. Then you're free.</p>
+            <p>An illustrative six-step route towards community-owned infrastructure. Timing and handover depend on the agreed scope.</p>
             <a href="/my-kamunity#von-neumann" class="ask-kai-btn" style="display:inline-block;margin-bottom:0.5rem;">See the sequence →</a><br>
-            <button class="ask-kai-btn" data-kai-modal data-kai-context="I'm in the Commons Warehouse looking at the Von Neumann Path. Can you explain how the six-week onboarding to constitutional independence works and what my organisation would need to commit to?" aria-label="Ask Kai about the Von Neumann Path">Ask Kai →</button>
+            <a class="ask-kai-btn" href="mailto:mike@kamunityconsulting.com">Ask Mike by email →</a>
         </div>
 
         <div class="wh-your-org-card wh-tool-card" role="listitem" data-search="your organisation sovereign instance ring zero start">
             <h4>Your org here</h4>
-            <p>What's available, how it works, and what it costs (almost nothing). Constitutional sovereignty for community organisations.</p>
+            <p>Explore the Ring Zero approach and email Mike about current scope, availability and pricing.</p>
             <div class="mk-cta-links" style="margin-top:1rem;">
                 <a href="/my-kamunity" class="mk-cta-link">See Ring Zero →</a>
-                <button class="mk-cta-link ask-kai-btn" data-kai-modal data-kai-context="I'm browsing the Commons Warehouse and thinking about what sovereign community infrastructure might look like for my organisation. Can you help me understand what's involved and where to start?" aria-label="Talk to Kai about community sovereignty">Talk to Kai first →</button>
+                <a class="ask-kai-btn" href="mailto:mike@kamunityconsulting.com">Ask Mike by email →</a>
                 <a href="/#services" class="mk-cta-link">Services &amp; prices →</a>
             </div>
         </div>
 
     </div>
-</section>
-</div>
-
-<!-- FOOTER OPT-IN WIDGET -->
-<div class="hp-section-wrap">
-<section class="wh-optin-footer" aria-labelledby="optin-footer-heading">
-  <h2 id="optin-footer-heading">Want to know when we add something in your area?</h2>
-  <p>The Warehouse grows as the sector produces needs. We'll tell you when something relevant lands.</p>
-  <button class="optin-footer-btn" onclick="openOptinModal(null)">Get notified →</button>
-  <p class="optin-small">Email only. No account. Unsubscribe anytime.</p>
 </section>
 </div>
 
@@ -398,81 +394,27 @@
             </div>
         </div>
         <div class="mpa-footer-bottom">
-            <div class="mpa-footer-legal">Kamunity is an AI wayfinder and community tools platform, not a counsellor, therapist, or substitute for professional advice. All AI-generated content should be reviewed by humans before use.</div>
+            <div class="mpa-footer-legal">Kamunity presents community tools and a signal-to-action demonstration. Kai is a proposed AI wayfinder, not public chat on this site. These tools do not replace professional advice; review outputs before use.</div>
             <div class="mpa-footer-aoc">Built on Whadjuk Noongar boodja. Sovereignty was never ceded.</div>
         </div>
     </div>
 </footer>
 
-<!-- OPT-IN MODAL -->
-<div id="optin-modal" class="optin-modal-overlay" role="dialog" aria-modal="true"
-     aria-labelledby="optin-modal-title" style="display:none;">
-  <div class="optin-modal-box">
-    <button class="optin-modal-close" onclick="closeOptinModal()" aria-label="Close">✕</button>
-    <h3 id="optin-modal-title">Get notified when we add tools in your area</h3>
-    <p class="optin-modal-desc">Send Mike the areas you care about. No account, no database, no tracking.</p>
-    <form id="optin-form" onsubmit="submitOptin(event)">
-      <label for="optin-email" class="optin-label">Your email</label>
-      <input type="email" id="optin-email" name="email" class="optin-email-input"
-             placeholder="you@yourorg.org.au" required autocomplete="email">
-      <fieldset class="optin-tags-fieldset">
-        <legend class="optin-label">Areas of interest <span class="optin-required">(pick at least one)</span></legend>
-        <div class="optin-tags-grid" id="optin-tags-grid"></div>
-      </fieldset>
-      <div id="optin-preselect-note" class="optin-preselect-note" style="display:none;"></div>
-      <button type="submit" class="optin-submit-btn" id="optin-submit">Open email draft →</button>
-      <p class="optin-small">This opens your email app with your interests pre-filled. Nothing is sent until you choose to send it.</p>
-    </form>
-    <div id="optin-success" class="optin-success" style="display:none;">
-      <p>✓ Email draft opened. Send it when you're ready.</p>
-    </div>
-    <div id="optin-error" class="optin-error" style="display:none;"></div>
-  </div>
-</div>
-
-<!-- Kai FAB -->
-<button class="kai-fab" id="kai-fab" data-kai-modal data-kai-context="I've been browsing the Commons Warehouse. Can you help me find what I'm looking for?" aria-label="Talk to Kai">K</button>
+<!-- Email contact shortcut -->
+<a class="kai-fab" href="mailto:mike@kamunityconsulting.com" aria-label="Email Mike">✉</a>
 
 <style>
 .wh-field-tags { display: flex; flex-wrap: wrap; gap: 0.25rem; margin: 0.5rem 0; }
 .wh-field-tag { background: var(--ember, #c84b0c); color: white; font-size: 0.7rem; padding: 0.1rem 0.4rem; border-radius: 3px; }
 .wh-aisle-intro { color: var(--muted, #706050); font-size: 0.9rem; margin-bottom: 1rem; }
-.optin-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 1rem; }
-.optin-modal-box { background: var(--parchment, #faf7f0); border-radius: 8px; padding: 2rem; max-width: 480px; width: 100%; position: relative; max-height: 90vh; overflow-y: auto; }
-.optin-modal-close { position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.2rem; cursor: pointer; }
-.optin-email-input { display: block; width: 100%; padding: 0.5rem 0.75rem; border: 1px solid var(--ash, #c8bfb0); border-radius: 4px; font-size: 1rem; margin: 0.5rem 0 1rem; box-sizing: border-box; }
-.optin-tags-fieldset { border: none; padding: 0; margin: 0 0 1rem; }
-.optin-tags-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; margin-top: 0.5rem; }
-.optin-tag-label { display: flex; align-items: center; gap: 0.4rem; font-size: 0.9rem; cursor: pointer; }
-.optin-submit-btn { background: var(--ember, #c84b0c); color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 4px; font-size: 1rem; cursor: pointer; width: 100%; }
-.optin-submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-.optin-small { font-size: 0.75rem; color: var(--muted, #706050); margin-top: 0.5rem; }
-.optin-success { color: var(--forest, #2d5a27); font-weight: bold; padding: 1rem 0; }
-.optin-error { color: #c0392b; font-size: 0.9rem; margin-top: 0.5rem; }
-.optin-label { font-weight: 600; font-size: 0.9rem; }
-.optin-required { font-weight: normal; color: var(--muted, #706050); }
-.optin-preselect-note { font-size: 0.85rem; color: var(--muted, #706050); margin-bottom: 0.5rem; }
-.optin-notify-btn { background: none; border: 1px solid var(--ash, #c8bfb0); padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.8rem; cursor: pointer; margin-top: 0.25rem; }
-.optin-notify-btn:hover { border-color: var(--ember, #c84b0c); color: var(--ember, #c84b0c); }
-.wh-optin-footer { padding: 3rem 0; text-align: center; border-top: 1px solid var(--ash, #c8bfb0); }
-.optin-footer-btn { background: var(--ember, #c84b0c); color: white; border: none; padding: 0.75rem 2rem; border-radius: 4px; font-size: 1rem; cursor: pointer; margin: 1rem 0 0.5rem; }
 </style>
 
 <script src="/js/nav.js"></script>
 <script src="/js/warehouse.js"></script>
-<script src="/js/kai-modal.js"></script>
 
 <script>
 function escWh(str) {
   return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-}
-
-function normaliseFactoryToolUrl(outputUrl) {
-  var url = String(outputUrl || '').trim();
-  if (!url) return '';
-  if (/\.html(?:[?#].*)?$/i.test(url)) return url;
-  if (/\/$/.test(url)) return url + 'index.html';
-  return url + '/index.html';
 }
 
 function parseWarehouseBrief(rawContent, fallbackTitle) {
@@ -621,28 +563,17 @@ async function loadFieldTools() {
         ? '<a href="' + escWh(outputUrl) + '" target="_blank" rel="noopener noreferrer" class="ask-kai-btn wh-field-view-btn" style="text-decoration:none;display:inline-block;">' + escWh(actionLabel) + ' →</a>'
         : '';
 
-      return '<div class="wh-tool-card" role="listitem" data-search="' + searchData + '" data-tool-id="' + escWh(tool.id) + '" data-output-type="' + escWh(tool.type || '') + '" data-output-url="' + escWh(outputUrl) + '">' +
+      return '<div class="wh-tool-card" role="listitem" data-search="' + searchData + '" data-tool-id="' + escWh(tool.id) + '" data-output-type="' + escWh(tool.type || '') + '">' +
         '<span class="wh-tool-badge">' + escWh(typeLabel) + ' · Phoenix · ' + escWh(evidenceLine) + '</span>' +
         '<h4>' + escWh(cardTitle) + '</h4>' +
         '<p>' + escWh(cardBody) + '</p>' +
         '<div class="wh-field-tags">' + tags + '</div>' +
         actionBtn +
-        '<button class="ask-kai-btn" data-kai-modal data-kai-context="I\'m in the Commons Warehouse looking at \'' + escWh(cardTitle) + '\'. Can you help me understand how to use this for my organisation?" aria-label="Ask Kai about ' + escWh(cardTitle) + '">Ask Kai \u2192</button>' +
-        '<button type="button" class="optin-notify-btn" data-notify-tag="' + escWh((tool.tags || [])[0] || '') + '" aria-label="Get notified about new tools in this area">\uD83D\uDD14 Notify me \u2192</button>' +
+        '<a class="ask-kai-btn" href="mailto:mike@kamunityconsulting.com?subject=' + encodeURIComponent('Question about ' + cardTitle) + '">Ask Mike by email \u2192</a>' +
         '</div>';
     }).join('');
 
-    row.querySelectorAll('[data-notify-tag]').forEach(function(button) {
-      button.addEventListener('click', function() {
-        openOptinModal(button.getAttribute('data-notify-tag'));
-      });
-    });
     wrap.style.display = '';
-
-    // Re-bind Kai modal buttons for dynamically added cards
-    if (typeof window.initKaiModalButtons === 'function') {
-      window.initKaiModalButtons();
-    }
   } catch (e) {
     // Silent fail — static warehouse still works
   }
@@ -663,7 +594,7 @@ function openFieldTool(btn) {
     'h1{font-size:1.7rem;margin-bottom:1.4rem;} h2{font-size:1.15rem;margin:1.4rem 0 .4rem;} h3{font-size:1rem;margin:1.2rem 0 .35rem;} blockquote{border-left:4px solid #c45a34;margin:1rem 0;padding:.35rem 1rem;background:#fff8ef;} .brief-body p{margin:.65rem 0;} .reasoning{margin-top:2rem;border-top:1px solid #d8cbb9;padding-top:1rem;color:#6b5b4b;font-size:.95rem;}</style>' +
     '</head><body><h1>' + escWh(brief.title || title) + '</h1><div class="brief-body">' + renderBriefContent(brief.content || content) + '</div>' +
     reasoningBlock +
-    '<p><small>Generated from community signal patterns — Commons Warehouse, Kamunity</small></p>' +
+    '<p><small>Draft from a selected public item. Review its source and limitations before use.</small></p>' +
     '</body></html>');
   win.document.close();
 }
@@ -691,159 +622,8 @@ function copyToolContent(toolId) {
   });
 }
 
-function downloadFactoryTool(toolId, outputUrl) {
-  // For local file paths, we need to serve them through an endpoint
-  // For now, alert the user about the location
-  if (!outputUrl) {
-    alert('Download not available — tool location unknown');
-    return;
-  }
-
-  // Check if it's a web URL or local path
-  if (outputUrl.startsWith('http')) {
-    // Web URL — can direct download
-    window.open(outputUrl, '_blank');
-  } else {
-    // Local path — show instructions
-    alert('Tool staged locally at:\n' + outputUrl + '\n\nOpen this folder in Finder to access files.');
-  }
-}
-
-function openEmbeddedTool(toolId, outputUrl) {
-  // Open embedded widget in a modal or new window
-  if (!outputUrl) {
-    alert('Tool preview not available — location unknown');
-    return;
-  }
-
-  // For now, open in new window
-  // Future: could render in a modal iframe
-  if (outputUrl.startsWith('http')) {
-    window.open(outputUrl, '_blank', 'width=800,height=600');
-  } else {
-    // Local path — show in preview window
-    alert('Embedded tool staged locally at:\n' + outputUrl + '\n\nOpen index.html in this folder to use the tool.');
-  }
-}
-
-var SECTOR_TAGS = [
-  { value: 'housing', label: 'Housing & Homelessness' },
-  { value: 'workforce', label: 'Workforce & Employment' },
-  { value: 'digital-tools', label: 'Digital & AI' },
-  { value: 'funding', label: 'Funding & Grants' },
-  { value: 'disability', label: 'Disability Services' },
-  { value: 'wellbeing', label: 'Health & Wellbeing' },
-  { value: 'governance', label: 'Governance & Policy' },
-  { value: 'indigenous-communities', label: 'First Nations' },
-];
-
-var OPTIN_EMAIL = 'mike@kamunityconsulting.com';
-
-var AISLE_TAG_MAP = {
-  'aisle-tools': 'digital-tools',
-  'aisle-assessments': 'governance',
-  'aisle-builds': 'digital-tools',
-  'aisle-ecosystem': 'digital-tools',
-  'aisle-instances': 'governance'
-};
-
-function openOptinModal(preselectedTag) {
-  var modal = document.getElementById('optin-modal');
-  var grid = document.getElementById('optin-tags-grid');
-  var note = document.getElementById('optin-preselect-note');
-  document.getElementById('optin-success').style.display = 'none';
-  document.getElementById('optin-error').style.display = 'none';
-  document.getElementById('optin-form').style.display = '';
-  document.getElementById('optin-submit').disabled = false;
-  document.getElementById('optin-submit').textContent = 'Open email draft \u2192';
-
-  grid.innerHTML = SECTOR_TAGS.map(function(t) {
-    return '<label class="optin-tag-label">' +
-      '<input type="checkbox" name="tags" value="' + escWh(t.value) + '"' +
-      (preselectedTag === t.value ? ' checked' : '') + '> ' +
-      escWh(t.label) + '</label>';
-  }).join('');
-
-  if (preselectedTag) {
-    var tagLabel = SECTOR_TAGS.find(function(t) { return t.value === preselectedTag; });
-    note.textContent = 'Pre-selected: ' + (tagLabel ? tagLabel.label : preselectedTag) + ' \u2014 add more or change below.';
-    note.style.display = '';
-  } else {
-    note.style.display = 'none';
-  }
-
-  modal.style.display = 'flex';
-  document.getElementById('optin-email').focus();
-}
-
-function closeOptinModal() {
-  document.getElementById('optin-modal').style.display = 'none';
-}
-
-async function submitOptin(e) {
-  e.preventDefault();
-  var email = document.getElementById('optin-email').value.trim();
-  var tags = Array.from(document.querySelectorAll('#optin-tags-grid input[name="tags"]:checked'))
-    .map(function(cb) { return cb.value; });
-
-  if (!tags.length) {
-    document.getElementById('optin-error').textContent = 'Please select at least one area of interest.';
-    document.getElementById('optin-error').style.display = '';
-    return;
-  }
-
-  var submitBtn = document.getElementById('optin-submit');
-  submitBtn.disabled = true;
-  submitBtn.textContent = 'Opening email\u2026';
-  document.getElementById('optin-error').style.display = 'none';
-
-  try {
-    var subject = 'Warehouse notification interests';
-    var body = [
-      'Please let me know when new Kamunity Warehouse tools land in these areas:',
-      '',
-      tags.map(function(tag) { return '- ' + tag; }).join('\n'),
-      '',
-      'Reply email: ' + email,
-      '',
-      'Source: Commons Warehouse portable opt-in'
-    ].join('\n');
-    window.location.href = 'mailto:' + OPTIN_EMAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-    document.getElementById('optin-form').style.display = 'none';
-    document.getElementById('optin-success').style.display = '';
-  } catch (err) {
-    document.getElementById('optin-error').textContent = 'Something went wrong opening your email app: ' + err.message;
-    document.getElementById('optin-error').style.display = '';
-    submitBtn.disabled = false;
-    submitBtn.textContent = 'Open email draft \u2192';
-  }
-}
-
-function injectNotifyButtons() {
-  Object.keys(AISLE_TAG_MAP).forEach(function(aisleId) {
-    var tag = AISLE_TAG_MAP[aisleId];
-    var aisle = document.getElementById(aisleId);
-    if (!aisle) return;
-    aisle.querySelectorAll('.wh-tool-card').forEach(function(card) {
-      if (card.querySelector('.optin-notify-btn')) return;
-      var btn = document.createElement('button');
-      btn.className = 'optin-notify-btn';
-      btn.setAttribute('aria-label', 'Get notified about new tools in this area');
-      btn.textContent = '\uD83D\uDD14 Notify me \u2192';
-      btn.onclick = function() { openOptinModal(tag); };
-      card.appendChild(btn);
-    });
-  });
-}
-
-document.getElementById('optin-modal').addEventListener('click', function(e) {
-  if (e.target === this) closeOptinModal();
-});
-document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeOptinModal(); });
-
 document.addEventListener('DOMContentLoaded', function() {
   loadFieldTools();
-  injectNotifyButtons();
 });
 </script>
 

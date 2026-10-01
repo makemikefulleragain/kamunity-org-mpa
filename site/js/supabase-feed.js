@@ -69,9 +69,9 @@
         readLink.textContent = 'Read on News →';
 
         var askLink = document.createElement('a');
-        askLink.href = '/#chats';
+        askLink.href = 'mailto:mike@kamunityconsulting.com';
         askLink.className = 'ask-kai-btn';
-        askLink.textContent = 'Ask Kai →';
+        askLink.textContent = 'Ask Mike by email →';
 
         card.appendChild(tagEl);
         card.appendChild(heading);

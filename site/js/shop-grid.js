@@ -77,7 +77,6 @@
         var tags = Array.isArray(item.sector_tags) ? item.sector_tags.slice(0, 3) : [];
         var meta = text(item.meta) || (tags.length ? tags.join(' · ') : text(item.type) || 'Phoenix tool');
         var actionLabel = text(item.action_label) || 'Open tool';
-        var kaiContext = 'I am looking at the Kamunity Commons tool "' + title + '". Can you help me understand when and how to use it?';
 
         var card = document.createElement('div');
         card.className = 'shop-card shop-card--commons';
@@ -89,7 +88,7 @@
                 '<div class="shop-card-meta"></div>' +
                 '<div class="shop-card-actions">' +
                 '<a class="shop-btn" target="_blank" rel="noopener noreferrer"></a>' +
-                '<button class="ask-kai-btn" data-kai-modal type="button">Ask Kai →</button>' +
+                '<a class="ask-kai-btn" href="mailto:mike@kamunityconsulting.com">Ask Mike by email →</a>' +
             '</div>';
 
         card.querySelector('h4').textContent = title;
@@ -97,9 +96,6 @@
         card.querySelector('.shop-card-meta').textContent = meta;
         card.querySelector('a').href = url;
         card.querySelector('a').textContent = actionLabel + ' →';
-        var kaiButton = card.querySelector('[data-kai-modal]');
-        kaiButton.setAttribute('data-kai-context', kaiContext);
-        kaiButton.setAttribute('aria-label', 'Ask Kai about ' + title);
         return card;
     }
 

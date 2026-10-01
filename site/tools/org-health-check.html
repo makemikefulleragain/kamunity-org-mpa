@@ -413,7 +413,7 @@
     <footer>
       <p class="privacy"><strong>Privacy:</strong> All scoring runs in your browser. No analytics, no tracking, no submission. The only network request this page makes is to load Google Fonts (Fraunces, Source Serif 4, IBM Plex Mono) on first paint. To run fully offline, save the page locally.</p>
       <p class="meta">
-        Part of the Kamunity commons · <a href="https://kamunity.org/" target="_blank" rel="noopener">kamunity.org</a> · <a href="https://kamunity.org/#chats" target="_blank" rel="noopener">Ask Kai about your results →</a>
+        Part of the Kamunity commons · <a href="mailto:mike@kamunityconsulting.com">Email Mike about your results →</a>
       </p>
     </footer>
   </div>
@@ -726,7 +726,7 @@ function buildQuiz(containerId, resultsId, warmId, questions, resultsConfig) {
             <div class="share-row">
                 <button class="share-btn" id="${containerId}-print" type="button">⎙ Print / save as PDF</button>
                 <button class="share-btn" id="${containerId}-copy" type="button">⧉ Copy results</button>
-                <a class="share-btn" href="https://kamunity.org/#chats" target="_blank" rel="noopener">Ask Kai about these →</a>
+                <a class="share-btn" href="mailto:mike@kamunityconsulting.com">Email Mike about these →</a>
                 <button class="quiz-btn-reset" id="${containerId}-reset" type="button">Start again</button>
             </div>`;
 
@@ -759,7 +759,7 @@ function buildQuiz(containerId, resultsId, warmId, questions, resultsConfig) {
                 ``,
                 result.text,
                 ``,
-                `via kamunity.org`
+                `via kamunity-org-mpa.netlify.app`
             ].join('\n');
             try {
                 await navigator.clipboard.writeText(lines);

@@ -105,7 +105,6 @@
         var candidateUrl = text(item.url);
         var url = /^https:\/\//i.test(candidateUrl) ? candidateUrl : '';
         var actionLabel = text(item.action_label) || (url ? 'Open room' : '');
-        var kaiContext = 'I am looking at the Kamunity Rooms card "' + title + '". Can you help me understand who this room is for and whether it is useful for my work?';
 
         var card = document.createElement('article');
         card.className = 'rooms-card';
@@ -119,7 +118,7 @@
             '<div class="rooms-card-meta"></div>' +
             '<div class="rooms-card-actions">' +
                 '<span class="rooms-card-action-slot"></span>' +
-                '<button class="ask-kai-btn" data-kai-modal type="button">Ask Kai →</button>' +
+                '<a class="ask-kai-btn" href="mailto:mike@kamunityconsulting.com">Ask Mike by email →</a>' +
             '</div>';
 
         card.querySelector('.rooms-card-icon').textContent = roomIcon(item);
@@ -145,9 +144,6 @@
             actionSlot.appendChild(label);
         }
 
-        var kaiButton = card.querySelector('[data-kai-modal]');
-        kaiButton.setAttribute('data-kai-context', kaiContext);
-        kaiButton.setAttribute('aria-label', 'Ask Kai about ' + title);
         return card;
     }
 

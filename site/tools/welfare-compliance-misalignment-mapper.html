@@ -310,11 +310,12 @@
     <div class="hero">
         <div class="container">
             <h1>Welfare Compliance Misalignment Mapper</h1>
-            <p>Document frontline observations, measure policy misalignment, generate advocacy evidence</p>
+            <p>Record anonymised frontline observations and draft a reflection for human review. This tool does not verify a policy finding.</p>
         </div>
     </div>
 
     <div class="container" style="padding-top: 48px; padding-bottom: 48px;">
+        <p><strong>Privacy and evidence:</strong> This tool processes entries in this browser session. Do not enter names, case numbers, precise dates or other identifying details. Scores are your judgments, not validated measurements. Check policy documents and source evidence, obtain consent where needed, and review any download before sharing. This is not legal or professional advice.</p>
         
         <!-- DATA COLLECTION FORM -->
         <div class="card">
@@ -417,7 +418,7 @@
         <!-- RESULTS & EVIDENCE SNAPSHOT -->
         <div class="card" id="resultsSection" style="display: none;">
             <div class="card-header">
-                <h2>Advocacy Evidence Snapshot</h2>
+                <h2>Draft Observation Snapshot</h2>
             </div>
             <div class="card-body">
                 <div class="results">
@@ -427,20 +428,20 @@
                     </div>
                     
                     <div id="evidenceSummary">
-                        <h3>Key Findings</h3>
+                        <h3>What was entered</h3>
                         <div id="findingsText"></div>
                         
-                        <h3>Structural Misalignment Evidence</h3>
+                        <h3>Questions for further review</h3>
                         <div id="misalignmentEvidence"></div>
                         
-                        <h3>Recommendations for Policy Reform</h3>
+                        <h3>Possible next steps</h3>
                         <div id="recommendations"></div>
                     </div>
                 </div>
                 
                 <div class="text-center mt-4">
-                    <button type="button" class="btn btn-primary" onclick="downloadReport()">📄 Download Full Report</button>
-                    <button type="button" class="btn btn-secondary" onclick="copyToClipboard()">📋 Copy for Submission</button>
+                    <button type="button" class="btn btn-primary" onclick="downloadReport()">📄 Download Draft</button>
+                    <button type="button" class="btn btn-secondary" onclick="copyToClipboard()">📋 Copy Draft</button>
                 </div>
             </div>
         </div>
@@ -450,6 +451,11 @@
         // CORE DATA STORAGE
         let observations = [];
         let currentObservation = null;
+
+        function escapeHtml(value) {
+            return String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
 
         // FORM SUBMISSION
         document.getElementById('observationForm').addEventListener('submit', function(e) {
@@ -494,12 +500,12 @@
             container.innerHTML = observations.map(obs => `
                 <div class="observation">
                     <div class="observation-meta">
-                        <span><strong>${obs.clientProfile.replace('-', ' ')}</strong></span>
-                        <span>${obs.complianceRequirement.replace('-', ' ')}</span>
-                        <span>${obs.timestamp}</span>
+                        <span><strong>${escapeHtml(obs.clientProfile.replace('-', ' '))}</strong></span>
+                        <span>${escapeHtml(obs.complianceRequirement.replace('-', ' '))}</span>
+                        <span>${escapeHtml(obs.timestamp)}</span>
                     </div>
                     <div class="observation-text">
-                        "${obs.observedOutcome}"
+                        "${escapeHtml(obs.observedOutcome)}"
                     </div>
                 </div>
             `).join('');
@@ -536,13 +542,13 @@
             
             let interpretation = '';
             if (misalignmentScore >= 4) {
-                interpretation = 'SEVERE MISALIGNMENT - Policy outcomes directly contradict stated objectives';
+                interpretation = 'High concern in these self-assigned scores — investigate before drawing conclusions';
             } else if (misalignmentScore >= 3) {
-                interpretation = 'SIGNIFICANT MISALIGNMENT - Policy creates barriers to stated goals';
+                interpretation = 'Elevated concern in these self-assigned scores — investigate further';
             } else if (misalignmentScore >= 2) {
-                interpretation = 'MODERATE MISALIGNMENT - Mixed outcomes, some policy conflicts';
+                interpretation = 'Mixed self-assigned scores — review supporting evidence';
             } else {
-                interpretation = 'MINOR MISALIGNMENT - Generally aligned with minor issues';
+                interpretation = 'Lower concern in these self-assigned scores — not a verified policy finding';
             }
             
             document.getElementById('scoreInterpretation').textContent = interpretation;
@@ -585,7 +591,7 @@
             
             // Generate findings
             const findings = [
-                `Analysis of ${count} frontline compliance observations reveals systematic misalignment between punitive welfare requirements and stated policy objectives.`,
+                `This draft summarises ${count} self-entered and self-scored observation${count === 1 ? '' : 's'}. It does not establish a systemic pattern or verify policy effects.`,
                 `Dignity & Respect outcomes: ${avgDignity.toFixed(1)}/5 (${getDimensionAssessment(avgDignity)})`,
                 `Wellbeing outcomes: ${avgWellbeing.toFixed(1)}/5 (${getDimensionAssessment(avgWellbeing)})`,
                 `Housing stability: ${avgHousing.toFixed(1)}/5 (${getDimensionAssessment(avgHousing)})`,
@@ -596,21 +602,19 @@
             
             // Generate misalignment evidence
             const evidence = [
-                'Compliance regimes designed to incentivize employment are creating barriers to sustainable work pathways',
-                'Punitive measures targeting poverty-related non-compliance undermine dignity and agency',
-                'Administrative burden diverts resources from direct support provision',
-                'One-size-fits-all requirements fail to account for complex individual circumstances'
+                'Which policy requirement applies, and what is the exact source text?',
+                'What direct evidence supports the reported effect, and what alternative explanations exist?',
+                'Were people affected asked for consent before their experience is shared?',
+                'Does a wider, representative set of observations show the same pattern?'
             ];
             
             document.getElementById('misalignmentEvidence').innerHTML = evidence.map(e => `<p>• ${e}</p>`).join('');
             
             // Generate recommendations
             const recommendations = [
-                'Replace punitive compliance with strengths-based support frameworks',
-                'Implement trauma-informed, culturally appropriate assessment processes',
-                'Increase caseworker discretion to tailor requirements to individual circumstances',
-                'Redirect compliance administration funding to direct support services',
-                'Establish independent oversight of compliance decision-making impacts'
+                'Remove identifying details and check consent before sharing.',
+                'Validate the policy text and separate firsthand accounts from inference.',
+                'Ask a qualified reviewer to assess any proposed policy claim or recommendation.'
             ];
             
             document.getElementById('recommendations').innerHTML = recommendations.map(r => `<p>• ${r}</p>`).join('');
@@ -641,7 +645,7 @@
         function copyToClipboard() {
             const content = generateFullReport();
             navigator.clipboard.writeText(content).then(() => {
-                alert('Report copied to clipboard - ready for pasting into submissions');
+                alert('Draft copied. Review evidence, privacy and consent before any submission.');
             });
         }
 
@@ -650,14 +654,15 @@
             const date = new Date().toLocaleDateString();
             const scoredObservations = observations.filter(obs => obs.scores);
             
-            let report = `WELFARE COMPLIANCE MISALIGNMENT REPORT
+            let report = `DRAFT WELFARE COMPLIANCE OBSERVATION SNAPSHOT
+Not a verified finding, representative study or legal advice. Review evidence and remove identifying details before sharing.
 Generated: ${date}
 Observations: ${observations.length} total, ${scoredObservations.length} scored
 
 EXECUTIVE SUMMARY
 ${document.getElementById('findingsText').textContent}
 
-STRUCTURAL MISALIGNMENT EVIDENCE
+QUESTIONS FOR FURTHER REVIEW
 ${document.getElementById('misalignmentEvidence').textContent}
 
 DETAILED OBSERVATIONS
@@ -684,7 +689,7 @@ Service Response: ${obs.serviceResponse}
             });
 
             report += `
-RECOMMENDATIONS FOR POLICY REFORM
+POSSIBLE NEXT STEPS
 ${document.getElementById('recommendations').textContent}
 
 ---

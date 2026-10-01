@@ -110,7 +110,7 @@
         card.setAttribute('data-type', typeLbl);
         card.setAttribute('data-tags', tags.toLowerCase());
 
-        var actionsHtml = '<a href="/#chats" class="ask-kai-btn news-card-ask">Ask Kai about this →</a>';
+        var actionsHtml = '<a href="mailto:mike@kamunityconsulting.com" class="ask-kai-btn news-card-ask">Ask Mike by email →</a>';
 
         /* Read aloud for written signals (SpeechSynthesis API — graceful fallback) */
         var readAloudHtml = '';
@@ -187,7 +187,7 @@
         panel.innerHTML = '';
 
         if (!filtered.length) {
-            panel.innerHTML = '<div class="signals-fallback" style="grid-column:1/-1;">No items in this category yet. <a href="/#chats">Ask Kai about what\'s happening →</a></div>';
+            panel.innerHTML = '<div class="signals-fallback" style="grid-column:1/-1;">No items in this category yet. <a href="mailto:mike@kamunityconsulting.com">Ask Mike by email →</a></div>';
             if (loadMoreWrap) loadMoreWrap.style.display = 'none';
             return;
         }
