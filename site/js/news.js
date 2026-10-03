@@ -336,7 +336,7 @@
         try {
             var url = new URL(value);
             if (url.protocol !== 'https:' || url.username || url.password) return '';
-            if (!url.hostname.includes('.') || /^(localhost|.*\.localhost|.*\.local|.*\.test)$/i.test(url.hostname)) return '';
+            if (!url.hostname.includes('.') || /^(localhost|.*\.localhost|.*\.local|.*\.test|\d+\.\d+\.\d+\.\d+|\[.*\])$/i.test(url.hostname)) return '';
             url.search = '';
             url.hash = '';
             return url.toString();

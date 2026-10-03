@@ -21,6 +21,7 @@ test('the story modal offers an external source link only for reviewed HTTPS URL
     'https://user:secret@example.org/report',
     'https://localhost/report',
     'https://preview.test/report',
+    'https://127.0.0.1/report',
     'not a URL',
   ]) {
     assert.equal(safeOriginalSourceUrl(url), '', `must reject ${url}`);
