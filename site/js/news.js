@@ -361,9 +361,23 @@
         }).join(' ');
 
         var bodyEl = document.getElementById('sm-body');
-        bodyEl.innerHTML = content.split(/\n+/).map(function(line) {
-            return line.trim() ? '<p>' + escWh(line) + '</p>' : '';
-        }).join('');
+        bodyEl.replaceChildren();
+        window.KamunityArticleFormat.articleFromStory(story).forEach(function (block) {
+            if (block.type === 'list') {
+                var list = document.createElement(block.ordered ? 'ol' : 'ul');
+                if (block.ordered) list.start = block.start;
+                block.items.forEach(function (text) {
+                    var li = document.createElement('li');
+                    appendArticleText(li, text);
+                    list.appendChild(li);
+                });
+                bodyEl.appendChild(list);
+            } else {
+                var element = document.createElement(block.type === 'heading' ? 'h' + block.level : 'p');
+                appendArticleText(element, block.text);
+                bodyEl.appendChild(element);
+            }
+        });
 
         var sourceLink = document.getElementById('sm-source-link');
         if (sourceLink) {
@@ -376,6 +390,18 @@
         var newsLink = document.getElementById('sm-news-link');
         if (newsLink && story.id) newsLink.href = '/news?story=' + encodeURIComponent(story.id);
         document.title = title + ' \u2014 Kamunity News';
+    }
+
+    // Never interpret story content as HTML. Only the bounded formatter selects
+    // semantic elements; all source wording is inserted through text nodes.
+    function appendArticleText(element, text) {
+        window.KamunityArticleFormat.inlineParts(text).forEach(function (part) {
+            if (part.bold) {
+                var strong = document.createElement('strong');
+                strong.textContent = part.text;
+                element.appendChild(strong);
+            } else element.appendChild(document.createTextNode(part.text));
+        });
     }
 
     function closeStoryModal(updateUrl) {

@@ -1,0 +1,7 @@
+/* Shared editorial hierarchy: body copy remains text, never source HTML. */
+.story-full-body p{white-space:pre-line;margin:0 0 1.1rem;overflow-wrap:anywhere}
+.story-full-body :is(h2,h3,h4){font-family:inherit;font-weight:650;line-height:1.35;margin:1.6rem 0 .7rem;overflow-wrap:anywhere}
+.story-full-body h2{font-size:1.35rem}.story-full-body h3{font-size:1.15rem}.story-full-body h4{font-size:1.05rem}
+.story-full-body :is(ul,ol){padding-left:1.5rem;margin:0 0 1.1rem}
+.story-full-body li{margin:.4rem 0;white-space:pre-line;overflow-wrap:anywhere}
+.story-full-body>:first-child{margin-top:0}
