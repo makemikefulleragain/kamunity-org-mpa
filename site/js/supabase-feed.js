@@ -44,14 +44,14 @@
 
         var tags = (item.tags || []).slice(0, 2).join(' · ');
         var age  = formatAge(item.published_at || item.created_at);
-        var title = item.summary || item.title || 'Phoenix story';
-        var detail = item.title && item.summary && item.title !== item.summary ? item.title : '';
+        var title = item.title || item.summary || 'Phoenix response';
+        var detail = item.summary && item.title !== item.summary ? item.summary : '';
         var storyId = item.id || item.public_id || '';
         var href = storyId ? '/news?story=' + encodeURIComponent(storyId) : '/news';
 
         var tagEl = document.createElement('div');
         tagEl.className = 'signal-card-tag';
-        tagEl.textContent = tags || item.category || 'Phoenix story';
+        tagEl.textContent = item.response_type === 'tool' ? 'Tool proposal · not yet built' : item.response_type === 'discussion' ? 'Discussion proposal · no room created' : item.response_type === 'opportunity' ? 'Opportunity · check availability' : 'Article';
 
         var heading = document.createElement('h4');
         heading.textContent = title;
@@ -66,7 +66,7 @@
         var readLink = document.createElement('a');
         readLink.href = href;
         readLink.className = 'ask-kai-btn';
-        readLink.textContent = 'Read on News →';
+        readLink.textContent = item.response_type === 'tool' || item.response_type === 'discussion' ? 'Read proposal →' : 'Read response →';
 
         var askLink = document.createElement('a');
         askLink.href = 'mailto:mike@kamunityconsulting.com';
