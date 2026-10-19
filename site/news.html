@@ -56,11 +56,12 @@
     <button class="story-modal-close" type="button" data-story-modal-close aria-label="Close story">×</button>
     <div class="story-full-meta">
       <span class="story-full-date" id="sm-date"></span>
-      <span id="sm-tags"></span>
+      <span id="sm-tags"></span><span id="sm-kind"></span>
     </div>
     <h1 id="story-modal-title" class="story-full-title">Loading…</h1>
     <div id="sm-body" class="story-full-body"></div>
     <div class="story-modal-actions">
+      <a class="ask-kai-btn" id="sm-next-step" target="_blank" rel="noopener noreferrer" hidden>View verified next step ↗</a>
       <a href="#" class="ask-kai-btn" id="sm-source-link" target="_blank" rel="noopener noreferrer" hidden>Read original source ↗</a>
       <a href="/news" class="ask-kai-btn" id="sm-news-link">All News →</a>
       <a href="mailto:mike@kamunityconsulting.com?subject=Kamunity%20News" class="ask-kai-btn">Ask Mike by email →</a>
@@ -74,8 +75,8 @@
 <!-- MASTHEAD -->
 <div class="hp-section-wrap news-masthead-wrap">
 <header class="news-masthead" id="main-content" aria-labelledby="news-heading">
-    <h1 id="news-heading">Kamunity News</h1>
-    <p class="news-masthead-sub">Sector intelligence for the WA community sector. No algorithm. No engagement optimisation.</p>
+    <h1 id="news-heading">Kamunity News &amp; ideas</h1>
+    <p class="news-masthead-sub">Articles, opportunities and proposals for the WA community sector. A proposal is an idea—not an available tool or live room.</p>
     <p class="news-counts" id="news-counts" aria-live="polite">Loading signal count...</p>
     <p class="news-counts" style="margin-top:0.2rem;">
         Last updated: <span id="news-last-updated">—</span>
@@ -85,23 +86,16 @@
 
 <!-- TAB BAR -->
 <div class="hp-section-wrap news-tabs-wrap">
-<div class="news-tab-bar" role="tablist" aria-label="News categories" id="news-tab-bar">
-    <button class="news-tab active" role="tab" aria-selected="true" data-tab="latest" aria-controls="news-panel">Latest</button>
-    <button class="news-tab" role="tab" aria-selected="false" data-tab="sector-intelligence" aria-controls="news-panel">Sector Intelligence</button>
-    <button class="news-tab" role="tab" aria-selected="false" data-tab="community-practice" aria-controls="news-panel">Community Practice</button>
-    <button class="news-tab" role="tab" aria-selected="false" data-tab="ai-tech" aria-controls="news-panel">AI &amp; Tech</button>
-    <button class="news-tab" role="tab" aria-selected="false" data-tab="policy-funding" aria-controls="news-panel">Policy &amp; Funding</button>
-</div>
+<p>Latest updates across all response types. Filter by type and topic below.</p>
 
 <!-- FILTER BAR -->
 <div class="news-filter-bar" role="search" aria-label="Filter news">
     <select class="news-filter-select" id="filter-type" aria-label="Filter by type">
         <option value="">All types</option>
-        <option value="signal">Signals</option>
-        <option value="pulse-video">Video</option>
-        <option value="pulse-audio">Audio</option>
-        <option value="pulse-written">Written</option>
-        <option value="story">Stories</option>
+        <option value="article">Articles</option>
+        <option value="opportunity">Opportunities</option>
+        <option value="discussion">Discussion proposals</option>
+        <option value="tool">Tool proposals</option>
     </select>
     <select class="news-filter-select" id="filter-category" aria-label="Filter by category">
         <option value="">All categories</option>
@@ -201,9 +195,11 @@
 <!-- Kai FAB -->
 <a class="kai-fab" href="mailto:mike@kamunityconsulting.com" aria-label="Email Mike">✉</a>
 
+<link rel="stylesheet" href="/css/publication.css?v=20261020">
 <script src="/js/nav.js"></script>
 <script src="/js/article-format.js?v=2"></script>
-<script src="/js/news.js?v=20261019-format2"></script>
+<script src="/js/publication-metadata.js?v=20261020"></script>
+<script src="/js/news.js?v=20261020-types"></script>
 
 </body>
 </html>

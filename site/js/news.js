@@ -47,6 +47,7 @@
 
     function itemMatchesTab(item, tab) {
         if (tab === 'latest') return true;
+        if ((item.topics || []).includes(tab) || item.category === tab) return true;
         var tags = (item.tags || []).map(function (t) { return t.toLowerCase(); });
         var tabTags = TAB_TAGS[tab] || [];
         return tabTags.some(function (tt) {
@@ -88,6 +89,10 @@
     }
 
     function getTypeLabel(item) {
+        if (window.KamunityPublication) {
+            var card = window.KamunityPublication.cardPresentation(item);
+            return [card.label, 'news-card-type--story'];
+        }
         var t = (item.type || 'signal').toLowerCase();
         if (t === 'story')         return ['story',           'news-card-type--story'];
         if (t.includes('video'))   return ['pulse · video',   'news-card-type--video'];
@@ -97,11 +102,12 @@
     }
 
     function renderCard(item) {
+        var presentation = window.KamunityPublication ? window.KamunityPublication.cardPresentation(item) : { action: 'Read response', state: '' };
         var typeInfo = getTypeLabel(item);
         var typeLbl  = typeInfo[0];
         var typeCls  = typeInfo[1];
         var age      = formatAge(item.published_at || item.created_at);
-        var tags     = (item.tags || []).slice(0, 3).join(' · ');
+        var tags     = window.KamunityPublication ? window.KamunityPublication.publicationTopics(item).map(function (topic) { return window.KamunityPublication.PUBLIC_TOPICS[topic]; }).join(' · ') : (item.tags || []).slice(0, 3).join(' · ');
         var title    = item.title || item.summary || 'Phoenix story';
         var summary  = item.summary || item.why_matters || item.body_text || '';
 
@@ -110,7 +116,8 @@
         card.setAttribute('data-type', typeLbl);
         card.setAttribute('data-tags', tags.toLowerCase());
 
-        var actionsHtml = '<a href="mailto:mike@kamunityconsulting.com" class="ask-kai-btn news-card-ask">Ask Mike by email →</a>';
+        var isProposal = item.response_type === 'tool' || item.response_type === 'discussion';
+        var actionsHtml = '<a href="mailto:mike@kamunityconsulting.com?subject=' + encodeURIComponent((isProposal ? 'Interest in proposal: ' : 'Kamunity response: ') + title) + '" class="ask-kai-btn news-card-ask">' + (isProposal ? 'Express interest by email →' : 'Ask Mike by email →') + '</a>';
 
         /* Read aloud for written signals (SpeechSynthesis API — graceful fallback) */
         var readAloudHtml = '';
@@ -133,8 +140,8 @@
         }
 
         var expandHtml = '';
-        if (item._full_body && item._full_body.length > 300) {
-            expandHtml = '<button class="ask-kai-btn news-card-read" data-story-open="' + escWh(item._story_id || '') + '">Read more</button>';
+        if (item._story_id) {
+            expandHtml = '<button class="ask-kai-btn news-card-read" data-story-open="' + escWh(item._story_id || '') + '">' + escWh(presentation.action) + ' →</button>';
         }
 
         var titleHtml = item._story_id
@@ -143,9 +150,11 @@
 
         card.innerHTML =
             '<div class="news-card-type ' + typeCls + '">' + typeLbl + '</div>' +
+            (presentation.state ? '<p class="news-card-status">' + escWh(presentation.state) + '</p>' : '') +
             titleHtml +
             (summary ? '<p class="news-card-summary">' + escWh(summary) + '</p>' : '') +
-            '<div class="news-card-meta">' + escWh(item.source_name || 'Phoenix Node') + ' · ' + age + (tags ? ' · ' + escWh(tags) : '') + '</div>' +
+            '<div class="news-card-meta">' + escWh(item.source_name || 'Phoenix Node') + ' · Published ' + escWh(new Date(item.published_at || item.created_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })) + (tags ? ' · ' + escWh(tags) : '') + '</div>' +
+            (item.source_url ? '<p><a class="news-original-source" target="_blank" rel="noopener noreferrer" href="' + escWh(safeOriginalSourceUrl(item.source_url)) + '">Open original source ↗</a></p>' : '') +
             '<div class="news-card-actions">' + mediaHtml + expandHtml + actionsHtml + readAloudHtml + '</div>';
 
         return card;
@@ -168,7 +177,7 @@
 
         var filtered = allItems.filter(function (item) {
             if (!itemMatchesTab(item, activeTab)) return false;
-            if (type && !getTypeLabel(item)[0].includes(type)) return false;
+            if (type && (window.KamunityPublication ? window.KamunityPublication.responseType(item) : item.response_type || (item.type === 'story' ? 'article' : item.type)) !== type) return false;
             if (cat && !itemMatchesTab(item, cat)) return false;
             return true;
         });
@@ -221,6 +230,8 @@
     [filterType, filterCat, filterSort].forEach(function (sel) {
         if (sel) sel.addEventListener('change', function () { visibleCount = PAGE_SIZE; render(); });
     });
+    var requestedType = new URLSearchParams(window.location.search).get('type');
+    if (filterType && ['article', 'opportunity', 'discussion', 'tool'].includes(requestedType)) filterType.value = requestedType;
 
     /* Load more */
     if (loadMoreBtn) {
@@ -234,6 +245,12 @@
         var content = item.body_text || '';
         return {
             type: item.type || 'story',
+            response_type: item.response_type || (item.type === 'story' ? 'article' : item.type),
+            topics: item.topics || [],
+            availability: item.availability,
+            state_label: item.state_label,
+            deadline: item.deadline,
+            source_url: safeOriginalSourceUrl(item.source_url),
             _story_id: item.id,
             title: item.title || item.summary || 'Phoenix story',
             summary: item.summary || content.slice(0, 220),
@@ -251,7 +268,7 @@
     /* Load data */
     async function loadNews() {
         try {
-            var res = await fetch(buildFeedUrl(PHOENIX_NEWS_ENDPOINT, { limit: 30 }), {
+            var res = await fetch(buildFeedUrl(PHOENIX_NEWS_ENDPOINT, { limit: 100 }), {
                 cache: 'no-store',
                 signal: AbortSignal.timeout(8000)
             });
@@ -350,6 +367,15 @@
         var title = story.title || story.summary || content.split('\n')[0] || 'Published Story';
         var date = story.published_at || story.created_at;
         document.getElementById('story-modal-title').textContent = title;
+        var kindElement = document.getElementById('sm-kind');
+        if (kindElement && window.KamunityPublication) {
+            var card = window.KamunityPublication.cardPresentation(story);
+            kindElement.textContent = card.label + (card.state ? ' · ' + card.state : '');
+        }
+        var nextStep = document.getElementById('sm-next-step');
+        var nextUrl = safeOriginalSourceUrl(story.next_step_url);
+        var isOpen = window.KamunityPublication && window.KamunityPublication.publicationState(story).startsWith('Open');
+        if (nextStep) { nextStep.hidden = !nextUrl || !isOpen; if (!nextStep.hidden) nextStep.href = nextUrl; else nextStep.removeAttribute('href'); }
         document.getElementById('sm-date').textContent = date
             ? new Date(date).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })
             : '';

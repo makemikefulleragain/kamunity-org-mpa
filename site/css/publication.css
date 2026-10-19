@@ -1,0 +1,2 @@
+.news-card-status{font:600 .8rem/1.5 var(--font-sans,system-ui);color:#56503f;margin:.5rem 0}.news-original-source{font-size:.85rem;text-underline-offset:3px}.news-card-summary{overflow-wrap:anywhere}#sm-kind{display:block;font-weight:600;margin:.4rem 0}.news-filter-bar{flex-wrap:wrap}.news-filter-select{max-width:100%}
+.story-modal-actions #sm-next-step[hidden],.story-modal-actions #sm-source-link[hidden]{display:none!important}
