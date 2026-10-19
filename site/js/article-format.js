@@ -20,9 +20,10 @@ function cleanSource(value) {
 }
 
 function inlineParts(value) {
-  return String(value || '').split(/(\*\*[^*\n]+\*\*|__[^_\n]+__)/g).filter(Boolean).map(text => {
+  return String(value || '').split(/(\*\*[^*\n]+\*\*|__[^_\n]+__|\*[^*\n]+\*)/g).filter(Boolean).map(text => {
     const bold = /^(?:\*\*[^*\n]+\*\*|__[^_\n]+__)$/.test(text);
-    return { text: bold ? text.slice(2, -2) : text, bold };
+    const italic = !bold && /^\*[^*\n]+\*$/.test(text);
+    return { text: bold ? text.slice(2, -2) : italic ? text.slice(1, -1) : text, bold, ...(italic ? { italic: true } : {}) };
   });
 }
 const plain = value => inlineParts(value).map(part => part.text).join('');

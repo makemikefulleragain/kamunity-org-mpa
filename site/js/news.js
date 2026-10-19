@@ -396,8 +396,8 @@
     // semantic elements; all source wording is inserted through text nodes.
     function appendArticleText(element, text) {
         window.KamunityArticleFormat.inlineParts(text).forEach(function (part) {
-            if (part.bold) {
-                var strong = document.createElement('strong');
+            if (part.bold || part.italic) {
+                var strong = document.createElement(part.bold ? 'strong' : 'em');
                 strong.textContent = part.text;
                 element.appendChild(strong);
             } else element.appendChild(document.createTextNode(part.text));

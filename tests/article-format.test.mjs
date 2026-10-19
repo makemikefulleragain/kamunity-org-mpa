@@ -60,3 +60,10 @@ test('raw scripts, HTML and executable markdown links never create executable no
   const hostileBlocks = render({ body_format: format.ARTICLE_FORMAT, body_blocks: [{ type: 'paragraph', text: '<img src=x onerror=alert(1)>' }] });
   assert.equal(hostileBlocks.children[0].children[0].tag, '#text');
 });
+test('single-asterisk publication footer renders as emphasis without literal markers', () => {
+  const article = format.parseArticle('*Published: 18 October 2026*');
+  const root = render({ body_format: article.format, body_blocks: article.blocks, body_text: article.text });
+  assert.equal(article.text, 'Published: 18 October 2026');
+  assert.equal(root.children[0].children[0].tag, 'em');
+  assert.equal(root.textContent, 'Published: 18 October 2026');
+});
