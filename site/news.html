@@ -113,13 +113,13 @@
 
 <!-- CARD GRID -->
 <div class="hp-section-wrap news-grid-wrap">
-<div class="news-card-grid" id="news-panel" role="tabpanel" aria-label="News articles" aria-live="polite">
+<div class="news-card-grid" id="news-panel" role="region" aria-label="Published responses" aria-live="polite">
     <!-- Populated by news.js when JS is available. Static fallback cards below for no-JS / offline (Doug Test). -->
 
     <div class="news-card" data-static-fallback="true">
         <div class="news-card-type news-card-type--signal">Signal</div>
         <h3>Kamunity News — Phoenix stories load when connected</h3>
-        <p class="news-card-summary">This page can show reviewed articles, pattern stories, and newsletter items from Phoenix Node. When JavaScript is available and the Phoenix feed is reachable, cards populate automatically. Without JS or offline, this static guide remains readable.</p>
+        <p class="news-card-summary">This page shows reviewed articles, opportunity notices, discussion proposals and tool proposals from Phoenix Node. With JavaScript and a reachable feed, the current cards load automatically. Without that connection, this guide does not claim to show the live inventory.</p>
         <div class="news-card-meta">Kamunity MPA · live feed status depends on Phoenix</div>
         <div class="news-card-actions">
             <a href="mailto:mike@kamunityconsulting.com?subject=Kamunity%20News" class="ask-kai-btn">Ask Mike by email →</a>
@@ -129,7 +129,7 @@
     <div class="news-card" data-static-fallback="true">
         <div class="news-card-type news-card-type--signal">What's in the feed</div>
         <h3>What Kamunity News covers</h3>
-        <p class="news-card-summary">Five tabs: <strong>Latest</strong> (everything), <strong>Sector Intelligence</strong> (WA community sector analysis), <strong>Community Practice</strong> (orgs sharing what works), <strong>AI &amp; Tech</strong> (technology that matters for community orgs), <strong>Policy &amp; Funding</strong> (grant rounds, policy changes, funding news). Cards include read-aloud for written content and YouTube embeds via youtube-nocookie.com.</p>
+        <p class="news-card-summary">Filter by response type and topic, then choose newest or oldest first. Topics include Sector Intelligence, Community Practice, AI &amp; Tech, and Policy &amp; Funding. A response can belong to more than one topic. Check its original sources, date and limitations.</p>
         <div class="news-card-meta">Kamunity · Check each item's source and date</div>
         <div class="news-card-actions">
             <a href="mailto:mike@kamunityconsulting.com?subject=Kamunity%20News" class="ask-kai-btn">Ask Mike by email →</a>
@@ -137,10 +137,10 @@
     </div>
 
     <div class="news-card" data-static-fallback="true">
-        <div class="news-card-type news-card-type--pulse">Pulse</div>
-        <h3>Community organisations publishing their own signals</h3>
-        <p class="news-card-summary">Pulse cards are for community organisations using Kamunity infrastructure to publish their own stories, updates, and sector intelligence. Video, audio, and written formats. No algorithm decides what appears — curated by context, not engagement.</p>
-        <div class="news-card-meta">Kamunity Pulse · public stories and updates</div>
+        <div class="news-card-type news-card-type--pulse">Proposals</div>
+        <h3>An idea is not an available service</h3>
+        <p class="news-card-summary">Tool and discussion proposals describe possibilities. Publishing one does not build a tool, open a room, organise an event or invite participants. Opportunity notices distinguish a potential lead from an offer whose availability has been checked.</p>
+        <div class="news-card-meta">Human-reviewed responses · separate decisions before action</div>
         <div class="news-card-actions">
             <a href="/my-kamunity" class="ask-kai-btn">See My Kamunity+ →</a>
         </div>

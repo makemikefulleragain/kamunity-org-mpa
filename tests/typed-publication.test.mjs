@@ -43,6 +43,7 @@ test('public controls and proposal discovery links use the same vocabulary', () 
   assert.ok(page.indexOf('/js/publication-metadata.js') < page.indexOf('/js/news.js'));
   assert.match(page, /value="article"/); assert.match(page, /value="tool"/);
   assert.doesNotMatch(page, /value="pulse-video"|value="story"|id="news-tab-bar"/);
+  assert.doesNotMatch(page, /Five tabs:|role="tabpanel"/);
   const home = readFileSync(new URL('../site/index.html', import.meta.url), 'utf8');
   const warehouse = readFileSync(new URL('../site/warehouse.html', import.meta.url), 'utf8');
   assert.match(home, /\/news\?type=discussion/); assert.match(home, /\/news\?type=tool/);
