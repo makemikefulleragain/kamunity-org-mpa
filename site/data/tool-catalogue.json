@@ -1,0 +1,176 @@
+{
+  "schema": "kamunity-tool-catalogue/v1",
+  "items": [
+    {
+      "id": "ai-safety-checklist",
+      "title": "AI Safety Checklist",
+      "summary": "What your team needs to know before using any AI tool. One printable page.",
+      "url": "/tools/ai-safety-checklist.html",
+      "theme": "quick",
+      "kind": "checklist",
+      "maintainer": "Kamunity",
+      "reviewStatus": "Review date not recorded"
+    },
+    {
+      "id": "board-paper-pack",
+      "title": "Board Paper Pack",
+      "summary": "Templates for presenting digital strategy, AI policy, or technology decisions to your board.",
+      "url": "/tools/board-paper-pack.html",
+      "theme": "quick",
+      "kind": "template",
+      "maintainer": "Kamunity",
+      "reviewStatus": "Review date not recorded"
+    },
+    {
+      "id": "grant-acquittal-helper",
+      "title": "Grant Acquittal Helper",
+      "summary": "Template and checklist for grant acquittal reporting. Covers common funder requirements.",
+      "url": "/tools/grant-acquittal-helper.html",
+      "theme": "dig",
+      "kind": "template",
+      "maintainer": "Kamunity",
+      "reviewStatus": "Review date not recorded"
+    },
+    {
+      "id": "corporate-volunteering-planner",
+      "title": "Corporate Volunteering Partnership Planner",
+      "summary": "Scope a useful corporate volunteering engagement and draft a partnership brief in your browser. Review the output before sharing it.",
+      "url": "/tools/corporate-volunteering-planner.html",
+      "theme": "dig",
+      "kind": "planner",
+      "maintainer": "Kamunity",
+      "reviewStatus": "Review date not recorded"
+    },
+    {
+      "id": "welfare-compliance-misalignment-mapper",
+      "title": "Welfare Compliance Misalignment Mapper",
+      "summary": "Document anonymised observations and prepare an advocacy draft. Human review is essential before use.",
+      "url": "/tools/welfare-compliance-misalignment-mapper.html",
+      "theme": "dig",
+      "kind": "planner",
+      "maintainer": "Kamunity",
+      "reviewStatus": "Review date not recorded"
+    },
+    {
+      "id": "compliance-harm-observations",
+      "title": "Compliance Harm Observations",
+      "summary": "Turn one anonymised observation into an evidence-aware draft brief, without claiming a verified finding.",
+      "url": "/tools/compliance-harm-observations/",
+      "theme": "dig",
+      "kind": "planner",
+      "maintainer": "Kamunity",
+      "reviewStatus": "Review date not recorded"
+    },
+    {
+      "id": "invisible-value-ledger",
+      "title": "Invisible Value Ledger",
+      "summary": "Make less-visible contributions easier to discuss and document.",
+      "url": "/tools/invisible-value-ledger.html",
+      "theme": "quick",
+      "kind": "reflection",
+      "maintainer": "Kamunity",
+      "reviewStatus": "Review date not recorded"
+    },
+    {
+      "id": "housing-crisis-pressure-mapper",
+      "title": "Housing Crisis Pressure Mapper",
+      "summary": "Explore housing pressures with a structured, non-diagnostic worksheet.",
+      "url": "/tools/housing-crisis-pressure-mapper/",
+      "theme": "dig",
+      "kind": "planner",
+      "maintainer": "Kamunity",
+      "reviewStatus": "Review date not recorded"
+    },
+    {
+      "id": "handout-ai-readiness",
+      "title": "Handout: AI Readiness",
+      "summary": "One-page summary of the AI Readiness framework. Share with your team or board.",
+      "url": "/tools/handout-ai-readiness.html",
+      "theme": "quick",
+      "kind": "handout",
+      "maintainer": "Kamunity",
+      "reviewStatus": "Review date not recorded"
+    },
+    {
+      "id": "handout-sovereignty-audit",
+      "title": "Handout: Sovereignty Audit",
+      "summary": "What does it mean to own your digital infrastructure? One-page primer for your team.",
+      "url": "/tools/handout-sovereignty-audit.html",
+      "theme": "quick",
+      "kind": "handout",
+      "maintainer": "Kamunity",
+      "reviewStatus": "Review date not recorded"
+    },
+    {
+      "id": "handout-kai",
+      "title": "Handout: Kai",
+      "summary": "What Kai is and what it isn't. One page. Share with anyone wondering about AI tools.",
+      "url": "/tools/handout-kai.html",
+      "theme": "quick",
+      "kind": "handout",
+      "maintainer": "Kamunity",
+      "reviewStatus": "Review date not recorded"
+    },
+    {
+      "id": "handout-consulting",
+      "title": "Handout: Consulting",
+      "summary": "Explore Kamunity Consulting services and indicative draft rates. Confirm current terms with Mike.",
+      "url": "/tools/handout-consulting.html",
+      "theme": "quick",
+      "kind": "handout",
+      "maintainer": "Kamunity",
+      "reviewStatus": "Review date not recorded"
+    },
+    {
+      "id": "handout-ecosystem",
+      "title": "Handout: Ecosystem",
+      "summary": "The full Kamunity ecosystem at a glance. Every site, tool, and connection.",
+      "url": "/tools/handout-ecosystem.html",
+      "theme": "quick",
+      "kind": "handout",
+      "maintainer": "Kamunity",
+      "reviewStatus": "Review date not recorded"
+    },
+    {
+      "id": "handout-rooms",
+      "title": "Handout: Community Rooms",
+      "summary": "What community rooms are and how Kamunity orgs use them. Good for introducing kamunity.ai.",
+      "url": "/tools/handout-rooms.html",
+      "theme": "quick",
+      "kind": "handout",
+      "maintainer": "Kamunity",
+      "reviewStatus": "Review date not recorded"
+    },
+    {
+      "id": "sovereignty-check",
+      "title": "Sovereignty Check",
+      "summary": "Reflect on four dimensions of digital dependence. A planning aid, not a sector benchmark.",
+      "url": "/tools#sovereignty-check",
+      "theme": "dig",
+      "kind": "reflection",
+      "maintainer": "Kamunity",
+      "reviewStatus": "Review date not recorded"
+    },
+    {
+      "id": "ai-readiness",
+      "title": "AI Readiness",
+      "summary": "Explore organisational readiness for AI through a guided assessment and next steps.",
+      "url": "https://kamunity-ai-readiness.netlify.app/",
+      "theme": "dig",
+      "kind": "reflection",
+      "maintainer": "Kamunity",
+      "reviewStatus": "Review date not recorded"
+    },
+    {
+      "id": "org-health",
+      "title": "Org Health Check",
+      "summary": "A private team reflection across strategy, process, quality, innovation and governance; not a validated diagnostic.",
+      "url": "https://kamunity-org-health.netlify.app/",
+      "theme": "dig",
+      "kind": "reflection",
+      "maintainer": "Mike Fuller / Kamunity",
+      "phoenixToolId": "5cb31e9d-6b60-414f-a9ff-835e938bafed",
+      "reviewStatus": "Reviewed Phoenix listing"
+    }
+  ]
+}

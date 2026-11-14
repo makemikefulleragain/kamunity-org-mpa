@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="fonts/fonts.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/mpa.css">
+<link rel="stylesheet" href="/css/tool-catalogue.css">
+<script src="/js/tool-catalogue.js" defer></script>
 </head>
 <body>
 
@@ -68,6 +70,7 @@
 </header>
 </div>
 
+<div data-tool-catalogue="warehouse" aria-label="Tools and downloads"></div>
 <!-- FROM THE FIELD — dynamically loaded from approved commons_library items -->
 <div class="hp-section-wrap wh-aisle-wrap wh-aisle-wrap--field" id="aisle-field-wrap" style="display:none;">
 <section class="wh-aisle" id="aisle-field" aria-labelledby="aisle-field-heading">
@@ -482,7 +485,9 @@ function briefSnippet(content, maxLength) {
   var text = stripMarkdownForSnippet(content);
   var limit = maxLength || 260;
   if (text.length <= limit) return text;
-  return text.slice(0, limit - 1).trim().replace(/[,\s;:]+$/, '') + '…';
+  var raw=text.slice(0,limit-1),cut=raw.trim();
+  if(!/\s$/.test(raw)&&!/^\s/.test(text.slice(limit-1))&&cut.lastIndexOf(' ')>0)cut=cut.slice(0,cut.lastIndexOf(' '));
+  return cut.replace(/[,\s;:]+$/, '')+'…';
 }
 
 function renderBriefContent(text) {
@@ -545,7 +550,30 @@ async function loadFieldTools() {
     var wrap = document.getElementById('aisle-field-wrap');
     if (!row || !wrap) return;
 
-    row.innerHTML = data.items.map(function(tool) {
+    // Keep the existing Warehouse identity when a reviewed Phoenix tool has
+    // the same canonical artifact. Add provenance to that card instead of a duplicate.
+    function canonicalToolUrl(value) {
+      try { var u=new URL(value); if(u.protocol!=='https:'||u.username||u.password)return '';u.hash='';return u.origin+u.pathname.replace(/\/$/,'')+u.search; } catch(e) { return ''; }
+    }
+    var existingByUrl = new Map();
+    document.querySelectorAll('.wh-tool-card a[href]').forEach(function(link){
+      var key=canonicalToolUrl(link.href);if(key&&!existingByUrl.has(key))existingByUrl.set(key,link.closest('.wh-tool-card'));
+    });
+    var seenArtifacts=new Set();
+    var newestByUrl=new Map();
+    data.items.forEach(function(tool){var key=canonicalToolUrl(tool.artifact&&tool.artifact.url),previous=newestByUrl.get(key);if(key&&(!previous||(Date.parse(tool.published_at)||0)>(Date.parse(previous.published_at)||0)))newestByUrl.set(key,tool);});
+    var freshTools=data.items.filter(function(tool){
+      var key=canonicalToolUrl(tool.artifact&&tool.artifact.url),card=key&&existingByUrl.get(key);
+      if(key&&newestByUrl.get(key)!==tool)return false;
+      if(key&&seenArtifacts.has(key))return false;if(key)seenArtifacts.add(key);
+      if(!card)return true;
+      card.id='phoenix-'+tool.id;card.dataset.toolId=tool.id;
+      if(!card.querySelector('.wh-phoenix-maintenance')){
+        var note=document.createElement('p');note.className='wh-phoenix-maintenance';note.textContent='Reviewed Phoenix listing'+(tool.maintenance&&tool.maintenance.version?' · version '+tool.maintenance.version:'')+(tool.maintenance&&tool.maintenance.next_review_due?' · review due '+tool.maintenance.next_review_due:'');card.appendChild(note);
+      }
+      return false;
+    });
+    row.innerHTML = freshTools.map(function(tool) {
       var cardTitle = tool.title || 'Phoenix tool';
       var cardBody = briefSnippet(tool.summary || '', 220);
       var tags = (tool.tags || []).map(function(t) {
@@ -563,17 +591,19 @@ async function loadFieldTools() {
         ? '<a href="' + escWh(outputUrl) + '" target="_blank" rel="noopener noreferrer" class="ask-kai-btn wh-field-view-btn" style="text-decoration:none;display:inline-block;">' + escWh(actionLabel) + ' →</a>'
         : '';
 
-      return '<div class="wh-tool-card" role="listitem" data-search="' + searchData + '" data-tool-id="' + escWh(tool.id) + '" data-output-type="' + escWh(tool.type || '') + '">' +
+      return '<div id="phoenix-' + escWh(tool.id) + '" class="wh-tool-card" role="listitem" data-search="' + searchData + '" data-tool-id="' + escWh(tool.id) + '" data-output-type="' + escWh(tool.type || '') + '">' +
         '<span class="wh-tool-badge">' + escWh(typeLabel) + ' · Phoenix · ' + escWh(evidenceLine) + '</span>' +
         '<h4>' + escWh(cardTitle) + '</h4>' +
         '<p>' + escWh(cardBody) + '</p>' +
+        (tool.maintenance ? '<p class="wh-phoenix-maintenance">Maintained by '+escWh(tool.maintenance.maintainer||'the tool owner')+' · version '+escWh(tool.maintenance.version||'')+' · review due '+escWh(tool.maintenance.next_review_due||'')+'</p>' : '') +
         '<div class="wh-field-tags">' + tags + '</div>' +
         actionBtn +
         '<a class="ask-kai-btn" href="mailto:mike@kamunityconsulting.com?subject=' + encodeURIComponent('Question about ' + cardTitle) + '">Ask Mike by email \u2192</a>' +
         '</div>';
     }).join('');
 
-    wrap.style.display = '';
+    wrap.style.display = freshTools.length?'':'none';
+    if(location.hash.indexOf('#phoenix-')===0){var target=document.getElementById(location.hash.slice(1));if(target)target.scrollIntoView();}
   } catch (e) {
     // Silent fail — static warehouse still works
   }
@@ -623,7 +653,7 @@ function copyToolContent(toolId) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  loadFieldTools();
+  /* Connected tools are rendered by the shared catalogue. */
 });
 </script>
 
