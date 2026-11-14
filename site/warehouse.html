@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="fonts/fonts.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/mpa.css">
+<link rel="stylesheet" href="/css/tool-catalogue.css">
+<script src="/js/tool-catalogue.js" defer></script>
 </head>
 <body>
 
@@ -68,6 +70,7 @@
 </header>
 </div>
 
+<div data-tool-catalogue="warehouse" aria-label="Tools and downloads"></div>
 <!-- FROM THE FIELD — dynamically loaded from approved commons_library items -->
 <div class="hp-section-wrap wh-aisle-wrap wh-aisle-wrap--field" id="aisle-field-wrap" style="display:none;">
 <section class="wh-aisle" id="aisle-field" aria-labelledby="aisle-field-heading">
@@ -650,7 +653,7 @@ function copyToolContent(toolId) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  loadFieldTools();
+  /* Connected tools are rendered by the shared catalogue. */
 });
 </script>
 

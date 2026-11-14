@@ -33,7 +33,7 @@ const ALLOWED_FEEDS = {
         path: '/.netlify/functions/public-mpa-tools',
         schemaVersion: 'phoenix-mpa-tools/v1',
         defaultLimit: 6,
-        maxLimit: 24,
+        maxLimit: 100,
     },
 };
 
@@ -163,6 +163,7 @@ export const handler = async (event) => {
 
     const upstreamUrl = new URL(feedConfig.path, origin);
     upstreamUrl.searchParams.set('limit', String(limit));
+    if(feedName==='tools'&&Number.isSafeInteger(Number(params.cursor))&&Number(params.cursor)>=0&&Number(params.cursor)<10000)upstreamUrl.searchParams.set('cursor',String(Number(params.cursor)));
 
     if (feedName === 'news' && params.story_id) {
         upstreamUrl.searchParams.set('story_id', String(params.story_id).slice(0, 100));

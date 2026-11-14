@@ -32,6 +32,8 @@
     <link rel="stylesheet" href="fonts/fonts.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/mpa.css">
+<link rel="stylesheet" href="/css/tool-catalogue.css">
+<script src="/js/tool-catalogue.js" defer></script>
 </head>
 <body>
 
@@ -72,7 +74,7 @@
     <p class="hero-sub">We've sat in those meetings. We know what you're carrying.</p>
 
     <div class="three-doors" role="list">
-        <a href="#shop" class="door-card door-card--quick" role="listitem" aria-label="Quick tools — grab and go, 60 seconds">
+        <a href="/tools?theme=quick" class="door-card door-card--quick" role="listitem" aria-label="Quick tools — grab and go, 60 seconds">
             <span class="door-card-icon" aria-hidden="true">⚡</span>
             <h3>Quick tools</h3>
             <div class="door-card-time">~60 seconds · Grab and go</div>
@@ -80,7 +82,7 @@
             <div class="door-card-arrow">→ go to shop</div>
         </a>
 
-        <a href="#shop" class="door-card door-card--dig" role="listitem" aria-label="Dig in — assessments, 10 minutes">
+        <a href="/tools?theme=dig" class="door-card door-card--dig" role="listitem" aria-label="Dig in — assessments, 10 minutes">
             <span class="door-card-icon" aria-hidden="true">🔍</span>
             <h3>Dig in</h3>
             <div class="door-card-time">~10 minutes · Understand where you stand</div>
@@ -144,6 +146,7 @@
     <h2 id="shop-heading">Kamunity Shop</h2>
     <p class="hp-section-tagline">Zero prices is just the beginning.</p>
 
+    <div data-tool-catalogue="shop" aria-label="Tools and downloads"></div>
     <!-- Row 1: Checklists & Downloads -->
     <div class="shop-row-label">Checklists &amp; Downloads — ~60 seconds</div>
     <div class="shop-row" role="list">
@@ -537,7 +540,7 @@
 <script src="js/nav.js"></script>
 <script src="js/quizzes.js"></script>
 <script src="js/supabase-feed.js"></script>
-<script src="js/shop-grid.js"></script>
+
 <script src="js/rooms.js"></script>
 </body>
 </html>
