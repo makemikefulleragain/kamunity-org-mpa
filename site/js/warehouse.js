@@ -65,6 +65,10 @@
         runSearch(this.value);
     });
 
+    document.addEventListener('warehouse-catalogue-updated', function () {
+        runSearch(searchInput.value);
+    });
+
     // Go button click
     if (searchGoBtn) {
         searchGoBtn.addEventListener('click', function () {
