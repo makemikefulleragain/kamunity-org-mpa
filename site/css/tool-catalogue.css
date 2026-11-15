@@ -5,7 +5,7 @@
 .catalogue-controls label { flex: 1; min-width: min(100%, 240px); font-family: 'IBM Plex Mono', monospace; font-size: .72rem; color: var(--charcoal); }
 .catalogue-controls input { display: block; width: 100%; margin-top: .35rem; }
 .catalogue-status { margin: .75rem 0; line-height: 1.6; color: var(--charcoal); }
-[data-tool-catalogue="warehouse"] > .catalogue-status { max-width: 64rem; margin: .75rem auto; padding: 0 2rem; }
+[data-tool-catalogue="warehouse"] > .catalogue-status { width: calc(100% - 3rem - 2px); max-width: 64rem; margin: .75rem auto; padding: 0 2rem; }
 .catalogue-section { min-width: 0; scroll-margin-top: 6rem; }
 #shop-quick, #shop-dig { scroll-margin-top: 6rem; }
 [data-tool-catalogue="shop"] .catalogue-section { margin: 2rem 0; }
@@ -39,6 +39,6 @@
 @media (max-width: 768px) {
  .wh-aisle-row.catalogue-shelf { scroll-padding-inline: 1rem; }
  .catalogue-shelf > .catalogue-card { flex-basis: 260px; min-width: 260px; max-width: 260px; }
- [data-tool-catalogue="warehouse"] > .catalogue-status { padding: 0 1rem; }
+ [data-tool-catalogue="warehouse"] > .catalogue-status { width: calc(100% - 1.5rem - 2px); }
 }
 @media (prefers-reduced-motion: reduce) { .catalogue-shelf { scroll-behavior: auto; } }
