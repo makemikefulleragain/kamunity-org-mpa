@@ -1563,7 +1563,11 @@
     gap: 0.5rem;
     flex: 1;
     max-width: 36rem;
+    min-width: 0;
 }
+
+.wh-search-group .wh-search-input { min-width: 0; width: 100%; }
+.wh-search-row > .ask-kai-btn { flex-shrink: 0; max-width: 100%; min-height: 44px; line-height: 1.5; }
 
 .wh-search-input {
     flex: 1;
@@ -1588,6 +1592,8 @@
     border: none;
     cursor: pointer;
     white-space: nowrap;
+    flex-shrink: 0;
+    min-height: 44px;
     transition: box-shadow 0.2s, transform 0.1s;
 }
 
@@ -1867,7 +1873,7 @@
 }
 
 .wh-aisle {
-    padding: 2.5rem 0;
+    padding: 2.5rem 2rem;
 }
 
 .wh-aisle-label {
@@ -2060,6 +2066,9 @@
 }
 
 @media (max-width: 768px) {
+    .wh-search-row { flex-direction: column; align-items: stretch; }
+    .wh-search-group { flex: none; width: 100%; }
+    .wh-search-row > .ask-kai-btn { align-self: flex-start; }
     .wh-aisle-row {
         margin: 0 -1rem;
         padding-left: 1rem;
@@ -2068,6 +2077,10 @@
     .wh-tool-card {
         min-width: 260px;
         max-width: 260px;
+    }
+    .wh-aisle .wh-aisle-row > .wh-tool-card {
+        flex-basis: min(260px, 100%);
+        min-width: 0;
     }
 }
 
