@@ -104,6 +104,6 @@
   if(data.schema!=='kamunity-tool-catalogue/v1'||!Array.isArray(data.items))throw Error('catalogue');items=data.items.filter(function(item){return item.id&&item.title&&safe(item.url)&&['quick','dig'].includes(item.theme);});replaceFallback();draw();
   try{var feed=await connectedTools();feed.forEach(function(tool){var artifact=tool.artifact||{},match=items.find(function(item){return item.phoenixToolId===tool.tool_id||normal(item.url)===normal(artifact.url);});var value={id:tool.tool_id||tool.id,title:tool.title,summary:tool.summary,url:artifact.url,publicUrl:tool.public_url,theme:tool.theme||'quick',kind:tool.tool_kind||'tool',maintenance:tool.maintenance,outputId:tool.id,createdAt:tool.created_at,publishedAt:tool.published_at};if(match)Object.assign(match,value);else if(!items.some(function(item){return item.id===value.id;}))items.push(value);});connection='ready';}catch(e){connection='partial';}draw();
   var target=location.hash?document.getElementById(location.hash.slice(1)):rowsMode&&theme!=='all'?host.querySelector('[data-catalogue-row="'+theme+'"]'):null;
-  if(target)target.scrollIntoView({block:'start',inline:'start'});
+  if(target)target.scrollIntoView({block:'start',inline:'nearest'});
  }).catch(function(){host.dataset.catalogueState='unavailable';status.textContent='The catalogue could not load. Existing links below remain available.';});
 })();
