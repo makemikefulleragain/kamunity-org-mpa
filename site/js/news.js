@@ -472,6 +472,7 @@ function readAloud(btn, encodedText) {
         btn.textContent = '🔊 Read aloud';
         return;
     }
+    document.querySelectorAll('audio').forEach(function (audio) { audio.pause(); });
     var utter = new SpeechSynthesisUtterance(text);
     utter.lang = 'en-AU';
     utter.onend = function () { btn.textContent = '🔊 Read aloud'; };
