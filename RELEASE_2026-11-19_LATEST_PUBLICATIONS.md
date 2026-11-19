@@ -7,3 +7,11 @@ Phoenix must be released first: its public news mapper now orders all eligible p
 Validation: MPA static verification and 55 tests passed. Phoenix passed 922 tests, including 120 publications with conflicting priorities and dates, all four classifications, a six-item limit, and stable dates through ordinary review changes. Local browser checks covered a single ordered list, classification labels and 1360/375/320 px layouts. Empty and failed feeds retain explicit states.
 
 Pre-release rollback: MPA deploy 6af937d8c3ac8a68d99c4155; Phoenix deploy 6afa55cddd425ce7ec5933a9 with its production lock retained. Deployment receipts and anonymous live readback are kept in ignored output directories.
+
+## Publication card reading update
+
+The owner requested removing Phoenix attribution and the email action from each homepage publication card, retaining its publication date and adding a plain-text Read aloud button. A shared browser SpeechSynthesis control now reads the headline and full body_text supplied by the public feed. It never substitutes the card summary or fetches an external publisher's article. The News cards use the same full-story control, replacing their previous summary-only playback; their other actions remain unchanged.
+
+The active button becomes Stop. Switching stories resets the previous control and starts the new story; completion, errors, page departure and audio playback reset reading state. Starting speech pauses existing audio. Unsupported speech or missing full text leaves the ordinary reader link available without offering summary-only narration.
+
+Validation: static verification and 60 tests passed. Isolated Chromium checks at 1360, 375 and 320 px verified removal of homepage attribution/email, the exact complete text passed to speech on both pages, stop/switch behavior and audio mutual exclusion. These checks inspect the browser speech input and control state, rather than claiming an independent listening assessment of installed voices. Rollback for this card update is MPA deploy 6afe64e380a5acf33377b99f.

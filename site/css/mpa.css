@@ -2388,7 +2388,7 @@
     margin-left: auto;
 }
 
-.news-card-actions [aria-label="Read aloud"] {
+.news-card .publication-read-aloud {
     flex-basis: 100%;
 }
 

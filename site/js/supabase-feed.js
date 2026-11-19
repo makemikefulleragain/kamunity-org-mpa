@@ -30,7 +30,7 @@
         card.className = 'signal-card';
 
         var presentation = window.KamunityPublication.cardPresentation(item);
-        var title = item.title || item.summary || 'Phoenix response';
+        var title = item.title || item.summary || 'Kamunity publication';
         var detail = item.summary && item.title !== item.summary ? item.summary : '';
         var storyId = item.id || item.public_id || '';
         var href = storyId ? '/news?story=' + encodeURIComponent(storyId) : '/news';
@@ -44,7 +44,7 @@
 
         var dateEl = document.createElement('div');
         dateEl.className = 'signal-card-date';
-        dateEl.textContent = (item.source_name || 'Phoenix Node') + ' · Published ';
+        dateEl.textContent = 'Published ';
         var date = document.createElement('time');
         date.dateTime = item.published_at || item.created_at || '';
         date.textContent = date.dateTime ? new Date(date.dateTime).toLocaleDateString('en-AU', {
@@ -59,11 +59,6 @@
         readLink.href = href;
         readLink.className = 'ask-kai-btn';
         readLink.textContent = presentation.action;
-
-        var askLink = document.createElement('a');
-        askLink.href = 'mailto:mike@kamunityconsulting.com';
-        askLink.className = 'ask-kai-btn';
-        askLink.textContent = 'Ask Mike by email';
 
         card.appendChild(tagEl);
         card.appendChild(heading);
@@ -80,7 +75,8 @@
             card.appendChild(detailEl);
         }
         actions.appendChild(readLink);
-        actions.appendChild(askLink);
+        var readAloud = window.KamunityReadAloud && window.KamunityReadAloud.createButton(item);
+        if (readAloud) actions.appendChild(readAloud);
         card.appendChild(actions);
 
         return card;

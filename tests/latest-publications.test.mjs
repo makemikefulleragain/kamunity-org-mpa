@@ -47,6 +47,8 @@ test('one list displays six newest publications across classifications, ignoring
   assert.equal(list.attributes['aria-busy'], 'false');
   assert.match(list.children[3].children.find(child => child.className === 'news-card-status').textContent, /not yet available/);
   assert.equal(card.children.at(-1).children[0].href, '/news?story=6');
+  assert.equal(card.children.find(child => child.className === 'signal-card-date').textContent, 'Published ');
+  assert.equal(card.children.at(-1).children.some(child => /mailto:/.test(child.href || '')), false);
 });
 
 test('a short feed renders only available publications without duplicate filler', async () => {
