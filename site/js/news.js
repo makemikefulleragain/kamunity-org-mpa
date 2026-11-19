@@ -110,6 +110,7 @@
         var tags     = window.KamunityPublication ? window.KamunityPublication.publicationTopics(item).map(function (topic) { return window.KamunityPublication.PUBLIC_TOPICS[topic]; }).join(' · ') : (item.tags || []).slice(0, 3).join(' · ');
         var title    = item.title || item.summary || 'Phoenix story';
         var summary  = item.summary || item.why_matters || item.body_text || '';
+        var sourceUrl = safeOriginalSourceUrl(item.source_url);
 
         var card = document.createElement('div');
         card.className = 'news-card';
@@ -145,10 +146,10 @@
             titleHtml +
             (summary ? '<p class="news-card-summary">' + escWh(summary) + '</p>' : '') +
             '<div class="news-card-meta">' + escWh(item.source_name || 'Phoenix Node') + ' · Published ' + escWh(new Date(item.published_at || item.created_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })) + (tags ? ' · ' + escWh(tags) : '') + '</div>' +
-            (item.source_url ? '<p><a class="news-original-source" target="_blank" rel="noopener noreferrer" href="' + escWh(safeOriginalSourceUrl(item.source_url)) + '">Open original source ↗</a></p>' : '') +
+            (sourceUrl ? '<p><a class="news-original-source" target="_blank" rel="noopener noreferrer" href="' + escWh(sourceUrl) + '">Open original source ↗</a></p>' : '') +
             '<div class="news-card-actions">' + mediaHtml + expandHtml + actionsHtml + '</div>';
 
-        var readAloud = window.KamunityReadAloud && window.KamunityReadAloud.createButton(item);
+        var readAloud = window.KamunityReadAloud && window.KamunityReadAloud.createButton(item, Boolean(sourceUrl));
         if (readAloud) card.querySelector('.news-card-actions').appendChild(readAloud);
 
         return card;

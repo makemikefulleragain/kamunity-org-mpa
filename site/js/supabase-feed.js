@@ -87,7 +87,7 @@
             card.appendChild(source);
         }
         actions.appendChild(readLink);
-        var readAloud = window.KamunityReadAloud && window.KamunityReadAloud.createButton(item);
+        var readAloud = window.KamunityReadAloud && window.KamunityReadAloud.createButton(item, Boolean(sourceUrl));
         if (readAloud) actions.appendChild(readAloud);
         card.appendChild(actions);
 

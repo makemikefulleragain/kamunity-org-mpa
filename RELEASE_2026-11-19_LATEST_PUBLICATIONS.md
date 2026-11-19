@@ -29,3 +29,11 @@ After reviewing the separate mockup, the owner approved replacing the third Cont
 The former feed teaser is now the permanent contact invitation: Have a question or an idea? Email Mike. The email link uses the established public address and its two-word label stays together. The feed script no longer writes that line in successful, empty or failed states.
 
 Validation: static verification and 62 tests passed. Local Chromium checks at 1360, 375 and 320 px covered the three hero choices, direct email destination, publication jump and heading visibility, zero horizontal overflow, and the stable contact line during normal, empty and failed feeds. The forced-failure checks deliberately return HTTP 503; those console entries are expected. Rollback for this hero update is MPA deploy 6afe8806d43d4da4f3267056.
+
+## Read aloud without website addresses
+
+The shared narration now excludes HTTP(S), www and common bare website addresses, including paths, query strings and fragments. Descriptive link text, narrative paragraphs, factual values and publisher attribution are retained. Empty URL-only lines and orphan source labels are tidied for speech. Published story text and source destinations are not rewritten.
+
+When a card renders a validated original-source link, narration ends once with: To read the original article, click the Open original source link. Both homepage and News renderers pass the actual link availability to the shared control, so narration does not promise a missing link. Existing stop/switch/audio behavior and full-body rather than summary-only reading are preserved. Script versions were advanced on both pages.
+
+Validation: static verification and 66 tests passed. Browser checks exercised six cards on each page, including a missing-source case, preserving first and final paragraphs and numerical facts while excluding addresses and retaining the source destinations. Narration supplied to the browser was also checked against all six current public stories. Installed voice output is not independently assessed. Release is staged from the committed Git archive, avoiding the earlier workspace read failure. Rollback is MPA deploy 6afeb6b5e18d29159c941b47.
