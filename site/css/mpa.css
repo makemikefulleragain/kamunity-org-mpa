@@ -364,30 +364,35 @@
     overflow-wrap: anywhere;
 }
 
-.publications-list h3 {
-    font-family: 'Fraunces', serif;
-    font-size: 1.1rem;
-    line-height: 1.4;
-    margin: 0;
+.publications-list > .news-card {
+    margin-bottom: 0.75rem;
 }
 
-.publications-list .signal-card p {
-    font-size: 1rem;
-    color: var(--charcoal);
-}
-
-.publications-list .signal-card-tag,
-.publications-list .signal-card-date,
-.publications-list .ask-kai-btn {
-    font-size: 0.875rem;
-}
-
-.publications-list .signal-card-date {
-    color: var(--charcoal);
+.publications-list > .news-card:last-child {
+    margin-bottom: 0;
 }
 
 .publications-list .news-card-actions {
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    align-items: stretch;
+}
+
+.publications-list .news-card-actions .ask-kai-btn {
+    justify-content: center;
+    min-height: 44px;
+    padding: 0.6rem 0.75rem;
+    margin: 0;
+    border: 1px solid var(--sky);
+    border-radius: 4px;
+    text-align: center;
+    line-height: 1.4;
+}
+
+.publications-list .news-card-actions .ask-kai-btn:focus-visible {
+    outline: 2px solid var(--sky);
+    outline-offset: 3px;
 }
 
 /* PoC shelf-card pattern — used for signal, shop, service cards */

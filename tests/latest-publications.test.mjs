@@ -19,7 +19,7 @@ async function render(items) {
     window: { location: { hostname: 'kamunity-org-mpa.netlify.app' } },
     document: { getElementById: id => id === 'latest-publications' ? list : null, createElement: element },
     fetch: async url => { requested = url; return { ok: true, json: async () => ({ schema_version: 'phoenix-mpa-news/v1', items }) }; },
-    AbortSignal, Date,
+    AbortSignal, Date, URL,
   };
   runInNewContext(metadata, context);
   runInNewContext(script, context);
@@ -42,16 +42,32 @@ test('one list displays six newest publications across classifications, ignoring
     ['Article', 'Article', 'Article', 'Discussion proposal', 'Opportunity notice', 'Tool proposal']);
   const card = list.children[0];
   assert.equal(card.tag, 'li');
-  assert.equal(card.children.find(child => child.className === 'signal-card-date').children[0].dateTime, items[6].published_at);
-  assert.match(card.children.find(child => child.className === 'signal-card-date').children[0].textContent, /17 Nov 2026/);
+  assert.equal(card.children.find(child => child.className === 'news-card-meta').children[0].dateTime, items[6].published_at);
+  assert.match(card.children.find(child => child.className === 'news-card-meta').children[0].textContent, /17 Nov 2026/);
   assert.equal(list.attributes['aria-busy'], 'false');
   assert.match(list.children[3].children.find(child => child.className === 'news-card-status').textContent, /not yet available/);
   assert.equal(card.children.at(-1).children[0].href, '/news?story=6');
-  assert.equal(card.children.find(child => child.className === 'signal-card-date').textContent, 'Published ');
+  assert.equal(card.children.find(child => child.className === 'news-card-meta').textContent, 'Published ');
   assert.equal(card.children.at(-1).children.some(child => /mailto:/.test(child.href || '')), false);
 });
 
 test('a short feed renders only available publications without duplicate filler', async () => {
   const { list } = await render([{ id: 'one', title: 'Only publication', response_type: 'article', published_at: '2026-11-19T00:00:00Z' }]);
   assert.equal(list.children.length, 1);
+});
+
+test('homepage original-source links use the public HTTPS article address in a separate protected tab', async () => {
+  const { list } = await render([{ id: 'source', title: 'Published story', source_url: 'https://example.org/original-report?utm_source=feed#section' }]);
+  const link = list.children[0].children.flatMap(child => child.children).find(child => child.className === 'news-original-source');
+  assert.equal(link.href, 'https://example.org/original-report');
+  assert.equal(link.textContent, 'Open original source ↗');
+  assert.equal(link.target, '_blank');
+  assert.equal(link.rel, 'noopener noreferrer');
+});
+
+test('missing and unsafe original-source addresses never produce a source link', async () => {
+  for (const source_url of [undefined, '', 'javascript:alert(1)', 'http://example.org/report', 'https://user:secret@example.org/report', 'https://127.0.0.1/report', 'https://preview.test/report']) {
+    const { list } = await render([{ id: 'unsafe', title: 'Published story', source_url }]);
+    assert.equal(list.children[0].children.flatMap(child => child.children).some(child => child.className === 'news-original-source'), false);
+  }
 });

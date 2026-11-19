@@ -27,7 +27,7 @@
 
     function renderCard(item) {
         var card = document.createElement('li');
-        card.className = 'signal-card';
+        card.className = 'news-card';
 
         var presentation = window.KamunityPublication.cardPresentation(item);
         var title = item.title || item.summary || 'Kamunity publication';
@@ -36,14 +36,14 @@
         var href = storyId ? '/news?story=' + encodeURIComponent(storyId) : '/news';
 
         var tagEl = document.createElement('div');
-        tagEl.className = 'signal-card-tag';
+        tagEl.className = 'news-card-type news-card-type--story';
         tagEl.textContent = presentation.label;
 
         var heading = document.createElement('h3');
         heading.textContent = title;
 
         var dateEl = document.createElement('div');
-        dateEl.className = 'signal-card-date';
+        dateEl.className = 'news-card-meta';
         dateEl.textContent = 'Published ';
         var date = document.createElement('time');
         date.dateTime = item.published_at || item.created_at || '';
@@ -71,8 +71,21 @@
         }
         if (detail) {
             var detailEl = document.createElement('p');
+            detailEl.className = 'news-card-summary';
             detailEl.textContent = detail;
             card.appendChild(detailEl);
+        }
+        var sourceUrl = safeOriginalSourceUrl(item.source_url);
+        if (sourceUrl) {
+            var source = document.createElement('p');
+            var sourceLink = document.createElement('a');
+            sourceLink.className = 'news-original-source';
+            sourceLink.href = sourceUrl;
+            sourceLink.target = '_blank';
+            sourceLink.rel = 'noopener noreferrer';
+            sourceLink.textContent = 'Open original source ↗';
+            source.appendChild(sourceLink);
+            card.appendChild(source);
         }
         actions.appendChild(readLink);
         var readAloud = window.KamunityReadAloud && window.KamunityReadAloud.createButton(item);
@@ -80,6 +93,21 @@
         card.appendChild(actions);
 
         return card;
+    }
+
+    // Match the News cards' policy for public original-source links.
+    function safeOriginalSourceUrl(value) {
+        if (typeof value !== 'string' || value.length > 2048) return '';
+        try {
+            var url = new URL(value);
+            if (url.protocol !== 'https:' || url.username || url.password) return '';
+            if (!url.hostname.includes('.') || /^(localhost|.*\.localhost|.*\.local|.*\.test|\d+\.\d+\.\d+\.\d+|\[.*\])$/i.test(url.hostname)) return '';
+            url.search = '';
+            url.hash = '';
+            return url.toString();
+        } catch (err) {
+            return '';
+        }
     }
 
     function showFallback(message) {
