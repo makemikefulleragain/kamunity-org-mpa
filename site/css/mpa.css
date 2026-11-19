@@ -350,24 +350,44 @@
 }
 
 /* ============================================================
-   SIGNALS + PULSE — §2
+   LATEST PUBLICATIONS — §2
    ============================================================ */
-.signals-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
+.publications-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
     margin-bottom: 2rem;
 }
 
-.signals-col-label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--sky);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 1rem;
-    padding-bottom: 0.4rem;
-    border-bottom: 2px solid var(--sky);
+.publications-list > li {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.publications-list h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.publications-list .signal-card p {
+    font-size: 1rem;
+    color: var(--charcoal);
+}
+
+.publications-list .signal-card-tag,
+.publications-list .signal-card-date,
+.publications-list .ask-kai-btn {
+    font-size: 0.875rem;
+}
+
+.publications-list .signal-card-date {
+    color: var(--charcoal);
+}
+
+.publications-list .news-card-actions {
+    flex-wrap: wrap;
 }
 
 /* PoC shelf-card pattern — used for signal, shop, service cards */
@@ -479,7 +499,6 @@
 .newsroom-link-box a:hover { text-decoration: underline; }
 
 @media (max-width: 768px) {
-    .signals-grid { grid-template-columns: 1fr; }
     .newsroom-link-box { flex-direction: column; align-items: flex-start; }
 }
 
@@ -2976,7 +2995,6 @@
 .door-card-time { color: var(--charcoal); }
 
 /* Section labels and taglines */
-.signals-col-label,
 .shop-row-label,
 .wh-aisle-label,
 .hp-section-tagline,

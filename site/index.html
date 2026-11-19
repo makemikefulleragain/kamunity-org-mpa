@@ -105,37 +105,18 @@
 </section>
 </div>
 
-<!-- ② SIGNALS + PULSE -->
+<!-- ② LATEST PUBLICATIONS -->
 <div class="hp-section-wrap">
 <section class="hp-section" id="signals" aria-labelledby="signals-heading">
-    <h2 id="signals-heading">What's happening in the WA community</h2>
-    <p class="hp-section-tagline">Latest signals and stories from where you are.</p>
+    <h2 id="signals-heading">Latest Publications</h2>
+    <p class="hp-section-tagline">The six latest publications, newest first.</p>
 
-    <div class="signals-grid" id="signals-grid">
-        <!-- Column 1: Signals -->
-        <div>
-            <div class="signals-col-label">Signals</div>
-            <div id="signals-col">
-                <div class="signals-fallback" role="status" aria-live="polite">
-                    Phoenix stories loading — <a href="/news">view Kamunity News →</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Column 2: Pulse -->
-        <div>
-            <div class="signals-col-label">Pulse</div>
-            <div id="pulse-col">
-                <div class="signals-fallback" role="status" aria-live="polite">
-                    Phoenix stories loading — <a href="/news">view Kamunity News →</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    <ol class="publications-list" id="latest-publications" aria-label="Latest publications, newest first" aria-live="polite" aria-busy="true">
+        <li class="signals-fallback">Loading publications — <a href="/news">view all publications</a></li>
+    </ol>
 
     <div class="newsroom-link-box" role="complementary">
-        <p>All signals, pulses, filters, and sorting</p>
-        <a href="/news">→ Kamunity News Room</a>
+        <a href="/news">View all publications</a>
     </div>
 </section>
 </div>
@@ -541,7 +522,8 @@
 
 <script src="js/nav.js"></script>
 <script src="js/quizzes.js"></script>
-<script src="js/supabase-feed.js"></script>
+<script src="js/publication-metadata.js"></script>
+<script src="js/supabase-feed.js?v=2026-11-19"></script>
 
 <script src="js/rooms.js"></script>
 </body>
