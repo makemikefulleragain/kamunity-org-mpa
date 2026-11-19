@@ -135,7 +135,7 @@
         try {
             var resp = await fetch(buildFeedUrl(PHOENIX_NEWS_ENDPOINT, { limit: 6 }), {
                 cache: 'no-store',
-                signal: AbortSignal.timeout(6000)
+                signal: AbortSignal.timeout(20000)
             });
             if (!resp.ok) throw new Error('Feed error ' + resp.status);
 

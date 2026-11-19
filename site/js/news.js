@@ -265,7 +265,7 @@
         try {
             var res = await fetch(buildFeedUrl(PHOENIX_NEWS_ENDPOINT, { limit: 100 }), {
                 cache: 'no-store',
-                signal: AbortSignal.timeout(8000)
+                signal: AbortSignal.timeout(20000)
             });
             if (!res.ok) throw new Error('Feed error ' + res.status);
             var data = requirePhoenixNewsFeed(await res.json());
