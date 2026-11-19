@@ -21,7 +21,6 @@
     var PHOENIX_NEWS_SCHEMA = 'phoenix-mpa-news/v1';
 
     var publications = document.getElementById('latest-publications');
-    var teaserEl   = document.getElementById('signal-teaser');
 
     if (!publications) return;
 
@@ -153,13 +152,11 @@
 
             if (!items.length) {
                 showFallback('No publications available right now');
-                if (teaserEl) teaserEl.textContent = 'New publications will appear here when available.';
                 return;
             }
 
             publications.innerHTML = '';
             items.forEach(function (item) { publications.appendChild(renderCard(item)); });
-            if (teaserEl) teaserEl.textContent = 'Explore the latest publications from the WA community sector.';
 
         } catch (err) {
             showFallback('Publications temporarily unavailable');

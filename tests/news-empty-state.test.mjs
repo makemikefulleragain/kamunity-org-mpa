@@ -8,7 +8,7 @@ const script = readFileSync(new URL('../site/js/supabase-feed.js', import.meta.u
 async function renderWith(response) {
   const elements = {
     'latest-publications': { innerHTML: '', setAttribute() {} },
-    'signal-teaser': { textContent: '' },
+    'hero-contact': { innerHTML: 'Have a question or an idea? <a href="mailto:mike@kamunityconsulting.com">Email Mike.</a>' },
   };
 
   runInNewContext(script, {
@@ -30,10 +30,12 @@ test('an empty approved news feed shows an honest empty state', async () => {
 
   assert.match(elements['latest-publications'].innerHTML, /No publications available right now/);
   assert.doesNotMatch(elements['latest-publications'].innerHTML, /loading/);
-  assert.match(elements['signal-teaser'].textContent, /will appear here when available/);
+  assert.match(elements['hero-contact'].innerHTML, /Have a question or an idea\?/);
+  assert.match(elements['hero-contact'].innerHTML, /mailto:mike@kamunityconsulting\.com/);
 });
 
 test('a failed news request is not described as still loading', async () => {
   const elements = await renderWith({ ok: false, status: 503 });
   assert.match(elements['latest-publications'].innerHTML, /temporarily unavailable/);
+  assert.match(elements['hero-contact'].innerHTML, /mailto:mike@kamunityconsulting\.com/);
 });

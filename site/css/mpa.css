@@ -219,6 +219,13 @@
     margin-bottom: 1.5rem;
 }
 
+.three-doors > .door-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.three-doors > .door-card p { flex: 1; }
+
 .door-card {
     padding: 2rem 1.5rem;
     border: 1px solid var(--parchment-dark);
@@ -249,7 +256,7 @@
 .door-card:hover::before { width: 6px; }
 .door-card--quick::before { background: var(--ember); }
 .door-card--dig::before  { background: var(--sky); }
-.door-card--chat::before { background: var(--moss); }
+.door-card--publications::before { background: var(--moss); }
 
 .door-card-icon {
     font-size: 1.8rem;
@@ -286,13 +293,20 @@
     margin-top: 0.9rem;
 }
 
-.signal-teaser {
+.hero-contact {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.75rem;
-    color: var(--ash);
+    color: var(--charcoal);
     border-left: 3px solid var(--parchment-dark);
     padding: 0.4rem 0.8rem;
     margin-top: 0.5rem;
+}
+
+.hero-contact a {
+    color: var(--sky);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    white-space: nowrap;
 }
 
 @media (max-width: 768px) {
@@ -352,6 +366,8 @@
 /* ============================================================
    LATEST PUBLICATIONS — §2
    ============================================================ */
+#signals { scroll-margin-top: 4rem; }
+
 .publications-list {
     list-style: none;
     padding: 0;
