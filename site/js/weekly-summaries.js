@@ -12,7 +12,7 @@
   function valid(item) {
     try {
       var url = new URL(item.audioUrl);
-      return /^\d{4}-\d{2}-\d{2}$/.test(item.id) && typeof item.title === 'string' && item.title.length <= 140 && typeof item.description === 'string' && typeof item.script === 'string' && item.script.length <= 4000 && item.duration > 1 && item.duration < 240 && Number.isFinite(Date.parse(item.period.start)) && Number.isFinite(Date.parse(item.period.end)) && url.origin === origin && url.pathname === '/.netlify/functions/weekly-summary-audio' && url.searchParams.get('id') === item.id && Array.isArray(item.sources);
+      return /^\d{4}-\d{2}-\d{2}$/.test(item.id) && typeof item.title === 'string' && item.title.length <= 140 && typeof item.description === 'string' && typeof item.script === 'string' && item.script.length <= 6500 && Number.isFinite(item.duration) && item.duration > 1 && item.duration <= 360 && Number.isFinite(Date.parse(item.period.start)) && Number.isFinite(Date.parse(item.period.end)) && url.origin === origin && url.pathname === '/.netlify/functions/weekly-summary-audio' && url.searchParams.get('id') === item.id && Array.isArray(item.sources);
     } catch (error) { return false; }
   }
   async function read(cursor, id) {
@@ -69,7 +69,7 @@
     archive.append(el('div', 'Listen back', { class: 'wh-aisle-label' }));
     var header = el('div', undefined, { class: 'catalogue-row-header' }); header.append(el('h2', 'Weekly News Summaries', { id: 'weekly-heading' }));
     var controls = el('div', undefined, { class: 'catalogue-row-controls' }), previous = el('button', '←', { type: 'button', 'aria-label': 'Previous weekly summaries' }), forward = el('button', '→', { type: 'button', 'aria-label': 'Next weekly summaries' }); controls.append(previous, forward); header.append(controls); archive.append(header);
-    archive.append(el('p', 'The week’s developments, connected in a story under four minutes. Recent editions appear first; older recordings remain in the archive.', { class: 'wh-aisle-intro' }));
+    archive.append(el('p', 'The week’s developments, connected in a story of up to six minutes. Recent editions appear first; older recordings remain in the archive.', { class: 'wh-aisle-intro' }));
     var row = el('div', undefined, { class: 'wh-aisle-row catalogue-shelf weekly-shelf', role: 'list', tabindex: '0', 'aria-label': 'Weekly news recordings' });
     var matching = items.filter(function (item) { return !search || search.value.toLowerCase().trim().split(/\s+/).every(function (word) { return [item.title, item.description, dates(item), item.script].join(' ').toLowerCase().includes(word); }); });
     if (matching.length) { var noResults = document.getElementById('wh-no-results'); if (noResults) noResults.style.display = 'none'; }
