@@ -31,6 +31,9 @@
     var filterSort   = document.getElementById('filter-sort');
     var storyModal   = document.getElementById('story-modal');
     var lastModalTrigger = null;
+    var initialStory = null;
+    try { var seed = document.getElementById('kamunity-initial-story'); if (seed) { var parsed = JSON.parse(seed.textContent); if (parsed.id === new URLSearchParams(window.location.search).get('story')) initialStory = parsed; } } catch (error) { /* Fall back to the public feed. */ }
+    function storyAddress(id) { var url = new URL(window.location.href); url.pathname = '/news'; if (id) url.searchParams.set('story', id); else url.searchParams.delete('story'); return url.pathname + url.search; }
 
     var allItems     = [];
     var visibleCount = 6;
@@ -286,7 +289,7 @@
 
             render();
             var storyParam = new URLSearchParams(window.location.search).get('story');
-            if (storyParam) openStoryModal(storyParam, null, false);
+            if (storyParam && !initialStory) openStoryModal(storyParam, null, false);
 
         } catch (err) {
             allItems = [];
@@ -300,6 +303,7 @@
         }
     }
 
+    if (initialStory && storyModal) { storyModal.classList.add('is-open'); storyModal.setAttribute('aria-hidden','false'); document.body.classList.add('story-modal-open'); renderStoryModal(initialStory); var initialClose=storyModal.querySelector('[data-story-modal-close]'); if(initialClose)initialClose.focus(); }
     loadNews();
 
     async function openStoryModal(storyId, trigger, updateUrl) {
@@ -312,7 +316,7 @@
         var closeBtn = storyModal.querySelector('[data-story-modal-close]');
         if (closeBtn) closeBtn.focus();
         if (updateUrl && history.pushState) {
-            history.pushState({ story: storyId }, '', '/news?story=' + encodeURIComponent(storyId));
+            history.pushState({ story: storyId }, '', storyAddress(storyId));
         }
         try {
             var res = await fetch(buildFeedUrl(PHOENIX_NEWS_ENDPOINT, { story_id: storyId }), {
@@ -349,7 +353,9 @@
             var url = new URL(value);
             if (url.protocol !== 'https:' || url.username || url.password) return '';
             if (!url.hostname.includes('.') || /^(localhost|.*\.localhost|.*\.local|.*\.test|\d+\.\d+\.\d+\.\d+|\[.*\])$/i.test(url.hostname)) return '';
+            var grantId = ['grants.gov.au','www.grants.gov.au'].includes(url.hostname.toLowerCase()) && /^\/Go\/Show\/?$/i.test(url.pathname) ? url.searchParams.get('GoUuid') : '';
             url.search = '';
+            if (/^[a-f0-9]{8}-(?:[a-f0-9]{4}-){3}[a-f0-9]{12}$/i.test(grantId || '')) url.searchParams.set('GoUuid', grantId);
             url.hash = '';
             return url.toString();
         } catch (err) {
@@ -383,7 +389,15 @@
 
         var bodyEl = document.getElementById('sm-body');
         bodyEl.replaceChildren();
-        window.KamunityArticleFormat.articleFromStory(story).forEach(function (block) {
+        var blocks = window.KamunityArticleFormat.articleFromStory(story);
+        var words = String(title).toLowerCase().match(/[a-z0-9]+/g) || [];
+        var firstWords = String(blocks[0] && blocks[0].text || '').toLowerCase().match(/[a-z0-9]+/g) || [];
+        if (blocks[0] && blocks[0].type === 'heading' && words.length >= 5 && words.filter(function (word) { return firstWords.includes(word); }).length / words.length >= 0.7) blocks = blocks.slice(1);
+        var intro = document.getElementById('sm-summary');
+        if (intro) { var summary = story.summary || ''; var first = String(blocks[0] && blocks[0].text || ''); intro.hidden = !summary || first.indexOf(summary) === 0 || summary === title; intro.textContent = intro.hidden ? '' : summary; }
+        var toolLink = document.getElementById('sm-tool-link');
+        if (toolLink) { var toolUrl = /Org Health Check/i.test(title) && /https:\/\/kamunity-org-health\.netlify\.app\//.test(content) && story.response_type !== 'tool' ? 'https://kamunity-org-health.netlify.app/' : ''; toolLink.hidden = !toolUrl; if(toolUrl)toolLink.href=toolUrl;else toolLink.removeAttribute('href'); }
+        blocks.forEach(function (block) {
             if (block.type === 'list') {
                 var list = document.createElement(block.ordered ? 'ol' : 'ul');
                 if (block.ordered) list.start = block.start;
@@ -409,7 +423,7 @@
         }
 
         var newsLink = document.getElementById('sm-news-link');
-        if (newsLink && story.id) newsLink.href = '/news?story=' + encodeURIComponent(story.id);
+        if (newsLink) newsLink.href = '/news';
         document.title = title + ' \u2014 Kamunity News';
     }
 
@@ -421,7 +435,10 @@
                 var strong = document.createElement(part.bold ? 'strong' : 'em');
                 strong.textContent = part.text;
                 element.appendChild(strong);
-            } else element.appendChild(document.createTextNode(part.text));
+            } else {
+                var pieces = part.text.split(/(https:\/\/[^\s<>]+)/g);
+                pieces.forEach(function(piece) { var punctuation = piece.match(/[),.;]+$/); var clean = piece.replace(/[),.;]+$/,''); var url = /^https:\/\//.test(clean) ? safeOriginalSourceUrl(clean) : ''; if(url) { var link = document.createElement('a'); link.href=url; link.target='_blank'; link.rel='noopener noreferrer'; link.textContent=clean; element.appendChild(link); if(punctuation)element.appendChild(document.createTextNode(punctuation[0])); } else element.appendChild(document.createTextNode(piece)); });
+            }
         });
     }
 
@@ -431,7 +448,7 @@
         storyModal.setAttribute('aria-hidden', 'true');
         document.body.classList.remove('story-modal-open');
         document.title = 'Kamunity News — Sector Intelligence for the WA Community Sector';
-        if (updateUrl && history.pushState) history.pushState({}, '', '/news');
+        if (updateUrl && history.pushState) history.pushState({}, '', storyAddress(null));
         if (lastModalTrigger && typeof lastModalTrigger.focus === 'function') lastModalTrigger.focus();
     }
 

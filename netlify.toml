@@ -8,6 +8,10 @@
 [functions]
   node_bundler = "esbuild"
 
+[functions."news-page"]
+  included_files = ["site/news.html"]
+  timeout = 26
+
 # ── Security headers (all pages) ─────────────────────────────────────────────
 [[headers]]
   for = "/.netlify/functions/*"
@@ -64,8 +68,15 @@
 
 [[redirects]]
   from = "/news"
-  to = "/news.html"
+  to = "/.netlify/functions/news-page"
   status = 200
+  force = true
+
+[[redirects]]
+  from = "/news.html"
+  to = "/.netlify/functions/news-page"
+  status = 200
+  force = true
 
 [[redirects]]
   from = "/warehouse"
