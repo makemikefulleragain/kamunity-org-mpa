@@ -1,5 +1,4 @@
-import {readFile} from 'node:fs/promises';
-import {resolve} from 'node:path';
+import {NEWS_TEMPLATE} from './_shared/news-template.mjs';
 import {createHash} from 'node:crypto';
 import {resolvePhoenixOrigin} from './phoenix-proxy.mjs';
 const MPA='https://kamunity-org-mpa.netlify.app';
@@ -31,7 +30,7 @@ export function storyPage(template,story,origin='https://phoenix-node.netlify.ap
   return html.replace(/<main\b[^>]*>/i,main=>main+fallback);
 }
 function safeSource(value){try{const url=new URL(value);return url.protocol==='https:'&&!url.username&&!url.password?url.href:'';}catch{return '';}}
-export function createNewsPage({load=()=>readFile(resolve('site/news.html'),'utf8'),fetchImpl=fetch,origin=event=>resolvePhoenixOrigin(event)}={}){return async event=>{
+export function createNewsPage({load=async()=>NEWS_TEMPLATE,fetchImpl=fetch,origin=event=>resolvePhoenixOrigin(event)}={}){return async event=>{
   if(!['GET','HEAD'].includes(event.httpMethod))return {statusCode:405,headers:{...headers,Allow:'GET, HEAD'},body:''};
   const template=await load(),id=event.queryStringParameters?.story;
   if(!id)return {statusCode:200,headers,body:event.httpMethod==='HEAD'?'':template};
