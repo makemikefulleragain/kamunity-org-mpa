@@ -7,9 +7,8 @@ const script = readFileSync(new URL('../site/js/supabase-feed.js', import.meta.u
 
 async function renderWith(response) {
   const elements = {
-    'signals-col': { innerHTML: '' },
-    'pulse-col': { innerHTML: '' },
-    'signal-teaser': { textContent: '' },
+    'latest-publications': { innerHTML: '', setAttribute() {} },
+    'hero-contact': { innerHTML: 'Have a question or an idea? <a href="mailto:mike@kamunityconsulting.com">Email Mike.</a>' },
   };
 
   runInNewContext(script, {
@@ -29,15 +28,14 @@ test('an empty approved news feed shows an honest empty state', async () => {
     json: async () => ({ schema_version: 'phoenix-mpa-news/v1', items: [] }),
   });
 
-  for (const id of ['signals-col', 'pulse-col']) {
-    assert.match(elements[id].innerHTML, /No reviewed Phoenix stories available right now/);
-    assert.doesNotMatch(elements[id].innerHTML, /loading/);
-  }
-  assert.match(elements['signal-teaser'].textContent, /will appear here when available/);
+  assert.match(elements['latest-publications'].innerHTML, /No publications available right now/);
+  assert.doesNotMatch(elements['latest-publications'].innerHTML, /loading/);
+  assert.match(elements['hero-contact'].innerHTML, /Have a question or an idea\?/);
+  assert.match(elements['hero-contact'].innerHTML, /mailto:mike@kamunityconsulting\.com/);
 });
 
 test('a failed news request is not described as still loading', async () => {
   const elements = await renderWith({ ok: false, status: 503 });
-  assert.match(elements['signals-col'].innerHTML, /temporarily unavailable/);
-  assert.match(elements['pulse-col'].innerHTML, /temporarily unavailable/);
+  assert.match(elements['latest-publications'].innerHTML, /temporarily unavailable/);
+  assert.match(elements['hero-contact'].innerHTML, /mailto:mike@kamunityconsulting\.com/);
 });

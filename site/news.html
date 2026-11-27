@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/mpa.css">
     <link rel="stylesheet" href="/css/article-format.css?v=1">
+    <link rel="stylesheet" href="/css/weekly-summaries.css?v=1">
 </head>
 <body>
 
@@ -59,6 +60,8 @@
       <span id="sm-tags"></span><span id="sm-kind"></span>
     </div>
     <h1 id="story-modal-title" class="story-full-title">Loading…</h1>
+    <p id="sm-summary" class="story-full-summary" hidden></p>
+    <a id="sm-tool-link" class="ask-kai-btn" target="_blank" rel="noopener noreferrer" hidden>Open Org Health Check</a>
     <div id="sm-body" class="story-full-body"></div>
     <div class="story-modal-actions">
       <a class="ask-kai-btn" id="sm-next-step" target="_blank" rel="noopener noreferrer" hidden>View verified next step ↗</a>
@@ -81,6 +84,10 @@
     <p class="news-counts" style="margin-top:0.2rem;">
         Last updated: <span id="news-last-updated">—</span>
     </p>
+    <section class="weekly-hero" data-weekly-hero aria-label="Last week’s news summary">
+      <p class="weekly-status" role="status">Checking last week’s audio summary…</p>
+      <noscript><p>Weekly recordings and transcripts load when JavaScript is enabled.</p></noscript>
+    </section>
 </header>
 </div>
 
@@ -197,9 +204,11 @@
 
 <link rel="stylesheet" href="/css/publication.css?v=20261020">
 <script src="/js/nav.js"></script>
+<script src="/js/weekly-summaries.js?v=1"></script>
 <script src="/js/article-format.js?v=2"></script>
 <script src="/js/publication-metadata.js?v=20261020"></script>
-<script src="/js/news.js?v=20261020-types"></script>
+<script src="/js/read-aloud.js?v=2026-11-19-links"></script>
+<script src="/js/news.js?v=2026-11-26-sharing"></script>
 
 </body>
 </html>

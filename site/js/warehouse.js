@@ -19,7 +19,7 @@
 
     function runSearch(query) {
         var allCards = document.querySelectorAll('.wh-tool-card[data-search]');
-        var aisles   = document.querySelectorAll('.wh-aisle');
+        var aisles   = document.querySelectorAll('.wh-aisle:not([data-weekly-archive])');
         var q = normalise(query);
 
         if (!q) {

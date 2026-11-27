@@ -1,9 +1,11 @@
+import {NEWS_TEMPLATE} from '../site/netlify/functions/_shared/news-template.mjs';
 import { execFileSync } from 'node:child_process';
 import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { Script } from 'node:vm';
 
 const root = resolve('site');
+if(NEWS_TEMPLATE!==readFileSync(resolve(root,'news.html'),'utf8'))throw new Error('Run node scripts/sync-news-template.mjs --write after editing news.html');
 const files = [];
 function walk(path) {
   for (const entry of readdirSync(path, { withFileTypes: true })) {

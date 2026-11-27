@@ -1,6 +1,6 @@
 /* ============================================================
    KAMUNITY MPA — supabase-feed.js
-   Fetches latest public Phoenix stories for the homepage excerpt.
+   Shows the six latest public Phoenix publications, newest first.
    Static fallback if unavailable (Doug Test)
    No data sent. Read-only. Constitutional Principle 5.
    ============================================================ */
@@ -20,45 +20,36 @@
             : 'https://phoenix-node.netlify.app/.netlify/functions/public-mpa-news');
     var PHOENIX_NEWS_SCHEMA = 'phoenix-mpa-news/v1';
 
-    var signalsCol = document.getElementById('signals-col');
-    var pulseCol   = document.getElementById('pulse-col');
-    var teaserEl   = document.getElementById('signal-teaser');
+    var publications = document.getElementById('latest-publications');
 
-    if (!signalsCol && !pulseCol) return;
-
-    function formatAge(dateStr) {
-        if (!dateStr) return '';
-        var d = new Date(dateStr);
-        var now = new Date();
-        var diff = Math.floor((now - d) / (1000 * 60 * 60 * 24));
-        if (diff === 0) return 'today';
-        if (diff === 1) return 'yesterday';
-        if (diff < 7)  return diff + ' days ago';
-        if (diff < 30) return Math.floor(diff / 7) + ' weeks ago';
-        return Math.floor(diff / 30) + ' months ago';
-    }
+    if (!publications) return;
 
     function renderCard(item) {
-        var card = document.createElement('div');
-        card.className = 'signal-card';
+        var card = document.createElement('li');
+        card.className = 'news-card';
 
-        var tags = (item.tags || []).slice(0, 2).join(' · ');
-        var age  = formatAge(item.published_at || item.created_at);
-        var title = item.title || item.summary || 'Phoenix response';
+        var presentation = window.KamunityPublication.cardPresentation(item);
+        var title = item.title || item.summary || 'Kamunity publication';
         var detail = item.summary && item.title !== item.summary ? item.summary : '';
         var storyId = item.id || item.public_id || '';
         var href = storyId ? '/news?story=' + encodeURIComponent(storyId) : '/news';
 
         var tagEl = document.createElement('div');
-        tagEl.className = 'signal-card-tag';
-        tagEl.textContent = item.response_type === 'tool' ? 'Tool proposal · not yet built' : item.response_type === 'discussion' ? 'Discussion proposal · no room created' : item.response_type === 'opportunity' ? 'Opportunity · check availability' : 'Article';
+        tagEl.className = 'news-card-type news-card-type--story';
+        tagEl.textContent = presentation.label;
 
-        var heading = document.createElement('h4');
+        var heading = document.createElement('h3');
         heading.textContent = title;
 
         var dateEl = document.createElement('div');
-        dateEl.className = 'signal-card-date';
-        dateEl.textContent = (item.source_name || 'Phoenix Node') + (age ? ' · ' + age : '');
+        dateEl.className = 'news-card-meta';
+        dateEl.textContent = 'Published ';
+        var date = document.createElement('time');
+        date.dateTime = item.published_at || item.created_at || '';
+        date.textContent = date.dateTime ? new Date(date.dateTime).toLocaleDateString('en-AU', {
+            day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Australia/Perth'
+        }) : 'date unavailable';
+        dateEl.appendChild(date);
 
         var actions = document.createElement('div');
         actions.className = 'news-card-actions';
@@ -66,34 +57,64 @@
         var readLink = document.createElement('a');
         readLink.href = href;
         readLink.className = 'ask-kai-btn';
-        readLink.textContent = item.response_type === 'tool' || item.response_type === 'discussion' ? 'Read proposal →' : 'Read response →';
-
-        var askLink = document.createElement('a');
-        askLink.href = 'mailto:mike@kamunityconsulting.com';
-        askLink.className = 'ask-kai-btn';
-        askLink.textContent = 'Ask Mike by email →';
+        readLink.textContent = presentation.action;
 
         card.appendChild(tagEl);
         card.appendChild(heading);
         card.appendChild(dateEl);
+        if (presentation.state) {
+            var state = document.createElement('p');
+            state.className = 'news-card-status';
+            state.textContent = presentation.state;
+            card.appendChild(state);
+        }
         if (detail) {
             var detailEl = document.createElement('p');
+            detailEl.className = 'news-card-summary';
             detailEl.textContent = detail;
             card.appendChild(detailEl);
         }
+        var sourceUrl = safeOriginalSourceUrl(item.source_url);
+        if (sourceUrl) {
+            var source = document.createElement('p');
+            var sourceLink = document.createElement('a');
+            sourceLink.className = 'news-original-source';
+            sourceLink.href = sourceUrl;
+            sourceLink.target = '_blank';
+            sourceLink.rel = 'noopener noreferrer';
+            sourceLink.textContent = 'Open original source ↗';
+            source.appendChild(sourceLink);
+            card.appendChild(source);
+        }
         actions.appendChild(readLink);
-        actions.appendChild(askLink);
+        var readAloud = window.KamunityReadAloud && window.KamunityReadAloud.createButton(item, Boolean(sourceUrl));
+        if (readAloud) actions.appendChild(readAloud);
         card.appendChild(actions);
 
         return card;
     }
 
-    function showFallback(col, message) {
-        col.innerHTML =
-            '<div class="signals-fallback">' +
+    // Match the News cards' policy for public original-source links.
+    function safeOriginalSourceUrl(value) {
+        if (typeof value !== 'string' || value.length > 2048) return '';
+        try {
+            var url = new URL(value);
+            if (url.protocol !== 'https:' || url.username || url.password) return '';
+            if (!url.hostname.includes('.') || /^(localhost|.*\.localhost|.*\.local|.*\.test|\d+\.\d+\.\d+\.\d+|\[.*\])$/i.test(url.hostname)) return '';
+            url.search = '';
+            url.hash = '';
+            return url.toString();
+        } catch (err) {
+            return '';
+        }
+    }
+
+    function showFallback(message) {
+        publications.innerHTML =
+            '<li class="signals-fallback">' +
             message + ' — ' +
-            '<a href="/news">view Kamunity News →</a>' +
-            '</div>';
+            '<a href="/news">view all publications</a>' +
+            '</li>';
     }
 
     function buildFeedUrl(endpoint, params) {
@@ -114,7 +135,7 @@
         try {
             var resp = await fetch(buildFeedUrl(PHOENIX_NEWS_ENDPOINT, { limit: 6 }), {
                 cache: 'no-store',
-                signal: AbortSignal.timeout(6000)
+                signal: AbortSignal.timeout(20000)
             });
             if (!resp.ok) throw new Error('Feed error ' + resp.status);
 
@@ -122,47 +143,25 @@
             if (!data || data.schema_version !== PHOENIX_NEWS_SCHEMA || !Array.isArray(data.items)) {
                 throw new Error('Unexpected Phoenix news feed schema');
             }
-            var items = data.items;
+            // The server orders the full eligible feed before applying limit=6.
+            var items = data.items.slice().sort(function (a, b) {
+                return (Date.parse(b.published_at || b.created_at) || 0) -
+                    (Date.parse(a.published_at || a.created_at) || 0) ||
+                    String(a.id || '').localeCompare(String(b.id || ''));
+            }).slice(0, 6);
 
             if (!items.length) {
-                if (signalsCol) showFallback(signalsCol, 'No reviewed Phoenix stories available right now');
-                if (pulseCol) showFallback(pulseCol, 'No reviewed Phoenix stories available right now');
-                if (teaserEl) teaserEl.textContent = 'New reviewed community stories will appear here when available.';
+                showFallback('No publications available right now');
                 return;
             }
 
-            var midpoint = Math.ceil(items.length / 2);
-            var signals = items.slice(0, midpoint).slice(0, 3);
-            var pulses  = items.slice(midpoint).slice(0, 3);
-
-            if (signalsCol) {
-                if (signals.length) {
-                    signalsCol.innerHTML = '';
-                    signals.forEach(function (s) { signalsCol.appendChild(renderCard(s)); });
-                } else {
-                    showFallback(signalsCol, 'No additional reviewed stories yet');
-                }
-            }
-
-            if (pulseCol) {
-                if (pulses.length) {
-                    pulseCol.innerHTML = '';
-                    pulses.forEach(function (p) { pulseCol.appendChild(renderCard(p)); });
-                } else {
-                    showFallback(pulseCol, 'No additional reviewed stories yet');
-                }
-            }
-
-            /* Update teaser with live count */
-            if (teaserEl && items.length) {
-                teaserEl.textContent =
-                    items.length + ' Phoenix ' + (items.length === 1 ? 'story is' : 'stories are') +
-                    ' currently available from Kamunity News.';
-            }
+            publications.innerHTML = '';
+            items.forEach(function (item) { publications.appendChild(renderCard(item)); });
 
         } catch (err) {
-            if (signalsCol) showFallback(signalsCol, 'Phoenix stories temporarily unavailable');
-            if (pulseCol)   showFallback(pulseCol, 'Phoenix stories temporarily unavailable');
+            showFallback('Publications temporarily unavailable');
+        } finally {
+            publications.setAttribute('aria-busy', 'false');
         }
     }
 
