@@ -404,8 +404,6 @@
         if (blocks[0] && blocks[0].type === 'heading' && words.length >= 5 && words.filter(function (word) { return firstWords.includes(word); }).length / words.length >= 0.7) blocks = blocks.slice(1);
         var intro = document.getElementById('sm-summary');
         if (intro) { var summary = story.summary || ''; var first = String(blocks[0] && blocks[0].text || ''); intro.hidden = !summary || first.indexOf(summary) === 0 || summary === title; intro.textContent = intro.hidden ? '' : summary; }
-        var toolLink = document.getElementById('sm-tool-link');
-        if (toolLink) { var toolUrl = /Org Health Check/i.test(title) && /https:\/\/kamunity-org-health\.netlify\.app\//.test(content) && story.response_type !== 'tool' ? 'https://kamunity-org-health.netlify.app/' : ''; toolLink.hidden = !toolUrl; if(toolUrl)toolLink.href=toolUrl;else toolLink.removeAttribute('href'); }
         blocks.forEach(function (block) {
             if (block.type === 'list') {
                 var list = document.createElement(block.ordered ? 'ol' : 'ul');
