@@ -56,7 +56,7 @@
 
         var readLink = document.createElement('a');
         readLink.href = href;
-        readLink.className = 'ask-kai-btn';
+        readLink.className = 'ask-kai-btn news-card-read';
         readLink.textContent = presentation.action;
 
         card.appendChild(tagEl);
@@ -89,6 +89,9 @@
         actions.appendChild(readLink);
         var readAloud = window.KamunityReadAloud && window.KamunityReadAloud.createButton(item, Boolean(sourceUrl));
         if (readAloud) actions.appendChild(readAloud);
+        actions.setAttribute('data-speech', readAloud ? 'available' : 'unavailable');
+        var share = window.KamunityShare && window.KamunityShare.createButton(item);
+        if (share) actions.appendChild(share);
         card.appendChild(actions);
 
         return card;
