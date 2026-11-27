@@ -2405,12 +2405,73 @@
     align-items: center;
 }
 
-.news-card-actions .news-card-ask {
-    margin-left: auto;
+.news-card .news-card-actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.65rem;
+    align-items: stretch;
 }
 
-.news-card .publication-read-aloud {
+.news-card .news-card-actions[data-speech="unavailable"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.news-card .news-card-actions .ask-kai-btn,
+.publication-share-fallback .ask-kai-btn {
+    justify-content: center;
+    min-width: 0;
+    min-height: 44px;
+    padding: 0.55rem 0.65rem;
+    margin: 0;
+    border: 1px solid var(--sky);
+    border-radius: 4px;
+    font-size: 0.875rem;
+    text-align: center;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.news-card .news-card-actions .ask-kai-btn:focus-visible,
+.publication-share:focus-visible,
+.publication-share-fallback :focus-visible {
+    outline: 2px solid var(--sky);
+    outline-offset: 3px;
+}
+
+.publication-share-feedback,
+.publication-share-fallback {
+    grid-column: 1 / -1;
     flex-basis: 100%;
+    min-width: 0;
+    margin: 0;
+    font-size: 0.875rem;
+}
+
+.publication-share-fallback {
+    display: grid;
+    gap: 0.65rem;
+    padding: 0.85rem;
+    background: var(--cream);
+    border: 1px solid var(--parchment-dark);
+    border-radius: 4px;
+}
+.publication-share-fallback p { margin: 0; }
+.publication-share-fallback label { display: grid; gap: 0.35rem; }
+.publication-share-fallback input {
+    box-sizing: border-box;
+    min-width: 0;
+    width: 100%;
+    padding: 0.6rem;
+    font: inherit;
+}
+.publication-share-fallback-actions { display: flex; flex-wrap: wrap; gap: 0.65rem; }
+.story-share { display: contents; }
+.story-modal-actions > .story-share > .publication-share { min-height: 44px; }
+
+@media (max-width: 520px) {
+    .news-card .news-card-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .news-card .news-card-read { grid-column: 1 / -1; }
+    .news-card .news-card-actions[data-speech="unavailable"] .news-card-read { grid-column: auto; }
 }
 
 .news-load-more {
