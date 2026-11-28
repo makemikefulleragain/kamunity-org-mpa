@@ -12,7 +12,9 @@
   function valid(item) {
     try {
       var url = new URL(item.audioUrl);
-      return /^\d{4}-\d{2}-\d{2}$/.test(item.id) && typeof item.title === 'string' && item.title.length <= 140 && typeof item.description === 'string' && typeof item.script === 'string' && item.script.length <= 6500 && Number.isFinite(item.duration) && item.duration > 1 && item.duration <= 360 && Number.isFinite(Date.parse(item.period.start)) && Number.isFinite(Date.parse(item.period.end)) && url.origin === origin && url.pathname === '/.netlify/functions/weekly-summary-audio' && url.searchParams.get('id') === item.id && Array.isArray(item.sources);
+      var briefing = item.briefing;
+      var briefingValid = !briefing || [briefing.publicationsConsidered, briefing.publicationsCovered, briefing.publicationsExcluded].every(function (n) { return Number.isSafeInteger(n) && n >= 0; }) && briefing.publicationsCovered + briefing.publicationsExcluded === briefing.publicationsConsidered && briefing.publicationsCovered === item.sources.length && Array.isArray(briefing.actions) && briefing.actions.every(function (action) { return typeof action.text === 'string' && action.text.trim().length >= 20 && item.script.includes(action.text) && Array.isArray(action.sourceIds) && action.sourceIds.length > 0 && action.sourceIds.every(function (id) { return item.sources.some(function (source) { return source.id === id; }); }); });
+      return /^\d{4}-\d{2}-\d{2}$/.test(item.id) && typeof item.title === 'string' && item.title.length <= 140 && typeof item.description === 'string' && typeof item.script === 'string' && item.script.length <= 14000 && Number.isFinite(item.duration) && item.duration > 1 && item.duration <= 720 && Number.isFinite(Date.parse(item.period.start)) && Number.isFinite(Date.parse(item.period.end)) && url.origin === origin && url.pathname === '/.netlify/functions/weekly-summary-audio' && url.searchParams.get('id') === item.id && Array.isArray(item.sources) && briefingValid;
     } catch (error) { return false; }
   }
   async function read(cursor, id) {
@@ -37,6 +39,13 @@
     speed.addEventListener('change', function () { audio.playbackRate = Number(speed.value); }); speedLabel.append(speed);
     var transcript = el('details', undefined, { class: 'weekly-transcript' }); transcript.append(el('summary', 'Transcript & sources'));
     transcript.append(el('p', 'Coverage: ' + dates(item) + '. This edition reflects what was published that week. Check current availability and dates in the linked sources.', { class: 'weekly-status' }));
+    if (item.briefing) {
+      transcript.append(el('p', item.briefing.publicationsCovered + ' of ' + item.briefing.publicationsConsidered + ' publications covered. ' + item.briefing.publicationsExcluded + ' excluded after editorial review.', { class: 'weekly-status' }));
+      if (item.briefing.actions.length) {
+        transcript.append(el('h3', 'Practical next steps'));
+        var actions = el('ul'); item.briefing.actions.forEach(function (action) { actions.append(el('li', action.text)); }); transcript.append(actions);
+      }
+    }
     item.script.split(/\n\s*\n/).forEach(function (p) { transcript.append(el('p', p)); });
     transcript.append(el('p', 'AI-generated narration · Published by Kamunity', { class: 'weekly-status' }));
     var sources = el('ul'); item.sources.forEach(function (source) { try { var url = new URL(source.url); if (url.protocol !== 'https:' || url.username || url.password) return; var li = el('li'); li.append(el('a', source.title, { href: url.href })); sources.append(li); } catch (error) { /* malformed source omitted */ } }); transcript.append(sources);
@@ -52,11 +61,11 @@
   }
   function drawHero(feed) {
     hero.replaceChildren();
-    var button = el('button', '▶ Play last week’s news summary', { type: 'button', class: 'weekly-play' });
+    var button = el('button', '▶ Play the weekly community-sector briefing', { type: 'button', class: 'weekly-play' });
     hero.append(button);
     if (!feed.items.length) { button.disabled = true; hero.append(el('p', 'The first edition is being prepared. New summaries arrive Sundays at 7am Perth time.', { class: 'weekly-status', role: 'status' })); return; }
     var item = feed.items[0];
-    hero.append(el('p', dates(item) + ' · ' + duration(item.duration) + ' · ' + item.title, { class: 'weekly-meta' }));
+    hero.append(el('p', dates(item) + ' · ' + duration(item.duration) + ' · ' + item.title + (item.briefing ? ' · ' + item.briefing.publicationsCovered + ' publications covered' : ''), { class: 'weekly-meta' }));
     if (feed.delayed) hero.append(el('p', 'The new edition is delayed. The previous available summary is shown with its coverage dates.', { class: 'weekly-status', role: 'status' }));
     var panel = recording(item, hero, button); panel.hidden = true;
     var links = el('div', undefined, { class: 'weekly-links' }), transcriptButton = el('button', 'Read transcript', { type: 'button', class: 'weekly-text-button' });
@@ -67,9 +76,9 @@
   function drawArchive() {
     archive.replaceChildren();
     archive.append(el('div', 'Listen back', { class: 'wh-aisle-label' }));
-    var header = el('div', undefined, { class: 'catalogue-row-header' }); header.append(el('h2', 'Weekly News Summaries', { id: 'weekly-heading' }));
+    var header = el('div', undefined, { class: 'catalogue-row-header' }); header.append(el('h2', 'Weekly Community-Sector Briefings', { id: 'weekly-heading' }));
     var controls = el('div', undefined, { class: 'catalogue-row-controls' }), previous = el('button', '←', { type: 'button', 'aria-label': 'Previous weekly summaries' }), forward = el('button', '→', { type: 'button', 'aria-label': 'Next weekly summaries' }); controls.append(previous, forward); header.append(controls); archive.append(header);
-    archive.append(el('p', 'The week’s developments, connected in a story of up to six minutes. Recent editions appear first; older recordings remain in the archive.', { class: 'wh-aisle-intro' }));
+    archive.append(el('p', 'Themes, important stories and practical next steps for community organisations and groups. Usually eight to ten minutes in a busy week, with a twelve-minute maximum. Recent editions appear first; earlier summaries remain in the archive.', { class: 'wh-aisle-intro' }));
     var row = el('div', undefined, { class: 'wh-aisle-row catalogue-shelf weekly-shelf', role: 'list', tabindex: '0', 'aria-label': 'Weekly news recordings' });
     var matching = items.filter(function (item) { return !search || search.value.toLowerCase().trim().split(/\s+/).every(function (word) { return [item.title, item.description, dates(item), item.script].join(' ').toLowerCase().includes(word); }); });
     if (matching.length) { var noResults = document.getElementById('wh-no-results'); if (noResults) noResults.style.display = 'none'; }
